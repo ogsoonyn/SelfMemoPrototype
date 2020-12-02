@@ -2,11 +2,6 @@
 using Prism.Mvvm;
 using Reactive.Bindings;
 using SelfMemoPrototype.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SelfMemoPrototype.ViewModel
 {
@@ -19,9 +14,13 @@ namespace SelfMemoPrototype.ViewModel
         public ReactivePropertySlim<string> Description { get; set; } = new ReactivePropertySlim<string>("");
         public ReactivePropertySlim<string> Category { get; set; } = new ReactivePropertySlim<string>("");
 
+        public ReactivePropertySlim<bool> GridReadOnly { get; set; } = new ReactivePropertySlim<bool>(true);
+
         public MainViewModel()
         {
             MemoList.Add(new SelfMemo("a", "b", "c", "d"));
+            MemoList.Add(new SelfMemo("hoge", "fuga", "piyo", "nyan"));
+            MemoList.Add(new SelfMemo("aaa", "bbb", "ccc", "ddd"));
         }
 
         private DelegateCommand _cmd;
@@ -42,6 +41,28 @@ namespace SelfMemoPrototype.ViewModel
                 Description.Value = "";
                 Category.Value = "";
             }
+        }
+
+        private DelegateCommand _cmd2;
+        public DelegateCommand Cmd2
+        {
+            get { return _cmd2 = _cmd2 ?? new DelegateCommand(Select); }
+        }
+
+        private void Select()
+        {
+
+        }
+
+        private DelegateCommand _cmd3;
+        public DelegateCommand Cmd3
+        {
+            get { return _cmd3 = _cmd3 ?? new DelegateCommand(Reset); }
+        }
+
+        private void Reset()
+        {
+
         }
     }
 }
