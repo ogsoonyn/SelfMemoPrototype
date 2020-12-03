@@ -20,6 +20,8 @@ namespace SelfMemoPrototype.ViewModel
         public ReactivePropertySlim<string> Description { get; set; } = new ReactivePropertySlim<string>("");
         public ReactivePropertySlim<string> Category { get; set; } = new ReactivePropertySlim<string>("");
 
+        public ReactivePropertySlim<bool> IsSelected { get; set; } = new ReactivePropertySlim<bool>();
+
         #region AddMemoItemCommand
         private DelegateCommand _addMemoItemCmd;
         public DelegateCommand AddMemoItemCmd
@@ -45,6 +47,9 @@ namespace SelfMemoPrototype.ViewModel
                 Category.Value = "";
 
                 //SaveMemoFile(); // MemoListのハンドラで実施されるのでここでは不要
+
+                // WordのTextboxをフォーカスする
+                IsSelected.Value = true;
             }
         }
         #endregion

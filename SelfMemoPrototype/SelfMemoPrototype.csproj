@@ -14,6 +14,7 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -26,7 +27,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -42,12 +42,14 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>memo.ico</ApplicationIcon>
@@ -181,4 +183,21 @@
     <Resource Include="memo.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>del "$(TargetDir)*.xml"
+del "$(TargetDir)*.pdb"
+rd /s /q "$(TargetDir)de"
+rd /s /q "$(TargetDir)en"
+rd /s /q "$(TargetDir)es"
+rd /s /q "$(TargetDir)fr"
+rd /s /q "$(TargetDir)hu"
+rd /s /q "$(TargetDir)it"
+rd /s /q "$(TargetDir)ko"
+rd /s /q "$(TargetDir)pt-BR"
+rd /s /q "$(TargetDir)ro"
+rd /s /q "$(TargetDir)ru"
+rd /s /q "$(TargetDir)sv"
+rd /s /q "$(TargetDir)zh-Hans"
+rd /s /q "$(TargetDir)zh-Hant"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

@@ -36,17 +36,28 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0" Text="用語" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <TextBox Grid.Row="0" Grid.Column="1" x:Name="WordBox" Text="{Binding Word.Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="0" Grid.Column="1" x:Name="WordBox"
+                 Text="{Binding Word.Value, UpdateSourceTrigger=PropertyChanged}" b:FocusExtension.IsFocused="{Binding IsSelected.Value}"
+                 VerticalAlignment="Center"/>
 
-        <TextBlock Grid.Row="1" Text="略語・別名・訳語など" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding ShortWord.Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="1" Text="略語・別名・訳語など"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="1" Grid.Column="1"
+                 Text="{Binding ShortWord.Value, UpdateSourceTrigger=PropertyChanged}"
+                 VerticalAlignment="Center"/>
 
         <TextBlock Grid.Row="2" Text="説明" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <TextBox Grid.Row="2" Grid.Column="1" Margin="0, 10" Text="{Binding Description.Value, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Margin="0, 10"
+                 Text="{Binding Description.Value, UpdateSourceTrigger=PropertyChanged}"
+                 AcceptsReturn="True"/>
 
-        <TextBlock Grid.Row="3" Text="カテゴリ" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <TextBox Grid.Row="3" Grid.Column="1" Margin="0, 10" Text="{Binding Category.Value, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True"/>
+        <TextBlock Grid.Row="3" Text="カテゴリ"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Margin="0, 10"
+                 Text="{Binding Category.Value, UpdateSourceTrigger=PropertyChanged}"
+                 AcceptsReturn="True"/>
 
-        <Button Grid.Row="4" Grid.ColumnSpan="2" Margin="20, 5" Content="Add (Ctrl+S)" Command="{Binding AddMemoItemCmd}"/>
+        <Button Grid.Row="4" Grid.ColumnSpan="2" Margin="20, 5"
+                Content="Add (Ctrl+S)" Command="{Binding AddMemoItemCmd}"/>
     </Grid>
 </Window>
