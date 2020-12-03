@@ -4,12 +4,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SelfMemoPrototype"
+        xmlns:b="clr-namespace:SelfMemoPrototype.Behavior"
         xmlns:vm="clr-namespace:SelfMemoPrototype.ViewModel"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
+        FocusManager.FocusedElement="{Binding ElementName=SearchTextBox}"
         Title="SelfMemo" MinHeight="300" MinWidth="450" Height="450" Width="800">
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
+
+    <i:Interaction.Behaviors>
+        <b:ApplicationCommandBehavior/>
+    </i:Interaction.Behaviors>
 
     <Window.Resources>
         <ContextMenu x:Key="sampleWinMenu">
@@ -17,18 +24,17 @@
             <MenuItem Header="Exit" Click="MenuItem_Exit_Click"/>
         </ContextMenu>
     </Window.Resources>
+    
     <DockPanel>
         <DockPanel.InputBindings>
             <KeyBinding Key="M" Modifiers="Ctrl" Command="{Binding OpenRegisterWindowCmd}"/>
+            <KeyBinding Key="Esc" Command="Close"/>
         </DockPanel.InputBindings>
 
         <Menu IsMainMenu="True" DockPanel.Dock="Top">
-            <MenuItem Header="File">
-                <MenuItem Header="Hide"/>
-                <MenuItem Header="Close"/>
-            </MenuItem>
-            <MenuItem Header="Edit">
-                <MenuItem Header="Register" Command="{Binding OpenRegisterWindowCmd}" InputGestureText="Ctrl+M"/>
+            <MenuItem Header="メニュー">
+                <MenuItem Header="追加登録ウィンドウを開く" Command="{Binding OpenRegisterWindowCmd}" InputGestureText="Ctrl+M"/>
+                <MenuItem Header="閉じる" Command="Close" InputGestureText="Esc"/>
             </MenuItem>
         </Menu>
         <DockPanel DockPanel.Dock="Top" Margin="5">
