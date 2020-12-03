@@ -2,31 +2,26 @@
 using Prism.Mvvm;
 using Reactive.Bindings;
 using SelfMemoPrototype.Model;
+using System;
 using System.ComponentModel;
+using System.IO;
+using System.Runtime.Serialization.Json;
 using System.Windows.Data;
 
 namespace SelfMemoPrototype.ViewModel
 {
     class MainViewModel : BindableBase
     {
-        public ReactiveCollection<SelfMemo> MemoList { get; set; } = new ReactiveCollection<SelfMemo>();
+        public ReactiveCollection<SelfMemoItem> MemoList { get; set; } = new ReactiveCollection<SelfMemoItem>();
 
         public ReactivePropertySlim<string> Word { get; set; } = new ReactivePropertySlim<string>("");
         public ReactivePropertySlim<string> ShortWord { get; set; } = new ReactivePropertySlim<string>("");
         public ReactivePropertySlim<string> Description { get; set; } = new ReactivePropertySlim<string>("");
         public ReactivePropertySlim<string> Category { get; set; } = new ReactivePropertySlim<string>("");
 
-        public ReactivePropertySlim<bool> GridReadOnly { get; set; } = new ReactivePropertySlim<bool>(true);
+        public ReactivePropertySlim<bool> LockGridEdit { get; set; } = new ReactivePropertySlim<bool>(true);
 
         public ReactivePropertySlim<string> FilterStr { get; set; } = new ReactivePropertySlim<string>("");
-
-        public ICollectionView AllItems
-        {
-            get
-            {
-                return allItemsSource.View;
-            }
-        }
 
         public ICollectionView FilteredItems
         {
@@ -36,18 +31,51 @@ namespace SelfMemoPrototype.ViewModel
             }
         }
 
-        private CollectionViewSource allItemsSource;
         private CollectionViewSource filteredItemsSource;
 
+        #region MemoFileControl
+        private static readonly string MemoFileName = "selfmemo.json";
+
+        private void LoadMemoFile()
+        {
+            ReactiveCollection<SelfMemoItem> _memo;
+            try
+            {
+                using (var ms = new FileStream(MemoFileName, FileMode.Open))
+                {
+                    var serializer = new DataContractJsonSerializer(typeof(ReactiveCollection<SelfMemoItem>));
+                    _memo = (ReactiveCollection<SelfMemoItem>)serializer.ReadObject(ms);
+                }
+
+                foreach (var m in _memo)
+                {
+                    MemoList.Add(m);
+                }
+            }
+            catch (Exception e)
+            {
+                //error
+            }
+
+        }
+
+        private void SaveMemoFile()
+        {
+            StreamWriter writer = new StreamWriter(MemoFileName, false, new System.Text.UTF8Encoding(false));
+
+            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(ReactiveCollection<SelfMemoItem>));
+            serializer.WriteObject(writer.BaseStream, MemoList);
+            writer.Close();
+        }
+        #endregion
 
         public MainViewModel()
         {
-            allItemsSource = new CollectionViewSource { Source = MemoList };
+            // 表示するリスト（filteredItemsSource）のソースとフィルタの設定
             filteredItemsSource = new CollectionViewSource { Source = MemoList };
-
             filteredItemsSource.Filter += (s, e) =>
             {
-                var item = e.Item as SelfMemo;
+                var item = e.Item as SelfMemoItem;
                 e.Accepted = CheckFilterStr(FilterStr.Value, item);
             };
 
@@ -57,13 +85,41 @@ namespace SelfMemoPrototype.ViewModel
                 FilteredItems.Refresh();
             };
 
-            MemoList.Add(new SelfMemo("a", "b", "c", "d"));
-            MemoList.Add(new SelfMemo("hoge", "fuga", "piyo", "nyan"));
-            MemoList.Add(new SelfMemo("aaa", "bbb", "ccc", "ddd"));
-            MemoList.Add(new SelfMemo("にほんご", "スペース 入った 文", "", "←空文字列"));
+            // ファイルが有ればロードしてMemoListを更新
+            if (File.Exists(MemoFileName))
+            {
+                LoadMemoFile();
+            }
+            else
+            {
+                MemoList.Add(new SelfMemoItem("用語", "正式名称、別名、訳語など", "用語の解説", "カテゴリ"));
+                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "キーワードと関連情報（訳語、正式名称、説明など）を記録して\n再参照しやすくするアプリです。", "本アプリの説明"));
+                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "上の検索窓で、キーワード類の検索ができます。", "本アプリの説明"));
+                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "このキーワード表は、「ロック」チェックボックスを外すと直接編集可能です。", "本アプリの説明"));
+                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "「Register」タブからキーワードの追加ができます。", "本アプリの説明"));
+            }
+
+            // MemoListのコレクションが更新されたらファイルに保存
+            MemoList.CollectionChanged += (s, e) =>
+            {
+                SaveMemoFile();
+            };
         }
 
-        private bool CheckFilterStr(string filter, SelfMemo memo)
+        ~MainViewModel()
+        {
+            // Finalizer でファイル保存を実行
+            SaveMemoFile();
+        }
+
+        /// <summary>
+        /// フィルタ文字列を解釈（スペース区切りでAND検索）して
+        /// 引数のSelfMemoItemがフィルタに引っかかるかどうかを返す
+        /// </summary>
+        /// <param name="filter">スペース区切りのフィルタ文字列</param>
+        /// <param name="memo">フィルタをかける対象のSelfMemoItem</param>
+        /// <returns></returns>
+        private bool CheckFilterStr(string filter, SelfMemoItem memo)
         {
             // フィルターが空文字列ならチェック通す
             if (filter.Length == 0) return true;
@@ -81,7 +137,7 @@ namespace SelfMemoPrototype.ViewModel
                 }
 
                 if (memo.Keyword.Contains(f)) found++;
-                else if (memo.ShortKeyword.Contains(f)) found++ ;
+                else if (memo.Keyword2.Contains(f)) found++ ;
                 else if (memo.Description.Contains(f)) found++;
                 else if (memo.Category.Contains(f)) found++;
             }
@@ -89,35 +145,33 @@ namespace SelfMemoPrototype.ViewModel
             return found == filters.Length;
         }
 
-        private DelegateCommand _cmd;
-        public DelegateCommand Cmd
+        #region AddMemoItemCommand
+        private DelegateCommand _addMemoItemCmd;
+        public DelegateCommand AddMemoItemCmd
         {
-            get { return _cmd = _cmd ?? new DelegateCommand(Add); }
+            get { return _addMemoItemCmd = _addMemoItemCmd ?? new DelegateCommand(AddMemoToList); }
         }
 
-        private void Add()
+        /// <summary>
+        /// プロパティに保持中の情報を新規SelfMemoとして追加する
+        /// </summary>
+        private void AddMemoToList()
         {
-            SelfMemo newmemo = new SelfMemo(Word.Value, ShortWord.Value, Description.Value, Category.Value);
+            SelfMemoItem newmemo = new SelfMemoItem(Word.Value, ShortWord.Value, Description.Value, Category.Value);
 
             if (!MemoList.Contains(newmemo))
             {
                 MemoList.Add(newmemo);
+
+                // プロパティを空白で初期化
                 Word.Value = "";
                 ShortWord.Value = "";
                 Description.Value = "";
                 Category.Value = "";
+
+                //SaveMemoFile(); // MemoListのハンドラで実施されるのでここでは不要
             }
         }
-
-        private DelegateCommand _cmd2;
-        public DelegateCommand Cmd2
-        {
-            get { return _cmd2 = _cmd2 ?? new DelegateCommand(Select); }
-        }
-
-        private void Select()
-        {
-
-        }
+        #endregion
     }
 }

@@ -6,22 +6,24 @@
         xmlns:local="clr-namespace:SelfMemoPrototype"
         xmlns:vm="clr-namespace:SelfMemoPrototype.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="SelfMemo" MinHeight="300" MinWidth="450" Height="450" Width="800">
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
     <TabControl>
+
         <TabItem Header="List">
             <DockPanel>
                 <DockPanel DockPanel.Dock="Top" Margin="5">
-                    <TextBlock DockPanel.Dock="Left" Text="Filter:"/>
-                    <CheckBox DockPanel.Dock="Right" Content="ReadOnly" IsChecked="{Binding GridReadOnly.Value}"/>
+                    <TextBlock DockPanel.Dock="Left" Margin="5,0" Text="Search"/>
+                    <CheckBox DockPanel.Dock="Right" Content="ロック" IsChecked="{Binding LockGridEdit.Value}"/>
                     <TextBox DockPanel.Dock="Right" Text="{Binding FilterStr.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </DockPanel>
 
-                <DataGrid DockPanel.Dock="Top" ItemsSource="{Binding FilteredItems}" IsReadOnly="{Binding GridReadOnly.Value}"/>
+                <DataGrid DockPanel.Dock="Top" ItemsSource="{Binding FilteredItems}" IsReadOnly="{Binding LockGridEdit.Value}"/>
             </DockPanel>
         </TabItem>
+
         <TabItem Header="Register">
             <Grid Margin="10">
                 <Grid.ColumnDefinitions>
@@ -37,18 +39,18 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0" Text="用語" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Word.Value}" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Word.Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
 
                 <TextBlock Grid.Row="1" Text="略語・別名・訳語など" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding ShortWord.Value}" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding ShortWord.Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
 
                 <TextBlock Grid.Row="2" Text="説明" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <TextBox Grid.Row="2" Grid.Column="1" Margin="0, 10" Text="{Binding Description.Value}" AcceptsReturn="True"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Margin="0, 10" Text="{Binding Description.Value, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True"/>
 
                 <TextBlock Grid.Row="3" Text="カテゴリ" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <TextBox Grid.Row="3" Grid.Column="1" Margin="0, 10" Text="{Binding Category.Value}" AcceptsReturn="True"/>
+                <TextBox Grid.Row="3" Grid.Column="1" Margin="0, 10" Text="{Binding Category.Value, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True"/>
 
-                <Button Grid.Row="4" Grid.ColumnSpan="2" Margin="20, 5" Content="_Add (Alt+A)" Command="{Binding Cmd}"/>
+                <Button Grid.Row="4" Grid.ColumnSpan="2" Margin="20, 5" Content="_Add (Alt+A)" Command="{Binding AddMemoItemCmd}"/>
             </Grid>
         </TabItem>
     </TabControl>
