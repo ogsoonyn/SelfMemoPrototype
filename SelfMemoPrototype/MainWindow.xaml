@@ -10,26 +10,46 @@
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
-    <DockPanel>
-        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="5" HorizontalAlignment="Center">
-            <TextBlock Text="用語: "/>
-            <TextBox Width="80" Text="{Binding Word.Value}"/>
+    <TabControl>
+        <TabItem Header="List">
+            <DockPanel>
+                <DockPanel DockPanel.Dock="Top" Margin="5">
+                    <TextBlock DockPanel.Dock="Left" Text="Filter:"/>
+                    <CheckBox DockPanel.Dock="Right" Content="ReadOnly" IsChecked="{Binding GridReadOnly.Value}"/>
+                    <TextBox DockPanel.Dock="Right" Text="{Binding FilterStr.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </DockPanel>
 
-            <TextBlock Text="略語・類義語等: "/>
-            <TextBox Width="80" Text="{Binding ShortWord.Value}"/>
-            
-            <TextBlock Text="説明: "/>
-            <TextBox Width="80" Text="{Binding Description.Value}"/>
+                <DataGrid DockPanel.Dock="Top" ItemsSource="{Binding FilteredItems}" IsReadOnly="{Binding GridReadOnly.Value}"/>
+            </DockPanel>
+        </TabItem>
+        <TabItem Header="Register">
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="3*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-            <TextBlock Text="カテゴリ: "/>
-            <TextBox Width="80" Text="{Binding Category.Value}"/>
+                <TextBlock Grid.Row="0" Text="用語" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Word.Value}" VerticalAlignment="Center"/>
 
-            <Button Width="50" DockPanel.Dock="Bottom" Content="Add" Command="{Binding Cmd}"/>
-            <Button Width="50" DockPanel.Dock="Bottom" Content="Select" Command="{Binding Cmd2}"/>
-            <Button Width="50" DockPanel.Dock="Bottom" Content="Reset" Command="{Binding Cmd3}"/>
+                <TextBlock Grid.Row="1" Text="略語・別名・訳語など" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding ShortWord.Value}" VerticalAlignment="Center"/>
 
-            <CheckBox Content="ReadOnly" IsChecked="{Binding GridReadOnly.Value}"/>
-        </StackPanel>
-        <DataGrid DockPanel.Dock="Top" ItemsSource="{Binding MemoList}" IsReadOnly="{Binding GridReadOnly.Value}"/>
-    </DockPanel>
+                <TextBlock Grid.Row="2" Text="説明" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Margin="0, 10" Text="{Binding Description.Value}" AcceptsReturn="True"/>
+
+                <TextBlock Grid.Row="3" Text="カテゴリ" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <TextBox Grid.Row="3" Grid.Column="1" Margin="0, 10" Text="{Binding Category.Value}" AcceptsReturn="True"/>
+
+                <Button Grid.Row="4" Grid.ColumnSpan="2" Margin="20, 5" Content="_Add (Alt+A)" Command="{Binding Cmd}"/>
+            </Grid>
+        </TabItem>
+    </TabControl>
 </Window>
