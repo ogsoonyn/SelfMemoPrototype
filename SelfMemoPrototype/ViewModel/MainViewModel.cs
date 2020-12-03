@@ -135,11 +135,12 @@ namespace SelfMemoPrototype.ViewModel
                     found++;
                     continue;
                 }
+                string fl = f.ToLower();
 
-                if (memo.Keyword.Contains(f)) found++;
-                else if (memo.Keyword2.Contains(f)) found++ ;
-                else if (memo.Description.Contains(f)) found++;
-                else if (memo.Category.Contains(f)) found++;
+                if (memo.Keyword.ToLower().Contains(fl)) found++;
+                else if (memo.Keyword2.ToLower().Contains(fl)) found++ ;
+                else if (memo.Description.ToLower().Contains(fl)) found++;
+                else if (memo.Category.ToLower().Contains(fl)) found++;
             }
 
             return found == filters.Length;
