@@ -33,14 +33,17 @@
 
         <Menu IsMainMenu="True" DockPanel.Dock="Top">
             <MenuItem Header="メニュー">
-                <MenuItem Header="追加登録ウィンドウを開く" Command="{Binding OpenRegisterWindowCmd}" InputGestureText="Ctrl+M"/>
+                <MenuItem Header="追加登録ウィンドウを開く" Command="{Binding OpenRegisterWindowCmd}"
+                          InputGestureText="Ctrl+M"/>
+                <MenuItem Header="設定" Command="{Binding OpenSettingWindowCmd}"/>
                 <MenuItem Header="閉じる" Command="Close" InputGestureText="Esc"/>
             </MenuItem>
         </Menu>
         <DockPanel DockPanel.Dock="Top" Margin="5">
                     <TextBlock DockPanel.Dock="Left" Margin="5,0" Text="Search"/>
                     <CheckBox DockPanel.Dock="Right" Content="ロック" IsChecked="{Binding LockGridEdit.Value}"/>
-                    <TextBox x:Name="SearchTextBox" DockPanel.Dock="Right" Text="{Binding FilterStr.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox x:Name="SearchTextBox" DockPanel.Dock="Right"
+                             Text="{Binding FilterStr.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </DockPanel>
 
         <DataGrid DockPanel.Dock="Top" ItemsSource="{Binding FilteredItems}" IsReadOnly="{Binding LockGridEdit.Value}"/>

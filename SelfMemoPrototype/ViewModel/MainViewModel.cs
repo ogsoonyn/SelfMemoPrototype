@@ -21,11 +21,6 @@ namespace SelfMemoPrototype.ViewModel
             }
         }
 
-        public ReactivePropertySlim<string> Word { get; set; } = new ReactivePropertySlim<string>("");
-        public ReactivePropertySlim<string> ShortWord { get; set; } = new ReactivePropertySlim<string>("");
-        public ReactivePropertySlim<string> Description { get; set; } = new ReactivePropertySlim<string>("");
-        public ReactivePropertySlim<string> Category { get; set; } = new ReactivePropertySlim<string>("");
-
         public ReactivePropertySlim<bool> LockGridEdit { get; set; } = new ReactivePropertySlim<bool>(true);
 
         public ReactivePropertySlim<string> FilterStr { get; set; } = new ReactivePropertySlim<string>("");
@@ -153,6 +148,7 @@ namespace SelfMemoPrototype.ViewModel
             return found == filters.Length;
         }
 
+        #region OpenRegisterWindow
         private DelegateCommand _openRegisterWindowCmd;
         public DelegateCommand OpenRegisterWindowCmd
         {
@@ -164,5 +160,20 @@ namespace SelfMemoPrototype.ViewModel
             var win = new RegisterWindow();
             win.Show();
         }
+        #endregion
+
+        #region OpenSettingWindow
+        private DelegateCommand _openSettingWindowCmd;
+        public DelegateCommand OpenSettingWindowCmd
+        {
+            get { return _openSettingWindowCmd = _openSettingWindowCmd ?? new DelegateCommand(OpenSettingWindow); }
+        }
+
+        private void OpenSettingWindow()
+        {
+            var win = new SettingWindow();
+            win.ShowDialog();
+        }
+        #endregion
     }
 }

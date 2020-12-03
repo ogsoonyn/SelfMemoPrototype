@@ -105,12 +105,17 @@
     </ApplicationDefinition>
     <Compile Include="Behavior\ApplicationCommandBehavior.cs" />
     <Compile Include="HotKeyHelper.cs" />
+    <Compile Include="Model\HotKeyManager.cs" />
     <Compile Include="Model\SelfMemoItem.cs" />
     <Compile Include="NotifyIconEx.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\RegisterViewModel.cs" />
+    <Compile Include="ViewModel\SettingViewModel.cs" />
     <Compile Include="View\RegisterWindow.xaml.cs">
       <DependentUpon>RegisterWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SettingWindow.xaml.cs">
+      <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -125,6 +130,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\RegisterWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SettingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

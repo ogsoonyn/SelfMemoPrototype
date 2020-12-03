@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SelfMemoPrototype.Model;
+using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,7 +13,6 @@ namespace SelfMemoPrototype
     public partial class MainWindow : Window
     {
         private NotifyIconEx _notify;
-        private HotKeyHelper _hotkey;
 
         public MainWindow()
         {
@@ -26,9 +26,7 @@ namespace SelfMemoPrototype
             this._notify.DoubleClick += (_, __) => { this.ShowWindow(); };
 
             // HotKeyの登録
-            this._hotkey = new HotKeyHelper(this);
-            this._hotkey.Register(ModifierKeys.Alt | ModifierKeys.Shift, Key.F2,
-                (_, __) => { this.ShowWindow(); });
+            HotKeyManager.Initialize(this, (_, __) => ShowWindow());
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -47,7 +45,7 @@ namespace SelfMemoPrototype
             this._notify.Dispose();
 
             // HotKeyの登録解除
-            this._hotkey.Dispose();
+            HotKeyManager.Dispose();
         }
 
         private void ShowWindow()
