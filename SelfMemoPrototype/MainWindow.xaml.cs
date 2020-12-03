@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace SelfMemoPrototype
 {
@@ -11,16 +12,23 @@ namespace SelfMemoPrototype
     public partial class MainWindow : Window
     {
         private NotifyIconEx _notify;
+        private HotKeyHelper _hotkey;
 
         public MainWindow()
         {
             InitializeComponent();
 
+            // 常駐（アイコン）の設定
             var iconPath = new Uri("pack://application:,,,/SelfMemoPrototype;component/memo.ico", UriKind.Absolute);
             var menu = (ContextMenu)this.FindResource("sampleWinMenu");
             this._notify = new NotifyIconEx(iconPath, "SelfMemo", menu);
 
             this._notify.DoubleClick += (_, __) => { this.ShowWindow(); };
+
+            // HotKeyの登録
+            this._hotkey = new HotKeyHelper(this);
+            this._hotkey.Register(ModifierKeys.Alt | ModifierKeys.Shift, Key.F2,
+                (_, __) => { this.ShowWindow(); });
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -37,6 +45,9 @@ namespace SelfMemoPrototype
 
             // ウィンドウを閉じる際に、タスクトレイのアイコンを削除する。
             this._notify.Dispose();
+
+            // HotKeyの登録解除
+            this._hotkey.Dispose();
         }
 
         private void ShowWindow()
