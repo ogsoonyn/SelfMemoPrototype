@@ -10,6 +10,13 @@
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
+
+    <Window.Resources>
+        <ContextMenu x:Key="sampleWinMenu">
+            <MenuItem Header="Show" Click="MenuItem_Show_Click"/>
+            <MenuItem Header="Exit" Click="MenuItem_Exit_Click"/>
+        </ContextMenu>
+    </Window.Resources>
     <TabControl>
 
         <TabItem Header="List">
