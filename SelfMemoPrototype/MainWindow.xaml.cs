@@ -59,6 +59,7 @@ namespace SelfMemoPrototype
             this.Show();
             this.Activate();
             this.ShowInTaskbar = true;
+            SearchTextBox.Focus(); // 検索窓にフォーカス当てる
         }
 
         /*

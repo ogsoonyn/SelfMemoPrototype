@@ -17,48 +17,26 @@
             <MenuItem Header="Exit" Click="MenuItem_Exit_Click"/>
         </ContextMenu>
     </Window.Resources>
-    <TabControl>
+    <DockPanel>
+        <DockPanel.InputBindings>
+            <KeyBinding Key="M" Modifiers="Ctrl" Command="{Binding OpenRegisterWindowCmd}"/>
+        </DockPanel.InputBindings>
 
-        <TabItem Header="List">
-            <DockPanel>
-                <DockPanel DockPanel.Dock="Top" Margin="5">
+        <Menu IsMainMenu="True" DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Hide"/>
+                <MenuItem Header="Close"/>
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Register" Command="{Binding OpenRegisterWindowCmd}" InputGestureText="Ctrl+M"/>
+            </MenuItem>
+        </Menu>
+        <DockPanel DockPanel.Dock="Top" Margin="5">
                     <TextBlock DockPanel.Dock="Left" Margin="5,0" Text="Search"/>
                     <CheckBox DockPanel.Dock="Right" Content="ロック" IsChecked="{Binding LockGridEdit.Value}"/>
-                    <TextBox DockPanel.Dock="Right" Text="{Binding FilterStr.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                </DockPanel>
+                    <TextBox x:Name="SearchTextBox" DockPanel.Dock="Right" Text="{Binding FilterStr.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        </DockPanel>
 
-                <DataGrid DockPanel.Dock="Top" ItemsSource="{Binding FilteredItems}" IsReadOnly="{Binding LockGridEdit.Value}"/>
-            </DockPanel>
-        </TabItem>
-
-        <TabItem Header="Register">
-            <Grid Margin="10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="3*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="3*"/>
-                    <RowDefinition Height="2*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <TextBlock Grid.Row="0" Text="用語" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Word.Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
-
-                <TextBlock Grid.Row="1" Text="略語・別名・訳語など" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding ShortWord.Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
-
-                <TextBlock Grid.Row="2" Text="説明" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <TextBox Grid.Row="2" Grid.Column="1" Margin="0, 10" Text="{Binding Description.Value, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True"/>
-
-                <TextBlock Grid.Row="3" Text="カテゴリ" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <TextBox Grid.Row="3" Grid.Column="1" Margin="0, 10" Text="{Binding Category.Value, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True"/>
-
-                <Button Grid.Row="4" Grid.ColumnSpan="2" Margin="20, 5" Content="_Add (Alt+A)" Command="{Binding AddMemoItemCmd}"/>
-            </Grid>
-        </TabItem>
-    </TabControl>
+        <DataGrid DockPanel.Dock="Top" ItemsSource="{Binding FilteredItems}" IsReadOnly="{Binding LockGridEdit.Value}"/>
+    </DockPanel>
 </Window>

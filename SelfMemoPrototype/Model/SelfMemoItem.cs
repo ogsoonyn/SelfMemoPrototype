@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Reactive.Bindings;
+using System;
 using System.Runtime.Serialization;
 
 namespace SelfMemoPrototype.Model
@@ -48,5 +49,19 @@ namespace SelfMemoPrototype.Model
             Category = category;
             Date = DateTime.Now;
         }
+    }
+
+    public class SelfMemoList
+    {
+        public static ReactiveCollection<SelfMemoItem> ItemsList
+        {
+            get
+            {
+                if (_itemsList == null) _itemsList = new ReactiveCollection<SelfMemoItem>();
+                return _itemsList;
+            }
+        }
+
+        private static ReactiveCollection<SelfMemoItem> _itemsList = null;
     }
 }

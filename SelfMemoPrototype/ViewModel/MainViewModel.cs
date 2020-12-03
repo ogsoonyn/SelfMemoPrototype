@@ -2,6 +2,7 @@
 using Prism.Mvvm;
 using Reactive.Bindings;
 using SelfMemoPrototype.Model;
+using SelfMemoPrototype.View;
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -12,7 +13,13 @@ namespace SelfMemoPrototype.ViewModel
 {
     class MainViewModel : BindableBase
     {
-        public ReactiveCollection<SelfMemoItem> MemoList { get; set; } = new ReactiveCollection<SelfMemoItem>();
+        public ReactiveCollection<SelfMemoItem> MemoList
+        {
+            get
+            {
+                return SelfMemoList.ItemsList;
+            }
+        }
 
         public ReactivePropertySlim<string> Word { get; set; } = new ReactivePropertySlim<string>("");
         public ReactivePropertySlim<string> ShortWord { get; set; } = new ReactivePropertySlim<string>("");
@@ -146,33 +153,16 @@ namespace SelfMemoPrototype.ViewModel
             return found == filters.Length;
         }
 
-        #region AddMemoItemCommand
-        private DelegateCommand _addMemoItemCmd;
-        public DelegateCommand AddMemoItemCmd
+        private DelegateCommand _openRegisterWindowCmd;
+        public DelegateCommand OpenRegisterWindowCmd
         {
-            get { return _addMemoItemCmd = _addMemoItemCmd ?? new DelegateCommand(AddMemoToList); }
+            get { return _openRegisterWindowCmd = _openRegisterWindowCmd ?? new DelegateCommand(OpenRegisterWindow); }
         }
 
-        /// <summary>
-        /// プロパティに保持中の情報を新規SelfMemoとして追加する
-        /// </summary>
-        private void AddMemoToList()
+        private void OpenRegisterWindow()
         {
-            SelfMemoItem newmemo = new SelfMemoItem(Word.Value, ShortWord.Value, Description.Value, Category.Value);
-
-            if (!MemoList.Contains(newmemo))
-            {
-                MemoList.Add(newmemo);
-
-                // プロパティを空白で初期化
-                Word.Value = "";
-                ShortWord.Value = "";
-                Description.Value = "";
-                Category.Value = "";
-
-                //SaveMemoFile(); // MemoListのハンドラで実施されるのでここでは不要
-            }
+            var win = new RegisterWindow();
+            win.Show();
         }
-        #endregion
     }
 }
