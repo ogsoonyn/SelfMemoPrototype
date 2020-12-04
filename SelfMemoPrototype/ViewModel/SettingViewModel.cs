@@ -61,6 +61,10 @@ namespace SelfMemoPrototype.ViewModel
                 Message.Value += (modifier.HasFlag(ModifierKeys.Windows) ? "Win+" : "");
                 Message.Value += key.ToString();
             }
+            else
+            {
+                Message.Value = "キーの記述が不正です。";
+            }
         }
     }
 }
