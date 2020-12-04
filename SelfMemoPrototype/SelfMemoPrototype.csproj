@@ -198,6 +198,8 @@ rd /s /q "$(TargetDir)ro"
 rd /s /q "$(TargetDir)ru"
 rd /s /q "$(TargetDir)sv"
 rd /s /q "$(TargetDir)zh-Hans"
-rd /s /q "$(TargetDir)zh-Hant"</PostBuildEvent>
+rd /s /q "$(TargetDir)zh-Hant"
+mkdir dll
+move *.dll dll</PostBuildEvent>
   </PropertyGroup>
 </Project>
