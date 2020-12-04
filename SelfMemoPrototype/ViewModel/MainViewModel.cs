@@ -6,6 +6,7 @@ using SelfMemoPrototype.View;
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Reflection;
 using System.Runtime.Serialization.Json;
 using System.Windows.Data;
 
@@ -34,6 +35,8 @@ namespace SelfMemoPrototype.ViewModel
         }
 
         private CollectionViewSource filteredItemsSource;
+
+        public ReactivePropertySlim<string> AppName { get; } = new ReactivePropertySlim<string>();
 
         #region MemoFileControl
         private static readonly string MemoFileName = "selfmemo.json";
@@ -73,6 +76,10 @@ namespace SelfMemoPrototype.ViewModel
 
         public MainViewModel()
         {
+            // タイトルに表示する文字列を指定
+            var asm = Assembly.GetExecutingAssembly().GetName();
+            AppName.Value = asm.Name + " - " + asm.Version.Major + "." + asm.Version.Minor;
+
             // 表示するリスト（filteredItemsSource）のソースとフィルタの設定
             filteredItemsSource = new CollectionViewSource { Source = MemoList };
             filteredItemsSource.Filter += (s, e) =>

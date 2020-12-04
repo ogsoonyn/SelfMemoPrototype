@@ -9,7 +9,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         FocusManager.FocusedElement="{Binding ElementName=SearchTextBox}"
-        Title="SelfMemo" MinHeight="300" MinWidth="450" Height="450" Width="800">
+        Title="{Binding AppName.Value}" MinHeight="300" MinWidth="450" Height="450" Width="800">
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
@@ -27,14 +27,14 @@
     
     <DockPanel>
         <DockPanel.InputBindings>
-            <KeyBinding Key="M" Modifiers="Ctrl" Command="{Binding OpenRegisterWindowCmd}"/>
+            <KeyBinding Key="R" Modifiers="Ctrl" Command="{Binding OpenRegisterWindowCmd}"/>
             <KeyBinding Key="Esc" Command="Close"/>
         </DockPanel.InputBindings>
 
         <Menu IsMainMenu="True" DockPanel.Dock="Top">
             <MenuItem Header="メニュー">
                 <MenuItem Header="追加登録ウィンドウを開く" Command="{Binding OpenRegisterWindowCmd}"
-                          InputGestureText="Ctrl+M"/>
+                          InputGestureText="Ctrl+R"/>
                 <MenuItem Header="設定" Command="{Binding OpenSettingWindowCmd}"/>
                 <MenuItem Header="閉じる" Command="Close" InputGestureText="Esc"/>
             </MenuItem>
