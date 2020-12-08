@@ -11,15 +11,22 @@
 
 ## 使い方
 
-実行すると常駐します。
-ショートカット（デフォルトではAlt+Shift+F2）で起動できます。
+### 起動
 
-Searchフォームに入力することで、用語や説明文をフィルタして表示できます。
+実行すると常駐します。
+ショートカット（デフォルトではAlt+Shift+F2）で起動します。
+
+### 用語登録
 
 メニューの「追加登録ウィンドウを開く」から用語を新規登録できます。Ctrl+RでもOK
 ![rapture_20201208174004_1](https://user-images.githubusercontent.com/16277861/101460113-811fb980-397c-11eb-813a-9ecaac4b54bf.png)
 
-キーワードリストは直接編集できませんが、「ロック」チェックボックスを外すと書き換え可能になります。
+### 検索
+
+Searchフォームに入力することで、キーワードリストの内容がフィルタされます。
+
+スペース区切りでAND検索可能。
+
 
 ## 利用例
 
@@ -33,5 +40,5 @@ Searchフォームに入力することで、用語や説明文をフィルタ�
 
 タスクトレイ常駐、グローバルホットキーの実装は下記記事を参考に（丸パクリ）させていただきました。
 
-[WPF用にNotifyIconクラスをラップしてみた](http://sourcechord.hatenablog.com/entry/2017/02/11/125649)
-[WPFでホットキーの登録](http://sourcechord.hatenablog.com/entry/2017/02/13/005456)
+- [WPF用にNotifyIconクラスをラップしてみた](http://sourcechord.hatenablog.com/entry/2017/02/11/125649)
+- [WPFでホットキーの登録](http://sourcechord.hatenablog.com/entry/2017/02/13/005456)
