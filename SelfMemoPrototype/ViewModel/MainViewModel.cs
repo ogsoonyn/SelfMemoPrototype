@@ -38,6 +38,8 @@ namespace SelfMemoPrototype.ViewModel
 
         public ReactivePropertySlim<string> AppName { get; } = new ReactivePropertySlim<string>();
 
+        public ReactivePropertySlim<bool> CopySearchWordToRegister { get; set; } = new ReactivePropertySlim<bool>(true);
+
         #region MemoFileControl
         private static readonly string MemoFileName = "selfmemo.json";
 
@@ -165,7 +167,12 @@ namespace SelfMemoPrototype.ViewModel
         private void OpenRegisterWindow()
         {
             var win = new RegisterWindow();
-            win.Show();
+            if (CopySearchWordToRegister.Value)
+            {
+                // Search枠に入力された文字列を登録フォームのKeyword枠にコピーする
+                (win.DataContext as RegisterViewModel).Word.Value = FilterStr.Value;
+            }
+            win.ShowDialog();
         }
         #endregion
 

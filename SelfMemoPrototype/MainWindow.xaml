@@ -31,10 +31,13 @@
             <KeyBinding Key="Esc" Command="Close"/>
         </DockPanel.InputBindings>
 
-        <Menu IsMainMenu="True" DockPanel.Dock="Top">
+        <Menu DockPanel.Dock="Top">
             <MenuItem Header="メニュー">
                 <MenuItem Header="追加登録ウィンドウを開く" Command="{Binding OpenRegisterWindowCmd}"
                           InputGestureText="Ctrl+R"/>
+                <MenuItem Header="検索キーワードを登録ウィンドウにコピー"
+                          ToolTip="検索フォームに入力がある状態で追加登録ウィンドウを開くと、入力内容を登録ウィンドウのキーワード部にコピーする"
+                          IsCheckable="True" IsChecked="{Binding CopySearchWordToRegister.Value}"/>
                 <MenuItem Header="設定" Command="{Binding OpenSettingWindowCmd}"/>
                 <MenuItem Header="閉じる" Command="Close" InputGestureText="Esc"/>
             </MenuItem>
