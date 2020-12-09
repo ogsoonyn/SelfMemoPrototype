@@ -16,11 +16,15 @@ namespace SelfMemoPrototype.ViewModel
     {
         public ReactiveCollection<SelfMemoItem> MemoList
         {
-            get
-            {
-                return SelfMemoList.ItemsList;
-            }
+            get { return SelfMemoList.ItemsList; }
         }
+        public ReactiveCollection<string> CategoryList
+        {
+            get { return SelfMemoList.CategoryList; }
+        }
+        public ReactivePropertySlim<bool> UseCategoryList { get; set; } = new ReactivePropertySlim<bool>(false);
+
+        public ReactivePropertySlim<string> CategoryListSelected { get; set; } = new ReactivePropertySlim<string>("");
 
         public ReactivePropertySlim<bool> LockGridEdit { get; set; } = new ReactivePropertySlim<bool>(true);
 
@@ -56,6 +60,7 @@ namespace SelfMemoPrototype.ViewModel
 
                 foreach (var m in _memo)
                 {
+                    m.Format();
                     MemoList.Add(m);
                 }
             }
@@ -87,12 +92,25 @@ namespace SelfMemoPrototype.ViewModel
             filteredItemsSource.Filter += (s, e) =>
             {
                 var item = e.Item as SelfMemoItem;
-                e.Accepted = CheckFilterStr(FilterStr.Value, item);
+                e.Accepted = CheckFilterStr(FilterStr.Value, item) && CheckCategoryFilter(item);
             };
 
             // Filter文字列が更新されたら、Filterされたアイテムリストを更新
             FilterStr.PropertyChanged += (s, e) =>
             {
+                FilteredItems.Refresh();
+            };
+
+            // カテゴリ選択ComboBoxが更新されたら、Filterされたアイテムリスト更新
+            CategoryListSelected.PropertyChanged += (s, e) =>
+            {
+                FilteredItems.Refresh();
+            };
+
+            // カテゴリ選択ComboBoxのEnable設定が更新されたらアイテムリスト更新
+            UseCategoryList.PropertyChanged += (s, e) =>
+            {
+                SelfMemoList.UpdateCategoryList();
                 FilteredItems.Refresh();
             };
 
@@ -155,6 +173,19 @@ namespace SelfMemoPrototype.ViewModel
             }
 
             return found == filters.Length;
+        }
+
+        private bool CheckCategoryFilter(SelfMemoItem memo)
+        {
+            // フィルタが無効なら全て通す
+            if (UseCategoryList.Value == false) return true;
+
+            // フィルタの選択肢がNULLならすべて通す
+            if (CategoryListSelected.Value?.Length == 0) return true;
+
+            // 指定されたCategoryの項目のみTrueを返す
+            return (memo.Category.Equals(CategoryListSelected.Value));
+
         }
 
         #region OpenRegisterWindow
