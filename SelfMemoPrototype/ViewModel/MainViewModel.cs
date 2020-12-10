@@ -47,38 +47,7 @@ namespace SelfMemoPrototype.ViewModel
         #region MemoFileControl
         private static readonly string MemoFileName = "selfmemo.json";
 
-        private void LoadMemoFile()
-        {
-            ReactiveCollection<SelfMemoItem> _memo;
-            try
-            {
-                using (var ms = new FileStream(MemoFileName, FileMode.Open))
-                {
-                    var serializer = new DataContractJsonSerializer(typeof(ReactiveCollection<SelfMemoItem>));
-                    _memo = (ReactiveCollection<SelfMemoItem>)serializer.ReadObject(ms);
-                }
 
-                foreach (var m in _memo)
-                {
-                    m.Format();
-                    MemoList.Add(m);
-                }
-            }
-            catch (Exception e)
-            {
-                //error
-            }
-
-        }
-
-        private void SaveMemoFile()
-        {
-            StreamWriter writer = new StreamWriter(MemoFileName, false, new System.Text.UTF8Encoding(false));
-
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(ReactiveCollection<SelfMemoItem>));
-            serializer.WriteObject(writer.BaseStream, MemoList);
-            writer.Close();
-        }
         #endregion
 
         public MainViewModel()
@@ -117,7 +86,7 @@ namespace SelfMemoPrototype.ViewModel
             // ファイルが有ればロードしてMemoListを更新
             if (File.Exists(MemoFileName))
             {
-                LoadMemoFile();
+                SelfMemoList.LoadMemoFile(MemoList, MemoFileName);
             }
             else
             {
@@ -131,14 +100,14 @@ namespace SelfMemoPrototype.ViewModel
             // MemoListのコレクションが更新されたらファイルに保存
             MemoList.CollectionChanged += (s, e) =>
             {
-                SaveMemoFile();
+                SelfMemoList.SaveMemoFile(MemoList, MemoFileName);
             };
         }
 
         ~MainViewModel()
         {
             // Finalizer でファイル保存を実行
-            SaveMemoFile();
+            SelfMemoList.SaveMemoFile(MemoList, MemoFileName);
         }
 
         /// <summary>

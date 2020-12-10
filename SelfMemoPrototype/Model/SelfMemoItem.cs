@@ -1,7 +1,9 @@
 ﻿using Reactive.Bindings;
 using System;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 
 namespace SelfMemoPrototype.Model
 {
@@ -108,5 +110,47 @@ namespace SelfMemoPrototype.Model
             }
         }
 
+        /// <summary>
+        /// ファイルからメモリストの情報を読み出して引数のリストに追加する
+        /// </summary>
+        /// <param name="memoList">追加する対象のリスト</param>
+        /// <param name="filename">読み出すファイル</param>
+        public static void LoadMemoFile(ReactiveCollection<SelfMemoItem> memoList, string filename)
+        {
+            ReactiveCollection<SelfMemoItem> _memo;
+            try
+            {
+                using (var ms = new FileStream(filename, FileMode.Open))
+                {
+                    var serializer = new DataContractJsonSerializer(typeof(ReactiveCollection<SelfMemoItem>));
+                    _memo = (ReactiveCollection<SelfMemoItem>)serializer.ReadObject(ms);
+                }
+
+                foreach (var m in _memo)
+                {
+                    m.Format();
+                    memoList.Add(m);
+                }
+            }
+            catch (Exception e)
+            {
+                //error
+            }
+
+        }
+
+        /// <summary>
+        /// 指定のメモリストの内容をファイルに出力する
+        /// </summary>
+        /// <param name="memoList">出力する対象のリスト</param>
+        /// <param name="filename">出力ファイル名</param>
+        public static void SaveMemoFile(ReactiveCollection<SelfMemoItem> memoList, string filename)
+        {
+            StreamWriter writer = new StreamWriter(filename, false, new System.Text.UTF8Encoding(false));
+
+            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(ReactiveCollection<SelfMemoItem>));
+            serializer.WriteObject(writer.BaseStream, memoList);
+            writer.Close();
+        }
     }
 }
