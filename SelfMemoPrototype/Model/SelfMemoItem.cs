@@ -10,20 +10,58 @@ namespace SelfMemoPrototype.Model
     [DataContract]
     public class SelfMemoItem
     {
-        [DataMember]
-        public string Keyword { get; set; }
+        public ReactivePropertySlim<string> KeywordR { get; set; } = new ReactivePropertySlim<string>();
+        public ReactivePropertySlim<string> Keyword2R { get; set; } = new ReactivePropertySlim<string>();
+        public ReactivePropertySlim<string> DescriptionR { get; set; } = new ReactivePropertySlim<string>();
+        public ReactivePropertySlim<string> CategoryR { get; set; } = new ReactivePropertySlim<string>();
+        public ReactivePropertySlim<DateTime> DateR { get; set; } = new ReactivePropertySlim<DateTime>();
 
         [DataMember]
-        public string Keyword2 { get; set; }
+        private string Keyword
+        {
+            get { return KeywordR.Value; }
+            set
+            {
+                if (KeywordR == null) KeywordR = new ReactivePropertySlim<string>(value);
+                else KeywordR.Value = value;
+            }
+        }
 
         [DataMember]
-        public string Description { get; set; }
+        private string Keyword2 { get { return Keyword2R.Value; }
+            set
+            {
+                if (Keyword2R == null) Keyword2R = new ReactivePropertySlim<string>(value);
+                else Keyword2R.Value = value;
+            }
+        }
 
         [DataMember]
-        public string Category { get; set; }
+        private string Description { get { return DescriptionR.Value; }
+            set
+            {
+                if (DescriptionR == null) DescriptionR = new ReactivePropertySlim<string>(value);
+                else DescriptionR.Value = value;
+            }
+        }
 
         [DataMember]
-        public DateTime Date { get; set; }
+        private string Category { get { return CategoryR.Value; }
+            set
+            {
+                if (CategoryR == null) CategoryR = new ReactivePropertySlim<string>(value);
+                else CategoryR.Value = value;
+            }
+        }
+
+        [DataMember]
+        private DateTime Date { get { return DateR.Value; }
+            set
+            {
+                if (DateR == null) DateR = new ReactivePropertySlim<DateTime>(value);
+                else DateR.Value = value;
+            }
+        }
 
         public override bool Equals(object obj)
         {
@@ -46,21 +84,48 @@ namespace SelfMemoPrototype.Model
 
         public SelfMemoItem(string keyword, string shortkwd, string description, string category)
         {
-            Keyword = keyword.Trim();
-            Keyword2 = shortkwd.Trim();
-            Description = description;
-            Category = category.Trim().Replace("\r\n", ",").Replace("\n", ",");
-            Date = DateTime.Now;
+            Initialize(keyword, shortkwd, description, category);
+        }
+
+        public void Initialize(string keyword, string shortkwd, string description, string category)
+        {
+            KeywordR.Value = keyword;
+            Keyword2R.Value = shortkwd;
+            DescriptionR.Value = description;
+            CategoryR.Value = category;
+            DateR.Value = DateTime.Now;
+
+            Initialize();
+        }
+
+        public void Initialize(string keyword, string shortkwd, string description, string category, DateTime date)
+        {
+            Initialize(keyword, shortkwd, description, category);
+            DateR.Value = date;
+        }
+
+        public void Initialize()
+        {
+            Format();
+            SetHandler();
         }
 
         /// <summary>
         /// 登録文字列を独自規定に従い整形する
         /// </summary>
-        public void Format()
+        private void Format()
         {
-            Keyword = Keyword.Trim();
-            Keyword2 = Keyword2.Trim();
-            Category = Category.Trim().Replace("\r\n", ",").Replace("\n", ",");
+            KeywordR.Value = KeywordR.Value.Trim();
+            Keyword2R.Value = Keyword2R.Value.Trim();
+            CategoryR.Value = CategoryR.Value.Trim().Replace("\r\n", ",").Replace("\n", ",");
+        }
+
+        private void SetHandler()
+        {
+            KeywordR.PropertyChanged += (_, __) => { DateR.Value = DateTime.Now; };
+            Keyword2R.PropertyChanged += (_, __) => { DateR.Value = DateTime.Now; };
+            DescriptionR.PropertyChanged += (_, __) => { DateR.Value = DateTime.Now; };
+            CategoryR.PropertyChanged += (_, __) => { DateR.Value = DateTime.Now; };
         }
     }
 
@@ -103,9 +168,9 @@ namespace SelfMemoPrototype.Model
             _categoryList.Clear();
             foreach (var item in ItemsList)
             {
-                if (!_categoryList.Contains(item.Category))
+                if (!_categoryList.Contains(item.CategoryR.Value))
                 {
-                    _categoryList.Add(item.Category);
+                    _categoryList.Add(item.CategoryR.Value);
                 }
             }
         }
@@ -128,7 +193,7 @@ namespace SelfMemoPrototype.Model
 
                 foreach (var m in _memo)
                 {
-                    m.Format();
+                    m.Initialize();
                     memoList.Add(m);
                 }
             }

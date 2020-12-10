@@ -3,11 +3,9 @@ using Prism.Mvvm;
 using Reactive.Bindings;
 using SelfMemoPrototype.Model;
 using SelfMemoPrototype.View;
-using System;
 using System.ComponentModel;
 using System.IO;
 using System.Reflection;
-using System.Runtime.Serialization.Json;
 using System.Windows.Data;
 
 namespace SelfMemoPrototype.ViewModel
@@ -135,10 +133,10 @@ namespace SelfMemoPrototype.ViewModel
                 }
                 string fl = f.ToLower();
 
-                if (memo.Keyword.ToLower().Contains(fl)) found++;
-                else if (memo.Keyword2.ToLower().Contains(fl)) found++ ;
-                else if (memo.Description.ToLower().Contains(fl)) found++;
-                else if (memo.Category.ToLower().Contains(fl)) found++;
+                if (memo.KeywordR.Value.ToLower().Contains(fl)) found++;
+                else if (memo.Keyword2R.Value.ToLower().Contains(fl)) found++ ;
+                else if (memo.DescriptionR.Value.ToLower().Contains(fl)) found++;
+                else if (memo.CategoryR.Value.ToLower().Contains(fl)) found++;
             }
 
             return found == filters.Length;
@@ -153,7 +151,7 @@ namespace SelfMemoPrototype.ViewModel
             if (CategoryListSelected.Value?.Length == 0) return true;
 
             // 指定されたCategoryの項目のみTrueを返す
-            return (memo.Category.Equals(CategoryListSelected.Value));
+            return (memo.CategoryR.Value.Equals(CategoryListSelected.Value));
 
         }
 
