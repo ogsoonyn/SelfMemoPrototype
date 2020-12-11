@@ -38,6 +38,12 @@
                 <MenuItem Header="検索キーワードを登録ウィンドウにコピー"
                           ToolTip="検索フォームに入力がある状態で追加登録ウィンドウを開くと、入力内容を登録ウィンドウのキーワード部にコピーする"
                           IsCheckable="True" IsChecked="{Binding CopySearchWordToRegister.Value}"/>
+                <MenuItem Header="テーブルの直接編集を禁止する" IsCheckable="True"
+                          ToolTip="チェックを外すとテーブルの直接編集が可能になる"
+                          IsChecked="{Binding LockGridEdit.Value}"/>
+                <MenuItem Header="テーブルの項目削除を許容する" IsCheckable="True"
+                          ToolTip="チェックを入れるとDeleteキーでの項目削除が可能になる"
+                          IsChecked="{Binding AllowDeleteItem.Value}"/>
                 <MenuItem Header="設定" Command="{Binding OpenSettingWindowCmd}"/>
                 <MenuItem Header="閉じる" Command="Close" InputGestureText="Esc"/>
             </MenuItem>
@@ -69,7 +75,7 @@
         </StatusBar>
 
         <DataGrid DockPanel.Dock="Top" ItemsSource="{Binding FilteredItems}" IsReadOnly="{Binding LockGridEdit.Value}"
-                  AutoGenerateColumns="False">
+                  AutoGenerateColumns="False" CanUserDeleteRows="{Binding AllowDeleteItem.Value}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="キーワード" Binding="{Binding KeywordR.Value}"/>
                 <DataGridTextColumn Header="キーワード2" Binding="{Binding Keyword2R.Value}"/>

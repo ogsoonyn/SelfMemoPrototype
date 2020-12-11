@@ -3,9 +3,7 @@ using Prism.Mvvm;
 using Reactive.Bindings;
 using SelfMemoPrototype.Model;
 using SelfMemoPrototype.View;
-using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Windows.Data;
 
@@ -62,6 +60,11 @@ namespace SelfMemoPrototype.ViewModel
         /// 検索フォームの文字列を登録フォームにコピーする機能のON/OFFフラグ
         /// </summary>
         public ReactivePropertySlim<bool> CopySearchWordToRegister { get; set; } = new ReactivePropertySlim<bool>(true);
+
+        /// <summary>
+        /// DataGrid上の操作で項目を削除することを許容するかどうか
+        /// </summary>
+        public ReactivePropertySlim<bool> AllowDeleteItem { get; set; } = new ReactivePropertySlim<bool>(false);
 
         /// <summary>
         /// 辞書データファイルの名前
