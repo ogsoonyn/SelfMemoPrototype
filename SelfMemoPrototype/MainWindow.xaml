@@ -57,6 +57,17 @@
                      Text="{Binding FilterStr.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </DockPanel>
 
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding FilteredItems.Count}"/>
+                    <TextBlock Text="/"/>
+                    <TextBlock Text="{Binding MemoList.Count}"/>
+                </StackPanel>
+
+            </StatusBarItem>
+        </StatusBar>
+
         <DataGrid DockPanel.Dock="Top" ItemsSource="{Binding FilteredItems}" IsReadOnly="{Binding LockGridEdit.Value}"
                   AutoGenerateColumns="False">
             <DataGrid.Columns>

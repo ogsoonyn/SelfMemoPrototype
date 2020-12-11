@@ -5,6 +5,7 @@ using SelfMemoPrototype.Model;
 using SelfMemoPrototype.View;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Data;
 
@@ -45,7 +46,7 @@ namespace SelfMemoPrototype.ViewModel
         /// <summary>
         /// Viewに表示する用のフィルタ済みItemリスト
         /// </summary>
-        public ICollectionView FilteredItems { get { return FilteredItemsSource.View; } }
+        public CollectionView FilteredItems { get { return FilteredItemsSource.View as CollectionView; } }
 
         /// <summary>
         /// MemoListにフィルタをつけたもの
