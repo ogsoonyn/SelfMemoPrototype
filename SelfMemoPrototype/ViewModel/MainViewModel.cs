@@ -81,6 +81,15 @@ namespace SelfMemoPrototype.ViewModel
                 FilteredItems.Refresh();
             };
 
+            // カテゴリリストが更新されてフィルタできなくなったら、フィルタ設定をOFFにする
+            CategoryList.CollectionChanged += (s, e) =>
+            {
+                if (!CategoryList.Contains(CategoryListSelected.Value))
+                {
+                    UseCategoryList.Value = false;
+                }
+            };
+
             // ファイルが有ればロードしてMemoListを更新
             if (File.Exists(MemoFileName))
             {

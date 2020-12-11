@@ -1,5 +1,6 @@
 ﻿using Reactive.Bindings;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -163,16 +164,49 @@ namespace SelfMemoPrototype.Model
         }
         private static ReactiveCollection<string> _categoryList = null;
 
-        public static void UpdateCategoryList()
+        /// <summary>
+        /// カテゴリ文字列を全件検索して、更新があればカテゴリリストを更新する
+        /// </summary>
+        /// <returns>リストを更新したらtrueを返す</returns>
+        public static bool UpdateCategoryList()
         {
-            _categoryList.Clear();
+            var list = new ReactiveCollection<string>();
+            bool updated = false;
+
+            // ItemsListを全件検索
             foreach (var item in ItemsList)
             {
-                if (!_categoryList.Contains(item.CategoryR.Value))
+                if (!list.Contains(item.CategoryR.Value))
                 {
-                    _categoryList.Add(item.CategoryR.Value);
+                    list.Add(item.CategoryR.Value);
                 }
             }
+
+            // 現行のリストと比較し、無いものは追加
+            foreach(var item in list)
+            {
+                if (!_categoryList.Contains(item))
+                {
+                    _categoryList.Add(item);
+                    updated = true;
+                }
+            }
+
+            // 現行リストにあるけど消えてるものは削除
+            var remList = new List<string>();
+            foreach (var item in _categoryList)
+            {
+                if (!list.Contains(item))
+                {
+                    remList.Add(item);
+                    updated = true;
+                }
+            }
+            foreach(var item in remList)
+            {
+                _categoryList.Remove(item);
+            }
+            return updated;
         }
 
         /// <summary>
