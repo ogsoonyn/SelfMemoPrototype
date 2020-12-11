@@ -3,76 +3,73 @@ using Prism.Mvvm;
 using Reactive.Bindings;
 using SelfMemoPrototype.Model;
 using SelfMemoPrototype.View;
-using System;
-using System.ComponentModel;
 using System.IO;
 using System.Reflection;
-using System.Runtime.Serialization.Json;
 using System.Windows.Data;
 
 namespace SelfMemoPrototype.ViewModel
 {
     class MainViewModel : BindableBase
     {
-        public ReactiveCollection<SelfMemoItem> MemoList
-        {
-            get
-            {
-                return SelfMemoList.ItemsList;
-            }
-        }
+        /// <summary>
+        /// メモリスト本体
+        /// </summary>
+        public ReactiveCollection<SelfMemoItem> MemoList { get { return SelfMemoList.ItemsList; } }
 
+        /// <summary>
+        /// カテゴリリスト本体
+        /// </summary>
+        public ReactiveCollection<string> CategoryList { get { return SelfMemoList.CategoryList; } }
+
+        /// <summary>
+        /// カテゴリでフィルタする機能のON/OFFフラグ
+        /// </summary>
+        public ReactivePropertySlim<bool> UseCategoryList { get; set; } = new ReactivePropertySlim<bool>(false);
+
+        /// <summary>
+        /// カテゴリでフィルタする機能で選択されているカテゴリ文字列
+        /// </summary>
+        public ReactivePropertySlim<string> CategoryListSelected { get; set; } = new ReactivePropertySlim<string>("");
+
+        /// <summary>
+        /// DataGridの直接編集をロックする機能のON/OFFフラグ
+        /// </summary>
         public ReactivePropertySlim<bool> LockGridEdit { get; set; } = new ReactivePropertySlim<bool>(true);
 
+        /// <summary>
+        /// 検索（フィルタ）文字列
+        /// </summary>
         public ReactivePropertySlim<string> FilterStr { get; set; } = new ReactivePropertySlim<string>("");
 
-        public ICollectionView FilteredItems
-        {
-            get
-            {
-                return filteredItemsSource.View;
-            }
-        }
+        /// <summary>
+        /// Viewに表示する用のフィルタ済みItemリスト
+        /// </summary>
+        public CollectionView FilteredItems { get { return FilteredItemsSource.View as CollectionView; } }
 
-        private CollectionViewSource filteredItemsSource;
+        /// <summary>
+        /// MemoListにフィルタをつけたもの
+        /// </summary>
+        private CollectionViewSource FilteredItemsSource;
 
+        /// <summary>
+        /// タイトルバーに表示するアプリ名
+        /// </summary>
         public ReactivePropertySlim<string> AppName { get; } = new ReactivePropertySlim<string>();
 
-        #region MemoFileControl
+        /// <summary>
+        /// 検索フォームの文字列を登録フォームにコピーする機能のON/OFFフラグ
+        /// </summary>
+        public ReactivePropertySlim<bool> CopySearchWordToRegister { get; set; } = new ReactivePropertySlim<bool>(true);
+
+        /// <summary>
+        /// DataGrid上の操作で項目を削除することを許容するかどうか
+        /// </summary>
+        public ReactivePropertySlim<bool> AllowDeleteItem { get; set; } = new ReactivePropertySlim<bool>(false);
+
+        /// <summary>
+        /// 辞書データファイルの名前
+        /// </summary>
         private static readonly string MemoFileName = "selfmemo.json";
-
-        private void LoadMemoFile()
-        {
-            ReactiveCollection<SelfMemoItem> _memo;
-            try
-            {
-                using (var ms = new FileStream(MemoFileName, FileMode.Open))
-                {
-                    var serializer = new DataContractJsonSerializer(typeof(ReactiveCollection<SelfMemoItem>));
-                    _memo = (ReactiveCollection<SelfMemoItem>)serializer.ReadObject(ms);
-                }
-
-                foreach (var m in _memo)
-                {
-                    MemoList.Add(m);
-                }
-            }
-            catch (Exception e)
-            {
-                //error
-            }
-
-        }
-
-        private void SaveMemoFile()
-        {
-            StreamWriter writer = new StreamWriter(MemoFileName, false, new System.Text.UTF8Encoding(false));
-
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(ReactiveCollection<SelfMemoItem>));
-            serializer.WriteObject(writer.BaseStream, MemoList);
-            writer.Close();
-        }
-        #endregion
 
         public MainViewModel()
         {
@@ -81,11 +78,11 @@ namespace SelfMemoPrototype.ViewModel
             AppName.Value = asm.Name + " - " + asm.Version.Major + "." + asm.Version.Minor;
 
             // 表示するリスト（filteredItemsSource）のソースとフィルタの設定
-            filteredItemsSource = new CollectionViewSource { Source = MemoList };
-            filteredItemsSource.Filter += (s, e) =>
+            FilteredItemsSource = new CollectionViewSource { Source = MemoList };
+            FilteredItemsSource.Filter += (s, e) =>
             {
                 var item = e.Item as SelfMemoItem;
-                e.Accepted = CheckFilterStr(FilterStr.Value, item);
+                e.Accepted = CheckFilterStr(FilterStr.Value, item) && CheckCategoryFilter(item);
             };
 
             // Filter文字列が更新されたら、Filterされたアイテムリストを更新
@@ -94,10 +91,32 @@ namespace SelfMemoPrototype.ViewModel
                 FilteredItems.Refresh();
             };
 
+            // カテゴリ選択ComboBoxが更新されたら、Filterされたアイテムリスト更新
+            CategoryListSelected.PropertyChanged += (s, e) =>
+            {
+                FilteredItems.Refresh();
+            };
+
+            // カテゴリ選択ComboBoxのEnable設定が更新されたらアイテムリスト更新
+            UseCategoryList.PropertyChanged += (s, e) =>
+            {
+                SelfMemoList.UpdateCategoryList();
+                FilteredItems.Refresh();
+            };
+
+            // カテゴリリストが更新されてフィルタできなくなったら、フィルタ設定をOFFにする
+            CategoryList.CollectionChanged += (s, e) =>
+            {
+                if (!CategoryList.Contains(CategoryListSelected.Value))
+                {
+                    UseCategoryList.Value = false;
+                }
+            };
+
             // ファイルが有ればロードしてMemoListを更新
             if (File.Exists(MemoFileName))
             {
-                LoadMemoFile();
+                SelfMemoList.LoadMemoFile(MemoList, MemoFileName);
             }
             else
             {
@@ -111,14 +130,14 @@ namespace SelfMemoPrototype.ViewModel
             // MemoListのコレクションが更新されたらファイルに保存
             MemoList.CollectionChanged += (s, e) =>
             {
-                SaveMemoFile();
+                SelfMemoList.SaveMemoFile(MemoList, MemoFileName);
             };
         }
 
         ~MainViewModel()
         {
             // Finalizer でファイル保存を実行
-            SaveMemoFile();
+            SelfMemoList.SaveMemoFile(MemoList, MemoFileName);
         }
 
         /// <summary>
@@ -127,7 +146,7 @@ namespace SelfMemoPrototype.ViewModel
         /// </summary>
         /// <param name="filter">スペース区切りのフィルタ文字列</param>
         /// <param name="memo">フィルタをかける対象のSelfMemoItem</param>
-        /// <returns></returns>
+        /// <returns>フィルタに引っかかればTrue</returns>
         private bool CheckFilterStr(string filter, SelfMemoItem memo)
         {
             // フィルターが空文字列ならチェック通す
@@ -146,15 +165,36 @@ namespace SelfMemoPrototype.ViewModel
                 }
                 string fl = f.ToLower();
 
-                if (memo.Keyword.ToLower().Contains(fl)) found++;
-                else if (memo.Keyword2.ToLower().Contains(fl)) found++ ;
-                else if (memo.Description.ToLower().Contains(fl)) found++;
-                else if (memo.Category.ToLower().Contains(fl)) found++;
+                if (memo.KeywordR.Value.ToLower().Contains(fl)) found++;
+                else if (memo.Keyword2R.Value.ToLower().Contains(fl)) found++ ;
+                else if (memo.DescriptionR.Value.ToLower().Contains(fl)) found++;
+                else if (memo.CategoryR.Value.ToLower().Contains(fl)) found++;
             }
 
             return found == filters.Length;
         }
 
+        /// <summary>
+        /// カテゴリフィルタの文字列を解釈して
+        /// 引数のSelfMemoItemがフィルタに引っかかるかどうかを返す
+        /// </summary>
+        /// <param name="memo">フィルタをかける対象</param>
+        /// <returns>フィルタに引っかかればTrue</returns>
+        private bool CheckCategoryFilter(SelfMemoItem memo)
+        {
+            // フィルタが無効なら全て通す
+            if (UseCategoryList.Value == false) return true;
+
+            // フィルタの選択肢がNULLならすべて通す
+            if (CategoryListSelected.Value?.Length == 0) return true;
+
+            // 指定されたCategoryの項目のみTrueを返す
+            return (memo.CategoryR.Value.Equals(CategoryListSelected.Value));
+        }
+
+        /// <summary>
+        /// 登録フォームを表示するコマンド
+        /// </summary>
         #region OpenRegisterWindow
         private DelegateCommand _openRegisterWindowCmd;
         public DelegateCommand OpenRegisterWindowCmd
@@ -165,10 +205,18 @@ namespace SelfMemoPrototype.ViewModel
         private void OpenRegisterWindow()
         {
             var win = new RegisterWindow();
-            win.Show();
+            if (CopySearchWordToRegister.Value)
+            {
+                // Search枠に入力された文字列を登録フォームのKeyword枠にコピーする
+                (win.DataContext as RegisterViewModel).Word.Value = FilterStr.Value;
+            }
+            win.ShowDialog();
         }
         #endregion
 
+        /// <summary>
+        /// 設定ダイアログを表示するコマンド
+        /// </summary>
         #region OpenSettingWindow
         private DelegateCommand _openSettingWindowCmd;
         public DelegateCommand OpenSettingWindowCmd

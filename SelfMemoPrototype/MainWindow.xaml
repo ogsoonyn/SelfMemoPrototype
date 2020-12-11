@@ -31,21 +31,71 @@
             <KeyBinding Key="Esc" Command="Close"/>
         </DockPanel.InputBindings>
 
-        <Menu IsMainMenu="True" DockPanel.Dock="Top">
+        <Menu DockPanel.Dock="Top">
             <MenuItem Header="メニュー">
                 <MenuItem Header="追加登録ウィンドウを開く" Command="{Binding OpenRegisterWindowCmd}"
                           InputGestureText="Ctrl+R"/>
+                <MenuItem Header="検索キーワードを登録ウィンドウにコピー"
+                          ToolTip="検索フォームに入力がある状態で追加登録ウィンドウを開くと、入力内容を登録ウィンドウのキーワード部にコピーする"
+                          IsCheckable="True" IsChecked="{Binding CopySearchWordToRegister.Value}"/>
+                <MenuItem Header="テーブルの直接編集を禁止する" IsCheckable="True"
+                          ToolTip="チェックを外すとテーブルの直接編集が可能になる"
+                          IsChecked="{Binding LockGridEdit.Value}"/>
+                <MenuItem Header="テーブルの項目削除を許容する" IsCheckable="True"
+                          ToolTip="チェックを入れるとDeleteキーでの項目削除が可能になる"
+                          IsChecked="{Binding AllowDeleteItem.Value}"/>
                 <MenuItem Header="設定" Command="{Binding OpenSettingWindowCmd}"/>
                 <MenuItem Header="閉じる" Command="Close" InputGestureText="Esc"/>
             </MenuItem>
         </Menu>
         <DockPanel DockPanel.Dock="Top" Margin="5">
-                    <TextBlock DockPanel.Dock="Left" Margin="5,0" Text="Search"/>
-                    <CheckBox DockPanel.Dock="Right" Content="ロック" IsChecked="{Binding LockGridEdit.Value}"/>
-                    <TextBox x:Name="SearchTextBox" DockPanel.Dock="Right"
-                             Text="{Binding FilterStr.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock DockPanel.Dock="Left" Margin="5,0" Text="Search"/>
+            <CheckBox DockPanel.Dock="Right" Content="ロック" VerticalContentAlignment="Center"
+                      IsChecked="{Binding LockGridEdit.Value}"/>
+            <CheckBox DockPanel.Dock="Right" IsChecked="{Binding UseCategoryList.Value}" VerticalContentAlignment="Center">
+                <ContentControl>
+                    <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding CategoryList}"
+                              SelectedItem="{Binding CategoryListSelected.Value}" MinWidth="100"
+                              IsEnabled="{Binding UseCategoryList.Value}"/>
+                </ContentControl>
+            </CheckBox>
+            <TextBox x:Name="SearchTextBox" DockPanel.Dock="Right"
+                     Text="{Binding FilterStr.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </DockPanel>
 
-        <DataGrid DockPanel.Dock="Top" ItemsSource="{Binding FilteredItems}" IsReadOnly="{Binding LockGridEdit.Value}"/>
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding FilteredItems.Count}"/>
+                    <TextBlock Text="/"/>
+                    <TextBlock Text="{Binding MemoList.Count}"/>
+                </StackPanel>
+
+            </StatusBarItem>
+        </StatusBar>
+
+        <DataGrid DockPanel.Dock="Top" ItemsSource="{Binding FilteredItems}" IsReadOnly="{Binding LockGridEdit.Value}"
+                  AutoGenerateColumns="False" CanUserDeleteRows="{Binding AllowDeleteItem.Value}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="キーワード" Binding="{Binding KeywordR.Value}"/>
+                <DataGridTextColumn Header="キーワード2" Binding="{Binding Keyword2R.Value}"/>
+                <DataGridTextColumn Header="説明" Binding="{Binding DescriptionR.Value}">
+                    <DataGridTextColumn.EditingElementStyle>
+                        <Style TargetType="TextBox">
+                            <Setter Property="TextWrapping" Value="Wrap"/>
+                            <Setter Property="AcceptsReturn" Value="True"/>
+                        </Style>
+                    </DataGridTextColumn.EditingElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="カテゴリ" Binding="{Binding CategoryR.Value}"/>
+                <DataGridTextColumn Header="更新日" Binding="{Binding DateR.Value, StringFormat=\{0:yyyy/MM/dd hh:mm:ss\}}">
+                    <DataGridTextColumn.EditingElementStyle>
+                        <Style TargetType="TextBox">
+                            <Setter Property="IsReadOnly" Value="True"/>
+                        </Style>
+                    </DataGridTextColumn.EditingElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </DockPanel>
 </Window>
