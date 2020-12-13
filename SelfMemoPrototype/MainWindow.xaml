@@ -49,15 +49,23 @@
             </MenuItem>
         </Menu>
         <DockPanel DockPanel.Dock="Top" Margin="5">
-            <TextBlock DockPanel.Dock="Left" Margin="5,0" Text="Search" VerticalAlignment="Center"/>
-            <CheckBox DockPanel.Dock="Right" Content="ロック" VerticalContentAlignment="Center"
-                      IsChecked="{Binding LockGridEdit.Value}"/>
+            <TextBlock DockPanel.Dock="Left" Text="検索 " VerticalAlignment="Center"/>
+            <CheckBox DockPanel.Dock="Right" Margin="5,0" VerticalContentAlignment="Center"
+                          ToolTip="ロック解除するとテーブルの直接編集が可能になります"
+                          IsChecked="{Binding LockGridEdit.Value}">
+                <ContentControl>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="Resources/tool_padlock01_01.png" VerticalAlignment="Center" Height="20"/>
+                        <TextBlock Text="ロック" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </ContentControl>
+            </CheckBox>
             <CheckBox DockPanel.Dock="Right" IsChecked="{Binding UseCategoryList.Value}" VerticalContentAlignment="Center">
                 <ContentControl>
                     <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="カテゴリフィルタ" VerticalAlignment="Center"/>
+                    <TextBlock Text="カテゴリ " VerticalAlignment="Center"/>
                     <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding CategoryList}"
-                              SelectedItem="{Binding CategoryListSelected.Value}" MinWidth="120"
+                              SelectedItem="{Binding CategoryListSelected.Value}" Width="150"
                               IsEnabled="{Binding UseCategoryList.Value}"/>
                     </StackPanel>
                 </ContentControl>
@@ -67,22 +75,55 @@
         </DockPanel>
 
         <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem HorizontalAlignment="Left" Visibility="{Binding UseFilterStr.Value, Converter={StaticResource BoolToVisible}}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Kwd: " Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                    <TextBlock Text="{Binding FilterStr.Value}"/>
+                </StackPanel>
+            </StatusBarItem>
+
+            <StatusBarItem HorizontalAlignment="Left" Visibility="{Binding UseCategoryList.Value, Converter={StaticResource BoolToVisible}}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Cat: " Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                    <TextBlock Text="{Binding CategoryListSelected.Value}"/>
+                </StackPanel>
+            </StatusBarItem>
+
             <StatusBarItem HorizontalAlignment="Right">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="{Binding FilteredItems.Count}"/>
                     <TextBlock Text="/"/>
                     <TextBlock Text="{Binding MemoList.Count}"/>
                 </StackPanel>
-
             </StatusBarItem>
+
         </StatusBar>
 
         <DataGrid DockPanel.Dock="Top" ItemsSource="{Binding FilteredItems}" IsReadOnly="{Binding LockGridEdit.Value}"
                   AutoGenerateColumns="False" CanUserDeleteRows="{Binding AllowDeleteItem.Value}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="キーワード" Binding="{Binding KeywordR.Value}"/>
-                <DataGridTextColumn Header="キーワード2" Binding="{Binding Keyword2R.Value}"/>
-                <DataGridTextColumn Header="説明" Binding="{Binding DescriptionR.Value}">
+                <DataGridTextColumn Header="キーワード" Binding="{Binding KeywordR.Value}" MaxWidth="200">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextWrapping" Value="Wrap"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="キーワード2" Binding="{Binding Keyword2R.Value}" MaxWidth="200">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextWrapping" Value="Wrap"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="説明" Binding="{Binding DescriptionR.Value}" MaxWidth="600">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextWrapping" Value="Wrap"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
                     <DataGridTextColumn.EditingElementStyle>
                         <Style TargetType="TextBox">
                             <Setter Property="TextWrapping" Value="Wrap"/>
@@ -90,8 +131,16 @@
                         </Style>
                     </DataGridTextColumn.EditingElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="カテゴリ" Binding="{Binding CategoryR.Value}"/>
-                <DataGridTextColumn Header="更新日" Binding="{Binding DateR.Value, StringFormat=\{0:yyyy/MM/dd hh:mm:ss\}}">
+
+                <DataGridTextColumn Header="カテゴリ" Binding="{Binding CategoryR.Value}" MaxWidth="200">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextWrapping" Value="Wrap"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="更新日" Binding="{Binding DateR.Value, StringFormat=\{0:yyyy/MM/dd hh:mm:ss\}}" MaxWidth="150">
                     <DataGridTextColumn.EditingElementStyle>
                         <Style TargetType="TextBox">
                             <Setter Property="IsReadOnly" Value="True"/>

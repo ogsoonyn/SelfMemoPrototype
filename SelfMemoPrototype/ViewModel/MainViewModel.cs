@@ -3,7 +3,9 @@ using Prism.Mvvm;
 using Reactive.Bindings;
 using SelfMemoPrototype.Model;
 using SelfMemoPrototype.View;
+using System;
 using System.IO;
+using System.Reactive.Linq;
 using System.Reflection;
 using System.Windows.Data;
 
@@ -40,6 +42,11 @@ namespace SelfMemoPrototype.ViewModel
         /// 検索（フィルタ）文字列
         /// </summary>
         public ReactivePropertySlim<string> FilterStr { get; set; } = new ReactivePropertySlim<string>("");
+
+        /// <summary>
+        /// フィルタ文字列があればTrueになるフラグ
+        /// </summary>
+        public ReadOnlyReactivePropertySlim<bool> UseFilterStr { get; }
 
         /// <summary>
         /// Viewに表示する用のフィルタ済みItemリスト
@@ -85,17 +92,36 @@ namespace SelfMemoPrototype.ViewModel
                 e.Accepted = CheckFilterStr(FilterStr.Value, item) && CheckCategoryFilter(item);
             };
 
+            // ファイルが有ればロードしてMemoListを更新
+            if (File.Exists(MemoFileName))
+            {
+                SelfMemoList.LoadMemoFile(MemoList, MemoFileName);
+            }
+
+            if (SelfMemoList.ItemsList.Count == 0)
+            {
+                MemoList.Add(new SelfMemoItem("用語", "正式名称、別名、訳語など", "用語の解説", "カテゴリ"));
+                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "キーワードと関連情報（訳語、正式名称、説明など）を登録して再参照しやすくするアプリです。", "本アプリの説明"));
+                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "検索フォームからキーワード検索ができます。", "本アプリの説明"));
+                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "メニューの「登録ダイアログを開く(Ctrl+R)」からキーワードの追加ができます。", "本アプリの説明"));
+                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "「ロック」チェックを外すとテーブルを直接編集できます。", "本アプリの説明"));
+                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "「カテゴリ」にチェックを入れるとカテゴリ毎の表示切り替えができます。", "本アプリの説明"));
+            }
+
             // Filter文字列が更新されたら、Filterされたアイテムリストを更新
-            FilterStr.PropertyChanged += (s, e) =>
+            FilterStr.Subscribe(_ =>
             {
                 FilteredItems.Refresh();
-            };
+            });
+
+            // Filter文字列の有無フラグを連動
+            UseFilterStr = FilterStr.Select(x => !string.IsNullOrWhiteSpace(x)).ToReadOnlyReactivePropertySlim();
 
             // カテゴリ選択ComboBoxが更新されたら、Filterされたアイテムリスト更新
-            CategoryListSelected.PropertyChanged += (s, e) =>
+            CategoryListSelected.Subscribe(_ =>
             {
                 FilteredItems.Refresh();
-            };
+            });
 
             // カテゴリ選択ComboBoxのEnable設定が更新されたらアイテムリスト更新
             UseCategoryList.PropertyChanged += (s, e) =>
@@ -112,21 +138,6 @@ namespace SelfMemoPrototype.ViewModel
                     UseCategoryList.Value = false;
                 }
             };
-
-            // ファイルが有ればロードしてMemoListを更新
-            if (File.Exists(MemoFileName))
-            {
-                SelfMemoList.LoadMemoFile(MemoList, MemoFileName);
-            }
-            else
-            {
-                MemoList.Add(new SelfMemoItem("用語", "正式名称、別名、訳語など", "用語の解説", "カテゴリ"));
-                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "キーワードと関連情報（訳語、正式名称、説明など）を登録して\n再参照しやすくするアプリです。", "本アプリの説明"));
-                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "Searchフォームからキーワード検索ができます。", "本アプリの説明"));
-                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "メニューの「新規項目追加(Ctrl+R)」からキーワードの追加ができます。", "本アプリの説明"));
-                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "「ロック」チェックボックスを外すとテーブルを直接編集できます。", "本アプリの説明"));
-                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "コンボボックスにチェックを入れるとカテゴリ毎の表示切り替えができます。", "本アプリの説明"));
-            }
 
             // MemoListのコレクションが更新されたらファイルに保存
             MemoList.CollectionChanged += (s, e) =>

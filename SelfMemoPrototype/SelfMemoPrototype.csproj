@@ -183,6 +183,9 @@
   <ItemGroup>
     <Resource Include="memo.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tool_padlock01_01.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>del "$(TargetDir)*.xml"
