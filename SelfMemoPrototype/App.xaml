@@ -2,8 +2,11 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:SelfMemoPrototype"
+             xmlns:c="clr-namespace:SelfMemoPrototype.Converter"
              Startup="ApplicationStartup">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <c:BoolNegativeConverter x:Key="BoolNegative"/>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

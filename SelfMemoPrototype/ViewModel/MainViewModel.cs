@@ -121,10 +121,11 @@ namespace SelfMemoPrototype.ViewModel
             else
             {
                 MemoList.Add(new SelfMemoItem("用語", "正式名称、別名、訳語など", "用語の解説", "カテゴリ"));
-                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "キーワードと関連情報（訳語、正式名称、説明など）を記録して\n再参照しやすくするアプリです。", "本アプリの説明"));
-                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "上の検索窓で、キーワード類の検索ができます。", "本アプリの説明"));
-                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "このキーワード表は、「ロック」チェックボックスを外すと直接編集可能です。", "本アプリの説明"));
-                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "「Register」タブからキーワードの追加ができます。", "本アプリの説明"));
+                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "キーワードと関連情報（訳語、正式名称、説明など）を登録して\n再参照しやすくするアプリです。", "本アプリの説明"));
+                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "Searchフォームからキーワード検索ができます。", "本アプリの説明"));
+                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "メニューの「新規項目追加(Ctrl+R)」からキーワードの追加ができます。", "本アプリの説明"));
+                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "「ロック」チェックボックスを外すとテーブルを直接編集できます。", "本アプリの説明"));
+                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "コンボボックスにチェックを入れるとカテゴリ毎の表示切り替えができます。", "本アプリの説明"));
             }
 
             // MemoListのコレクションが更新されたらファイルに保存

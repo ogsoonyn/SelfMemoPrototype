@@ -33,30 +33,33 @@
 
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="メニュー">
-                <MenuItem Header="追加登録ウィンドウを開く" Command="{Binding OpenRegisterWindowCmd}"
+                <MenuItem Header="登録ダイアログを開く" Command="{Binding OpenRegisterWindowCmd}"
                           InputGestureText="Ctrl+R"/>
-                <MenuItem Header="検索キーワードを登録ウィンドウにコピー"
-                          ToolTip="検索フォームに入力がある状態で追加登録ウィンドウを開くと、入力内容を登録ウィンドウのキーワード部にコピーする"
+                <MenuItem Header="検索フォームの入力を登録ダイアログにコピーする"
+                          ToolTip="チェックを入れると、登録ダイアログを開いたときに検索フォームの入力をダイアログ側にコピーする"
                           IsCheckable="True" IsChecked="{Binding CopySearchWordToRegister.Value}"/>
                 <MenuItem Header="テーブルの直接編集を禁止する" IsCheckable="True"
-                          ToolTip="チェックを外すとテーブルの直接編集が可能になる"
+                          ToolTip="チェックを入れるとテーブルの直接編集を不可能にする"
                           IsChecked="{Binding LockGridEdit.Value}"/>
-                <MenuItem Header="テーブルの項目削除を許容する" IsCheckable="True"
+                <MenuItem Header="Deleteキーでのテーブルの項目削除を許容する" IsCheckable="True"
                           ToolTip="チェックを入れるとDeleteキーでの項目削除が可能になる"
-                          IsChecked="{Binding AllowDeleteItem.Value}"/>
-                <MenuItem Header="設定" Command="{Binding OpenSettingWindowCmd}"/>
+                          IsChecked="{Binding AllowDeleteItem.Value}" IsEnabled="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegative}}"/>
+                <MenuItem Header="グローバルホットキーの設定" Command="{Binding OpenSettingWindowCmd}"/>
                 <MenuItem Header="閉じる" Command="Close" InputGestureText="Esc"/>
             </MenuItem>
         </Menu>
         <DockPanel DockPanel.Dock="Top" Margin="5">
-            <TextBlock DockPanel.Dock="Left" Margin="5,0" Text="Search"/>
+            <TextBlock DockPanel.Dock="Left" Margin="5,0" Text="Search" VerticalAlignment="Center"/>
             <CheckBox DockPanel.Dock="Right" Content="ロック" VerticalContentAlignment="Center"
                       IsChecked="{Binding LockGridEdit.Value}"/>
             <CheckBox DockPanel.Dock="Right" IsChecked="{Binding UseCategoryList.Value}" VerticalContentAlignment="Center">
                 <ContentControl>
+                    <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="カテゴリフィルタ" VerticalAlignment="Center"/>
                     <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding CategoryList}"
-                              SelectedItem="{Binding CategoryListSelected.Value}" MinWidth="100"
+                              SelectedItem="{Binding CategoryListSelected.Value}" MinWidth="120"
                               IsEnabled="{Binding UseCategoryList.Value}"/>
+                    </StackPanel>
                 </ContentControl>
             </CheckBox>
             <TextBox x:Name="SearchTextBox" DockPanel.Dock="Right"

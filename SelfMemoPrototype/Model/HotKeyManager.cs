@@ -27,6 +27,12 @@ namespace SelfMemoPrototype.Model
             _hotkey.Dispose();
         }
 
+        /// <summary>
+        /// Initializeで指定したハンドラを起動するグローバルホットキーを上書き登録する
+        /// </summary>
+        /// <param name="modifier"></param>
+        /// <param name="key"></param>
+        /// <returns>正しく登録できればTrue</returns>
         public static bool RegisterHotKey(ModifierKeys modifier, Key key)
         {
             if (modifier == ModifierKeys.None) return false;
@@ -43,5 +49,30 @@ namespace SelfMemoPrototype.Model
             return true;
         }
 
+        /// <summary>
+        /// 登録中のGlobal Hot Keyを表す文字列を返す
+        /// </summary>
+        /// <returns>ホットキー文字列</returns>
+        public static string GetGHKeyString()
+        {
+            Key key = (Key)Properties.Settings.Default.EnumKey;
+            ModifierKeys modifier = (ModifierKeys)Properties.Settings.Default.EnumModifierKeys;
+
+            string ret = string.Empty;
+         
+            foreach(ModifierKeys mod in Enum.GetValues(typeof(ModifierKeys)))
+            {
+                if (mod == ModifierKeys.None) continue;
+
+                if (modifier.HasFlag(mod))
+                {
+                    if (!string.IsNullOrEmpty(ret)) ret += " + ";
+                    ret += mod.ToString();
+                }
+            }
+            ret += " + " + key.ToString();
+
+            return ret;
+        }
     }
 }

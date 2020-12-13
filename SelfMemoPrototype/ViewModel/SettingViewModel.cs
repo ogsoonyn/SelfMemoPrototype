@@ -22,6 +22,8 @@ namespace SelfMemoPrototype.ViewModel
 
         public ReactivePropertySlim<string> Message { get; set; } = new ReactivePropertySlim<string>();
 
+        public ReactivePropertySlim<string> GHKeyString { get; set; } = new ReactivePropertySlim<string>("-");
+
         public SettingViewModel()
         {
             Key key = (Key)Properties.Settings.Default.EnumKey;
@@ -33,6 +35,8 @@ namespace SelfMemoPrototype.ViewModel
             ModifierAlt.Value = modifier.HasFlag(ModifierKeys.Alt);
             ModifierCtrl.Value = modifier.HasFlag(ModifierKeys.Control);
             ModifierWindows.Value = modifier.HasFlag(ModifierKeys.Windows);
+
+            GHKeyString.Value = HotKeyManager.GetGHKeyString();
         }
 
         private DelegateCommand _setGlobalHotkeyCmd;
@@ -53,13 +57,12 @@ namespace SelfMemoPrototype.ViewModel
 
             if (Enum.TryParse<Key>(ShortcutKey.Value, out Key key))
             {
-                HotKeyManager.RegisterHotKey(modifier, key);
-                Message.Value = "ショートカットキーを更新しました: ";
-                Message.Value += (modifier.HasFlag(ModifierKeys.Control) ? "Ctrl+" : "");
-                Message.Value += (modifier.HasFlag(ModifierKeys.Alt) ? "Alt+" : "");
-                Message.Value += (modifier.HasFlag(ModifierKeys.Shift) ? "Shift+" : "");
-                Message.Value += (modifier.HasFlag(ModifierKeys.Windows) ? "Win+" : "");
-                Message.Value += key.ToString();
+                if (HotKeyManager.RegisterHotKey(modifier, key))
+                {
+                    GHKeyString.Value = HotKeyManager.GetGHKeyString();
+
+                    Message.Value = "ショートカットキーを更新しました";
+                }
             }
             else
             {
