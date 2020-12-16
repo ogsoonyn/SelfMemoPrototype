@@ -9,7 +9,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         mc:Ignorable="d"
         FocusManager.FocusedElement="{Binding ElementName=WordBox}"
-        Title="SelfMemoPrototype - 登録ダイアログ" Height="360" Width="500" ResizeMode="NoResize">
+        Title="SelfMemoPrototype - 登録ダイアログ" Height="360" Width="500" ResizeMode="NoResize" DragEnter="Window_DragEnter" Drop="Window_Drop" AllowDrop="True">
     <Window.DataContext>
         <vm:RegisterViewModel/>
     </Window.DataContext>
