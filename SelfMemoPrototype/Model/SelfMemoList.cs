@@ -1,4 +1,5 @@
-﻿using Reactive.Bindings;
+﻿using Hnx8.ReadJEnc;
+using Reactive.Bindings;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -142,10 +143,17 @@ namespace SelfMemoPrototype.Model
             if (Path.GetExtension(filename).ToLower() != ".csv") return 0;
             int ret = 0;
 
+            FileInfo info = new FileInfo(filename);
+            Encoding enc;
+
+            using (FileReader reader = new FileReader(info))
+            {
+                enc = reader.Read(info).GetEncoding();
+            }
+
             try
             {
-                // TODO: エンコード Shift-JISとUTF8を解釈したい
-                StreamReader sr = new StreamReader(filename, Encoding.UTF8);
+                StreamReader sr = new StreamReader(filename, enc);
                 string line = sr.ReadLine();
 
                 while (line != null)
