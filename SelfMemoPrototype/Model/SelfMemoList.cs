@@ -62,7 +62,7 @@ namespace SelfMemoPrototype.Model
             }
 
             // 現行のリストと比較し、無いものは追加
-            foreach(var item in list)
+            foreach (var item in list)
             {
                 if (!_categoryList.Contains(item))
                 {
@@ -81,7 +81,7 @@ namespace SelfMemoPrototype.Model
                     updated = true;
                 }
             }
-            foreach(var item in remList)
+            foreach (var item in remList)
             {
                 _categoryList.Remove(item);
             }
@@ -154,29 +154,77 @@ namespace SelfMemoPrototype.Model
             try
             {
                 StreamReader sr = new StreamReader(filename, enc);
-                string line = sr.ReadLine();
+                string line = "";
 
-                while (line != null)
+                while (true)
                 {
-                    // TODO: 改行が含まれるcsvファイルにも対応したい。項目がダブルクオートで囲われてたら取り払いたい
-                    var separated = line.Split(',');
-                    if(separated.Length >= 4)
+                    int cnt = 0;
+                    bool flag = false;
+
+                    line = sr.ReadLine();
+                    if (line == null) break;
+                    cnt = CountOf(line, "\""); // "の数で改行の有無を判断
+
+                    do
                     {
-                        var m = new SelfMemoItem(separated[0], separated[1], separated[2], separated[3]);
+                        if (flag)
+                        {
+                            // 改行が検出された。もう一行読み出して末尾につなげる
+                            var str = sr.ReadLine();
+                            if (str == null) break;
+                            line += "\n" + str;
+
+                            // ダブルクオートの数が偶数なら改行フラグ継続
+                            cnt = CountOf(str, "\"");
+                            flag = (cnt % 2 == 0);
+                        }
+                        else
+                        {
+                            // 通常なら、ダブルクオート数が偶数なら改行無しと判断
+                            flag = !(cnt % 2 == 0);
+                        }
+                    } while (flag);
+
+                    var separated = line.Split(',');
+                    if (separated.Length >= 4)
+                    {
+                        var m = new SelfMemoItem(separated[0].Trim('\"'), separated[1].Trim('\"'), separated[2].Trim('\"'), separated[3].Trim('\"'));
                         memoList.Add(m);
                         ret++;
                     }
-
-                    line = sr.ReadLine();
                 }
 
                 sr.Close();
 
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 //error
             }
             return ret;
+        }
+
+        /// <summary>
+        /// 文字列に特定の文字がいくつ含まれるかを返す
+        /// </summary>
+        /// <param name="target">対象の文字列</param>
+        /// <param name="strArray">個数を数える対象の文字列</param>
+        /// <returns></returns>
+        private static int CountOf(string target, params string[] strArray)
+        {
+            int count = 0;
+
+            foreach (string str in strArray)
+            {
+                int index = target.IndexOf(str, 0);
+                while (index != -1)
+                {
+                    count++;
+                    index = target.IndexOf(str, index + str.Length);
+                }
+            }
+
+            return count;
         }
 
     }
