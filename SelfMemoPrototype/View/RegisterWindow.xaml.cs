@@ -10,7 +10,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-//using System.Windows.Shapes;
 using System.IO;
 using SelfMemoPrototype.Model;
 
@@ -26,18 +25,6 @@ namespace SelfMemoPrototype.View
             InitializeComponent();
         }
 
-        private void Window_DragEnter(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                e.Effects = DragDropEffects.All;
-            }
-            else
-            {
-                e.Effects = DragDropEffects.None;
-            }
-        }
-
         private void Window_Drop(object sender, DragEventArgs e)
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop, false);
@@ -49,7 +36,24 @@ namespace SelfMemoPrototype.View
                 {
                     MessageBox.Show(val + "件追加しました", "csvから登録", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
+                else
+                {
+                    MessageBox.Show("追加する項目が見つかりませんでした", "csvから登録", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
+        }
+
+        private void Window_PreviewDragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, true))
+            {
+                e.Effects = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effects = DragDropEffects.None;
+            }
+            e.Handled = e.Data.GetDataPresent(DataFormats.FileDrop);
         }
     }
 }

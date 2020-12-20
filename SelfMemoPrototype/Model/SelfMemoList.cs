@@ -146,6 +146,7 @@ namespace SelfMemoPrototype.Model
             FileInfo info = new FileInfo(filename);
             Encoding enc;
 
+            // 文字コードを判別
             using (FileReader reader = new FileReader(info))
             {
                 enc = reader.Read(info).GetEncoding();
@@ -159,15 +160,15 @@ namespace SelfMemoPrototype.Model
                 while (true)
                 {
                     int cnt = 0;
-                    bool flag = false;
+                    bool detectLineBreak = false;
 
                     line = sr.ReadLine();
                     if (line == null) break;
-                    cnt = CountOf(line, "\""); // "の数で改行の有無を判断
+                    cnt = CountOf(line, "\""); // ダブルクオートの数（改行の有無判断に使用）
 
                     do
                     {
-                        if (flag)
+                        if (detectLineBreak)
                         {
                             // 改行が検出された。もう一行読み出して末尾につなげる
                             var str = sr.ReadLine();
@@ -176,21 +177,24 @@ namespace SelfMemoPrototype.Model
 
                             // ダブルクオートの数が偶数なら改行フラグ継続
                             cnt = CountOf(str, "\"");
-                            flag = (cnt % 2 == 0);
+                            detectLineBreak = (cnt % 2 == 0);
                         }
                         else
                         {
-                            // 通常なら、ダブルクオート数が偶数なら改行無しと判断
-                            flag = !(cnt % 2 == 0);
+                            // 通常なら、ダブルクオート数の偶奇で改行の有無を判断
+                            detectLineBreak = !(cnt % 2 == 0);
                         }
-                    } while (flag);
+                    } while (detectLineBreak);
 
                     var separated = line.Split(',');
                     if (separated.Length >= 4)
                     {
                         var m = new SelfMemoItem(separated[0].Trim('\"'), separated[1].Trim('\"'), separated[2].Trim('\"'), separated[3].Trim('\"'));
-                        memoList.Add(m);
-                        ret++;
+                        if (!memoList.Contains(m))
+                        {
+                            memoList.Add(m);
+                            ret++;
+                        }
                     }
                 }
 
