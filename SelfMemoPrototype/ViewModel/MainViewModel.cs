@@ -242,5 +242,22 @@ namespace SelfMemoPrototype.ViewModel
             win.ShowDialog();
         }
         #endregion
+
+        private DelegateCommand _saveFilteredItemsCmd;
+        public DelegateCommand SaveFilteredItemsCmd
+        {
+            get { return _saveFilteredItemsCmd = _saveFilteredItemsCmd ?? new DelegateCommand(SaveFilteredItems); }
+        }
+
+        private void SaveFilteredItems()
+        {
+            var list = new ReactiveCollection<SelfMemoItem>();
+            foreach(var item in FilteredItems)
+            {
+                list.Add(item as SelfMemoItem);
+            }
+
+            SelfMemoList.SaveMemoFile(list, "filtered.json");
+        }
     }
 }

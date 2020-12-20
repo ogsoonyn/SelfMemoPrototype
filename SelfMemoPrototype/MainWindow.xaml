@@ -45,6 +45,7 @@
                           ToolTip="チェックを入れるとDeleteキーでの項目削除が可能になる"
                           IsChecked="{Binding AllowDeleteItem.Value}" IsEnabled="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegative}}"/>
                 <MenuItem Header="グローバルホットキーの設定" Command="{Binding OpenSettingWindowCmd}"/>
+                <MenuItem Header="現在表示中のリストをfiltered.jsonに保存" Command="{Binding SaveFilteredItemsCmd}"/>
                 <MenuItem Header="閉じる" Command="Close" InputGestureText="Esc"/>
             </MenuItem>
         </Menu>
