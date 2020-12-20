@@ -31,14 +31,24 @@ namespace SelfMemoPrototype.View
 
             foreach(var name in files)
             {
-                int val = SelfMemoList.AddMemoFromCsv(SelfMemoList.ItemsList, name);
-                if(val > 0)
+                int val = 0;
+                switch (Path.GetExtension(name).ToLower())
                 {
-                    MessageBox.Show(val + "件追加しました", "csvから登録", MessageBoxButton.OK, MessageBoxImage.Information);
+                    case ".csv":
+                        val = SelfMemoList.AddMemoFromCsv(SelfMemoList.ItemsList, name);
+                        break;
+                    case ".json":
+                        val = SelfMemoList.LoadMemoFile(SelfMemoList.ItemsList, name);
+                        break;
+                }
+
+                if (val > 0)
+                {
+                    MessageBox.Show(name + " から " + val + " 件追加しました", "ファイルから登録", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                 {
-                    MessageBox.Show("追加する項目が見つかりませんでした", "csvから登録", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("追加する項目が見つかりませんでした", "ファイルから登録", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
         }
