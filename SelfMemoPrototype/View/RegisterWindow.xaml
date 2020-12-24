@@ -1,4 +1,4 @@
-﻿<Window x:Class="SelfMemoPrototype.View.RegisterWindow"
+﻿<mahApps:MetroWindow x:Class="SelfMemoPrototype.View.RegisterWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,13 +7,14 @@
         xmlns:b="clr-namespace:SelfMemoPrototype.Behavior"
         xmlns:vm="clr-namespace:SelfMemoPrototype.ViewModel"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:mahApps="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         FocusManager.FocusedElement="{Binding ElementName=WordBox}"
-        Title="SelfMemoPrototype - 登録ダイアログ" Height="400" Width="500" 
+        Title="SelfMemoPrototype - 登録ダイアログ" Height="500" Width="500" 
         ResizeMode="NoResize" Drop="Window_Drop" AllowDrop="True" PreviewDragOver="Window_PreviewDragOver">
-    <Window.DataContext>
+    <mahApps:MetroWindow.DataContext>
         <vm:RegisterViewModel/>
-    </Window.DataContext>
+    </mahApps:MetroWindow.DataContext>
     <i:Interaction.Behaviors>
         <b:ApplicationCommandBehavior/>
     </i:Interaction.Behaviors>
@@ -66,4 +67,4 @@
                    Text="ファイル(csv, json)のドラッグ＆ドロップでまとめて項目追加できます。"/>
 
     </Grid>
-</Window>
+</mahApps:MetroWindow>

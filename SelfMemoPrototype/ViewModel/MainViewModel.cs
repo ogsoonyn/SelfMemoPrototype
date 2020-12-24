@@ -26,7 +26,7 @@ namespace SelfMemoPrototype.ViewModel
         /// <summary>
         /// カテゴリでフィルタする機能のON/OFFフラグ
         /// </summary>
-        public ReactivePropertySlim<bool> UseCategoryList { get; set; } = new ReactivePropertySlim<bool>(false);
+        //public ReactivePropertySlim<bool> UseCategoryList { get; set; } = new ReactivePropertySlim<bool>(false);
 
         /// <summary>
         /// カテゴリでフィルタする機能で選択されているカテゴリ文字列
@@ -124,18 +124,19 @@ namespace SelfMemoPrototype.ViewModel
             });
 
             // カテゴリ選択ComboBoxのEnable設定が更新されたらアイテムリスト更新
+            /*
             UseCategoryList.PropertyChanged += (s, e) =>
             {
                 SelfMemoList.UpdateCategoryList();
                 FilteredItems.Refresh();
-            };
+            };*/
 
             // カテゴリリストが更新されてフィルタできなくなったら、フィルタ設定をOFFにする
             CategoryList.CollectionChanged += (s, e) =>
             {
                 if (!CategoryList.Contains(CategoryListSelected.Value))
                 {
-                    UseCategoryList.Value = false;
+                    //UseCategoryList.Value = false;
                 }
             };
 
@@ -162,7 +163,7 @@ namespace SelfMemoPrototype.ViewModel
         private bool CheckFilterStr(string filter, SelfMemoItem memo)
         {
             // フィルターが空文字列ならチェック通す
-            if (filter.Length == 0) return true;
+            if (string.IsNullOrEmpty(filter)) return true;
 
             string[] filters = filter.Split(new char[]{' ','　'});
             int found = 0;
@@ -195,10 +196,10 @@ namespace SelfMemoPrototype.ViewModel
         private bool CheckCategoryFilter(SelfMemoItem memo)
         {
             // フィルタが無効なら全て通す
-            if (UseCategoryList.Value == false) return true;
+            //if (UseCategoryList.Value == false) return true;
 
             // フィルタの選択肢がNULLならすべて通す
-            if (CategoryListSelected.Value?.Length == 0) return true;
+            if (string.IsNullOrEmpty(CategoryListSelected.Value)) return true;
 
             // 指定されたCategoryの項目のみTrueを返す
             return (memo.CategoryR.Value.Equals(CategoryListSelected.Value));

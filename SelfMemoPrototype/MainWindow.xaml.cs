@@ -1,4 +1,5 @@
-﻿using SelfMemoPrototype.Model;
+﻿using MahApps.Metro.Controls;
+using SelfMemoPrototype.Model;
 using System;
 using System.ComponentModel;
 using System.Windows;
@@ -10,7 +11,7 @@ namespace SelfMemoPrototype
     /// <summary>
     /// MainWindow.xaml の相互作用ロジック
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         private NotifyIconEx _notify;
 

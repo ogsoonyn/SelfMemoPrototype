@@ -12,13 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.IO;
 using SelfMemoPrototype.Model;
+using MahApps.Metro.Controls;
 
 namespace SelfMemoPrototype.View
 {
     /// <summary>
     /// RegisterWindow.xaml の相互作用ロジック
     /// </summary>
-    public partial class RegisterWindow : Window
+    public partial class RegisterWindow : MetroWindow
     {
         public RegisterWindow()
         {
