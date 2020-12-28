@@ -11,7 +11,7 @@
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         FocusManager.FocusedElement="{Binding ElementName=SearchTextBox}"
-        Title="{Binding AppName.Value}" MinHeight="300" MinWidth="450" Height="450" Width="800">
+        Title="{Binding AppName.Value}" MinHeight="300" MinWidth="450" Height="450" Width="800" SaveWindowPosition="True" TitleCharacterCasing="Normal">
 
     <i:Interaction.Behaviors>
         <b:ApplicationCommandBehavior/>
@@ -20,6 +20,14 @@
     <mahApps:MetroWindow.DataContext>
         <vm:MainViewModel/>
     </mahApps:MetroWindow.DataContext>
+
+    <mahApps:MetroWindow.RightWindowCommands>
+        <mahApps:WindowCommands>
+            <Button>
+                <md:PackIcon Kind="Help"/>
+            </Button>
+        </mahApps:WindowCommands>
+    </mahApps:MetroWindow.RightWindowCommands>
     
     <mahApps:MetroWindow.Resources>
         <ContextMenu x:Key="sampleWinMenu">
@@ -34,40 +42,30 @@
             <KeyBinding Key="Esc" Command="Close"/>
         </DockPanel.InputBindings>
 
-        <Menu VerticalAlignment="Center" DockPanel.Dock="Top">
-            <MenuItem Header="メニュー">
-                <MenuItem Header="登録ダイアログを開く" Command="{Binding OpenRegisterWindowCmd}"
+        <DockPanel DockPanel.Dock="Top">
+            <Menu DockPanel.Dock="Left" IsMainMenu="True" VerticalAlignment="Center">
+                <MenuItem>
+                    <MenuItem.Header>
+                        <md:PackIcon Kind="Menu"/>
+                    </MenuItem.Header>
+                    <MenuItem Header="登録ダイアログを開く" Command="{Binding OpenRegisterWindowCmd}"
                           InputGestureText="Ctrl+R"/>
-                <MenuItem Header="検索フォームの入力を登録ダイアログにコピーする"
+                    <MenuItem Header="検索フォームの入力を登録ダイアログにコピーする"
                           ToolTip="チェックを入れると、登録ダイアログを開いたときに検索フォームの入力をダイアログ側にコピーする"
                           IsCheckable="True" IsChecked="{Binding CopySearchWordToRegister.Value}"/>
-                <MenuItem Header="テーブルの直接編集を禁止する" IsCheckable="True"
+                    <MenuItem Header="テーブルの直接編集を禁止する" IsCheckable="True"
                           ToolTip="チェックを入れるとテーブルの直接編集を不可能にする"
                           IsChecked="{Binding LockGridEdit.Value}"/>
-                <MenuItem Header="Deleteキーでのテーブルの項目削除を許容する" IsCheckable="True"
+                    <MenuItem Header="Deleteキーでのテーブルの項目削除を許容する" IsCheckable="True"
                           ToolTip="チェックを入れるとDeleteキーでの項目削除が可能になる"
                           IsChecked="{Binding AllowDeleteItem.Value}" IsEnabled="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegative}}"/>
-                <MenuItem Header="グローバルホットキーの設定" Command="{Binding OpenSettingWindowCmd}"/>
-                <MenuItem Header="現在表示中のリストをfiltered.jsonに保存" Command="{Binding SaveFilteredItemsCmd}"/>
-                <MenuItem Header="閉じる" Command="Close" InputGestureText="Esc"/>
-            </MenuItem>
+                    <MenuItem Header="グローバルホットキーの設定" Command="{Binding OpenSettingWindowCmd}"/>
+                    <MenuItem Header="現在表示中のリストをfiltered.jsonに保存" Command="{Binding SaveFilteredItemsCmd}"/>
+                    <MenuItem Header="閉じる" Command="Close" InputGestureText="Esc"/>
+                </MenuItem>
+            </Menu>
 
-            <StackPanel Orientation="Horizontal">
-                <md:PackIcon Kind="Magnify" VerticalAlignment="Center" Foreground="{Binding ElementName=SearchTextBox, Path=BorderBrush}"/>
-                <TextBox x:Name="SearchTextBox" Style="{StaticResource MaterialDesignTextBox}"
-                         md:HintAssist.Hint="検索" md:TextFieldAssist.HasClearButton="True"
-                         MinWidth="400" Margin="3"
-                         Text="{Binding FilterStr.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            </StackPanel>
-            <ComboBox ItemsSource="{Binding CategoryList}"
-                                      SelectedItem="{Binding CategoryListSelected.Value}" MinWidth="150"
-                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                                      md:TextFieldAssist.HasClearButton="True"
-                                      md:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryHueMidBrush}"
-                                      md:ColorZoneAssist.Mode="Inverted"
-                                      md:HintAssist.Hint="カテゴリフィルタ"/>
-
-            <CheckBox Margin="5,0" Style="{StaticResource MaterialDesignCheckBox}"
+            <CheckBox DockPanel.Dock="Right" Margin="5, 0" Style="{StaticResource MaterialDesignCheckBox}"
                           ToolTip="ロック解除するとテーブルの直接編集が可能になります"
                           IsChecked="{Binding LockGridEdit.Value}">
                 <ContentControl>
@@ -77,7 +75,21 @@
                     </StackPanel>
                 </ContentControl>
             </CheckBox>
-        </Menu>
+
+            <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding CategoryList}"
+                                      SelectedItem="{Binding CategoryListSelected.Value}" MinWidth="150"
+                                      Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                      md:TextFieldAssist.HasClearButton="True"
+                                      md:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryHueMidBrush}"
+                                      md:ColorZoneAssist.Mode="Inverted"
+                                      md:HintAssist.Hint="カテゴリフィルタ"/>
+
+            <md:PackIcon DockPanel.Dock="Left" Kind="Magnify" VerticalAlignment="Center" Foreground="{Binding ElementName=SearchTextBox, Path=BorderBrush}"/>
+            <TextBox x:Name="SearchTextBox" Style="{StaticResource MaterialDesignTextBox}"
+                     VerticalContentAlignment="Center"
+                         md:HintAssist.Hint="検索" md:TextFieldAssist.HasClearButton="True" Margin="3"
+                         Text="{Binding FilterStr.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        </DockPanel>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem HorizontalAlignment="Left" Visibility="{Binding UseFilterStr.Value, Converter={StaticResource BoolToVisible}}">
                 <StackPanel Orientation="Horizontal">

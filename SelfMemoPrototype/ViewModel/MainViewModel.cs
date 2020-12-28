@@ -26,7 +26,7 @@ namespace SelfMemoPrototype.ViewModel
         /// <summary>
         /// カテゴリでフィルタする機能のON/OFFフラグ
         /// </summary>
-        //public ReactivePropertySlim<bool> UseCategoryList { get; set; } = new ReactivePropertySlim<bool>(false);
+        public ReadOnlyReactivePropertySlim<bool> UseCategoryList { get; }
 
         /// <summary>
         /// カテゴリでフィルタする機能で選択されているカテゴリ文字列
@@ -98,6 +98,7 @@ namespace SelfMemoPrototype.ViewModel
                 SelfMemoList.LoadMemoFile(MemoList, MemoFileName);
             }
 
+            // MemoListが空なら、ヘルプメッセージ的な項目を追加する
             if (SelfMemoList.ItemsList.Count == 0)
             {
                 MemoList.Add(new SelfMemoItem("用語", "正式名称、別名、訳語など", "用語の解説", "カテゴリ"));
@@ -123,13 +124,8 @@ namespace SelfMemoPrototype.ViewModel
                 FilteredItems.Refresh();
             });
 
-            // カテゴリ選択ComboBoxのEnable設定が更新されたらアイテムリスト更新
-            /*
-            UseCategoryList.PropertyChanged += (s, e) =>
-            {
-                SelfMemoList.UpdateCategoryList();
-                FilteredItems.Refresh();
-            };*/
+            // UseCategoryListはカテゴリリストからなんか選択されてたらTrue
+            UseCategoryList = CategoryListSelected.Select(x => !string.IsNullOrEmpty(x)).ToReadOnlyReactivePropertySlim();
 
             // カテゴリリストが更新されてフィルタできなくなったら、フィルタ設定をOFFにする
             CategoryList.CollectionChanged += (s, e) =>
