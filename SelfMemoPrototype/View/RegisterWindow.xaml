@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SelfMemoPrototype.View"
         xmlns:b="clr-namespace:SelfMemoPrototype.Behavior"
         xmlns:vm="clr-namespace:SelfMemoPrototype.ViewModel"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         FocusManager.FocusedElement="{Binding ElementName=WordBox}"
         Title="SelfMemoPrototype - 登録ダイアログ" Height="400" Width="500" 

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SelfMemoPrototype"
         xmlns:b="clr-namespace:SelfMemoPrototype.Behavior"
         xmlns:vm="clr-namespace:SelfMemoPrototype.ViewModel"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         FocusManager.FocusedElement="{Binding ElementName=SearchTextBox}"
         Title="{Binding AppName.Value}" MinHeight="300" MinWidth="450" Height="450" Width="800">
