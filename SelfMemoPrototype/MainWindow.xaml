@@ -117,6 +117,20 @@
 
         <DataGrid DockPanel.Dock="Top" ItemsSource="{Binding FilteredItems}" IsReadOnly="{Binding LockGridEdit.Value}"
                   AutoGenerateColumns="False" CanUserDeleteRows="{Binding AllowDeleteItem.Value}">
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                            <Setter Property="BorderBrush" Value="Transparent"/>
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="キーワード" Binding="{Binding KeywordR.Value}" MaxWidth="230">
                     <DataGridTextColumn.ElementStyle>
@@ -134,16 +148,18 @@
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
 
-                <DataGridTextColumn Header="説明" Binding="{Binding DescriptionR.Value}" MaxWidth="600">
+                <DataGridTextColumn x:Name="desc" Header="説明" MaxWidth="600">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextWrapping" Value="Wrap"/>
+                            <Setter Property="local:NavigationService.Text" Value="{Binding DescriptionR.Value}"/>
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                     <DataGridTextColumn.EditingElementStyle>
                         <Style TargetType="TextBox">
                             <Setter Property="TextWrapping" Value="Wrap"/>
                             <Setter Property="AcceptsReturn" Value="True"/>
+                            <Setter Property="Text" Value="{Binding DescriptionR.Value}"/>
                         </Style>
                     </DataGridTextColumn.EditingElementStyle>
                 </DataGridTextColumn>

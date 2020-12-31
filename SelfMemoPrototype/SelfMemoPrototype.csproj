@@ -137,6 +137,7 @@
     <Compile Include="Model\HotKeyManager.cs" />
     <Compile Include="Model\SelfMemoItem.cs" />
     <Compile Include="Model\SelfMemoList.cs" />
+    <Compile Include="NavigationService.cs" />
     <Compile Include="NotifyIconEx.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\RegisterViewModel.cs" />
