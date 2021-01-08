@@ -58,6 +58,9 @@
     <Reference Include="Hnx8.ReadJEnc, Version=1.3.1.2, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ReadJEnc.1.3.1.2\lib\net47\Hnx8.ReadJEnc.dll</HintPath>
     </Reference>
+    <Reference Include="Markdown.Xaml">
+      <HintPath>..\lib\Markdown.Xaml.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.19\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
@@ -111,6 +114,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Behavior\ApplicationCommandBehavior.cs" />
+    <Compile Include="BindableRichTextBox.cs" />
     <Compile Include="Converter\BoolNegativeConverter.cs" />
     <Compile Include="HotKeyHelper.cs" />
     <Compile Include="Model\HotKeyManager.cs" />

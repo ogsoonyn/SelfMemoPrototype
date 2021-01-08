@@ -7,6 +7,7 @@
         xmlns:b="clr-namespace:SelfMemoPrototype.Behavior"
         xmlns:vm="clr-namespace:SelfMemoPrototype.ViewModel"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:md="clr-namespace:Markdown.Xaml;assembly=Markdown.Xaml"
         mc:Ignorable="d"
         FocusManager.FocusedElement="{Binding ElementName=SearchTextBox}"
         Title="{Binding AppName.Value}" MinHeight="300" MinWidth="450" Height="450" Width="800">
@@ -23,6 +24,9 @@
             <MenuItem Header="Show" Click="MenuItem_Show_Click"/>
             <MenuItem Header="Exit" Click="MenuItem_Exit_Click"/>
         </ContextMenu>
+
+        <md:Markdown x:Key="Markdown"/>
+        <md:TextToFlowDocumentConverter x:Key="TextToFlowDocumentConverter" Markdown="{StaticResource Markdown}"/>
     </Window.Resources>
     
     <DockPanel>
@@ -133,21 +137,19 @@
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
 
-                <DataGridTextColumn x:Name="desc" Header="説明" MaxWidth="600">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="TextWrapping" Value="Wrap"/>
-                            <Setter Property="local:NavigationService.Text" Value="{Binding DescriptionR.Value}"/>
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                    <DataGridTextColumn.EditingElementStyle>
-                        <Style TargetType="TextBox">
-                            <Setter Property="TextWrapping" Value="Wrap"/>
-                            <Setter Property="AcceptsReturn" Value="True"/>
-                            <Setter Property="Text" Value="{Binding DescriptionR.Value}"/>
-                        </Style>
-                    </DataGridTextColumn.EditingElementStyle>
-                </DataGridTextColumn>
+                <DataGridTemplateColumn Header="説明MD" MaxWidth="600">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <local:BindableRichTextBox IsDocumentEnabled="True" IsReadOnly="True"
+                                                       Document="{Binding DescriptionR.Value, Converter={StaticResource TextToFlowDocumentConverter}}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <TextBox Text="{Binding DescriptionR.Value}" TextWrapping="Wrap" AcceptsReturn="True"/>
+                        </DataTemplate>                        
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
 
                 <DataGridTextColumn Header="カテゴリ" Binding="{Binding CategoryR.Value}" MaxWidth="200">
                     <DataGridTextColumn.ElementStyle>
