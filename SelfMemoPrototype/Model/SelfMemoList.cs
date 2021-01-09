@@ -52,6 +52,11 @@ namespace SelfMemoPrototype.Model
             var list = new ReactiveCollection<string>();
             bool updated = false;
 
+            if (_categoryList == null)
+            {
+                _categoryList = new ReactiveCollection<string>();
+            }
+
             // ItemsListを全件検索
             foreach (var item in ItemsList)
             {

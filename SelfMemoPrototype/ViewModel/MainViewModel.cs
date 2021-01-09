@@ -151,14 +151,11 @@ namespace SelfMemoPrototype.ViewModel
             // UseCategoryListはカテゴリリストからなんか選択されてたらTrue
             UseCategoryList = CategoryListSelected.Select(x => !string.IsNullOrEmpty(x)).ToReadOnlyReactivePropertySlim();
 
-            // カテゴリリストが更新されてフィルタできなくなったら、フィルタ設定をOFFにする
-            CategoryList.CollectionChanged += (s, e) =>
+            // カテゴリリストのON/OFFを切り替えるタイミングでもカテゴリリストの内容更新
+            UseCategoryList.Subscribe(_ =>
             {
-                if (!CategoryList.Contains(CategoryListSelected.Value))
-                {
-                    //UseCategoryList.Value = false;
-                }
-            };
+                SelfMemoList.UpdateCategoryList();
+            });
 
             // MemoListのコレクションが更新されたらファイルに保存
             MemoList.CollectionChanged += (s, e) =>
