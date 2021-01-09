@@ -8,6 +8,7 @@ using System.IO;
 using System.Reactive.Linq;
 using System.Reflection;
 using System.Windows.Data;
+using System.Windows.Threading;
 
 namespace SelfMemoPrototype.ViewModel
 {
@@ -78,6 +79,11 @@ namespace SelfMemoPrototype.ViewModel
         /// </summary>
         private static readonly string MemoFileName = "selfmemo.json";
 
+        /// <summary>
+        /// FilteredItemsの更新に使用するタイマー
+        /// </summary>
+        DispatcherTimer FilteredItemsRefreshTimer = new DispatcherTimer();
+
         public MainViewModel()
         {
             // タイトルに表示する文字列を指定
@@ -112,7 +118,16 @@ namespace SelfMemoPrototype.ViewModel
             // Filter文字列が更新されたら、Filterされたアイテムリストを更新
             FilterStr.Subscribe(_ =>
             {
-                FilteredItems.Refresh();
+                if (!FilteredItemsRefreshTimer.IsEnabled)
+                {
+                    FilteredItemsRefreshTimer.Interval = TimeSpan.FromMilliseconds(300);
+                    FilteredItemsRefreshTimer.Tick += (s, e) =>
+                    {
+                        FilteredItems.Refresh();
+                        FilteredItemsRefreshTimer.Stop();
+                    };
+                    FilteredItemsRefreshTimer.Start();
+                }
             });
 
             // Filter文字列の有無フラグを連動
@@ -121,7 +136,16 @@ namespace SelfMemoPrototype.ViewModel
             // カテゴリ選択ComboBoxが更新されたら、Filterされたアイテムリスト更新
             CategoryListSelected.Subscribe(_ =>
             {
-                FilteredItems.Refresh();
+                if (!FilteredItemsRefreshTimer.IsEnabled)
+                {
+                    FilteredItemsRefreshTimer.Interval = TimeSpan.FromMilliseconds(100);
+                    FilteredItemsRefreshTimer.Tick += (s, e) =>
+                    {
+                        FilteredItems.Refresh();
+                        FilteredItemsRefreshTimer.Stop();
+                    };
+                    FilteredItemsRefreshTimer.Start();
+                }
             });
 
             // UseCategoryListはカテゴリリストからなんか選択されてたらTrue
