@@ -138,7 +138,7 @@ namespace SelfMemoPrototype.ViewModel
             {
                 if (!FilteredItemsRefreshTimer.IsEnabled)
                 {
-                    FilteredItemsRefreshTimer.Interval = TimeSpan.FromMilliseconds(100);
+                    FilteredItemsRefreshTimer.Interval = TimeSpan.FromMilliseconds(300);
                     FilteredItemsRefreshTimer.Tick += (s, e) =>
                     {
                         FilteredItems.Refresh();

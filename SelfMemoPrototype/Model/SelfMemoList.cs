@@ -49,8 +49,7 @@ namespace SelfMemoPrototype.Model
         /// <returns>リストを更新したらtrueを返す</returns>
         public static bool UpdateCategoryList()
         {
-            var list = new ReactiveCollection<string>();
-            bool updated = false;
+            var newlist = new List<string>();
 
             if (_categoryList == null)
             {
@@ -60,37 +59,17 @@ namespace SelfMemoPrototype.Model
             // ItemsListを全件検索
             foreach (var item in ItemsList)
             {
-                if (!list.Contains(item.CategoryR.Value))
+                if (!newlist.Contains(item.CategoryR.Value))
                 {
-                    list.Add(item.CategoryR.Value);
+                    newlist.Add(item.CategoryR.Value);
                 }
             }
 
-            // 現行のリストと比較し、無いものは追加
-            foreach (var item in list)
-            {
-                if (!_categoryList.Contains(item))
-                {
-                    _categoryList.Add(item);
-                    updated = true;
-                }
-            }
+            newlist.Sort();
+            _categoryList.Clear();
+            foreach (var s in newlist) { _categoryList.Add(s); }
 
-            // 現行リストにあるけど消えてるものは削除
-            var remList = new List<string>();
-            foreach (var item in _categoryList)
-            {
-                if (!list.Contains(item))
-                {
-                    remList.Add(item);
-                    updated = true;
-                }
-            }
-            foreach (var item in remList)
-            {
-                _categoryList.Remove(item);
-            }
-            return updated;
+            return true;
         }
 
         /// <summary>
