@@ -5,7 +5,9 @@ using System.Runtime.Serialization;
 namespace SelfMemoPrototype.Model
 {
     [DataContract]
+#pragma warning disable CS0659 // 型は Object.Equals(object o) をオーバーライドしますが、Object.GetHashCode() をオーバーライドしません
     public class SelfMemoItem
+#pragma warning restore CS0659 // 型は Object.Equals(object o) をオーバーライドしますが、Object.GetHashCode() をオーバーライドしません
     {
         public ReactivePropertySlim<string> KeywordR { get; set; } = new ReactivePropertySlim<string>();
         public ReactivePropertySlim<string> Keyword2R { get; set; } = new ReactivePropertySlim<string>();
@@ -74,10 +76,12 @@ namespace SelfMemoPrototype.Model
             return false;
         }
 
+        /*
         public override int GetHashCode()
         {
             return (Keyword + Description + Keyword2 + Category).GetHashCode();
         }
+        */
 
         public SelfMemoItem(string keyword, string shortkwd, string description, string category)
         {
