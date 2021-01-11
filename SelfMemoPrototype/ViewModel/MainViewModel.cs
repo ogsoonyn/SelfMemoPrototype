@@ -7,6 +7,7 @@ using System;
 using System.IO;
 using System.Reactive.Linq;
 using System.Reflection;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
 
@@ -84,6 +85,11 @@ namespace SelfMemoPrototype.ViewModel
         /// </summary>
         DispatcherTimer FilteredItemsRefreshTimer = new DispatcherTimer();
 
+        /// <summary>
+        /// 選択中の項目プレビューに使用する
+        /// </summary>
+        public ReactivePropertySlim<SelfMemoItem> SelectedItem { get; set; } = new ReactivePropertySlim<SelfMemoItem>();
+
         public MainViewModel()
         {
             // タイトルに表示する文字列を指定
@@ -147,6 +153,12 @@ namespace SelfMemoPrototype.ViewModel
                     FilteredItemsRefreshTimer.Start();
                 }
             });
+
+            // 選択項目をSelectedItemに入れる処理
+            FilteredItems.CurrentChanged += (s, e) =>
+            {
+                SelectedItem.Value = FilteredItems.CurrentItem as SelfMemoItem;
+            };
 
             // UseCategoryListはカテゴリリストからなんか選択されてたらTrue
             UseCategoryList = CategoryListSelected.Select(x => !string.IsNullOrEmpty(x)).ToReadOnlyReactivePropertySlim();

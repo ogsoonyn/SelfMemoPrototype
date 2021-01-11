@@ -53,8 +53,8 @@
                     <MenuItem Header="検索フォームの入力を登録ダイアログにコピーする"
                           ToolTip="チェックを入れると、登録ダイアログを開いたときに検索フォームの入力をダイアログ側にコピーする"
                           IsCheckable="True" IsChecked="{Binding CopySearchWordToRegister.Value}"/>
-                    <MenuItem Header="テーブルの直接編集を禁止する" IsCheckable="True"
-                          ToolTip="チェックを入れるとテーブルの直接編集を不可能にする"
+                    <MenuItem Header="編集ロック" IsCheckable="True"
+                          ToolTip="チェックを外すとSelected Item枠でのデータ編集が可能になる"
                           IsChecked="{Binding LockGridEdit.Value}"/>
                     <MenuItem Header="Deleteキーでのテーブルの項目削除を許容する" IsCheckable="True"
                           ToolTip="チェックを入れるとDeleteキーでの項目削除が可能になる"
@@ -65,18 +65,7 @@
                 </MenuItem>
             </Menu>
 
-            <CheckBox DockPanel.Dock="Right" Margin="5, 0" Style="{StaticResource MaterialDesignCheckBox}"
-                          ToolTip="ロック解除するとテーブルの直接編集が可能になります"
-                          IsChecked="{Binding LockGridEdit.Value}">
-                <ContentControl>
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="Resources/tool_padlock01_01.png" VerticalAlignment="Center" Height="20"/>
-                        <TextBlock Text="ロック" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </ContentControl>
-            </CheckBox>
-
-            <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding CategoryList}"
+            <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding CategoryList}" Margin="10,0"
                                       SelectedItem="{Binding CategoryListSelected.Value}" MinWidth="150"
                                       Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                       md:TextFieldAssist.HasClearButton="True"
@@ -87,7 +76,7 @@
             <md:PackIcon DockPanel.Dock="Left" Kind="Magnify" VerticalAlignment="Center" Foreground="{Binding ElementName=SearchTextBox, Path=BorderBrush}"/>
             <TextBox x:Name="SearchTextBox" Style="{StaticResource MaterialDesignTextBox}"
                      VerticalContentAlignment="Center"
-                         md:HintAssist.Hint="検索" md:TextFieldAssist.HasClearButton="True" Margin="3"
+                         md:HintAssist.Hint="検索" md:TextFieldAssist.HasClearButton="True" Margin="10,3"
                          Text="{Binding FilterStr.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </DockPanel>
         <StatusBar DockPanel.Dock="Bottom">
@@ -105,6 +94,12 @@
                 </StackPanel>
             </StatusBarItem>
 
+            <StatusBarItem HorizontalAlignment="Left">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding FilteredItems.CurrentPosition}"/>
+                </StackPanel>
+            </StatusBarItem>
+
             <StatusBarItem HorizontalAlignment="Right">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="{Binding FilteredItems.Count}"/>
@@ -115,75 +110,159 @@
 
         </StatusBar>
 
-        <DataGrid DockPanel.Dock="Top" ItemsSource="{Binding FilteredItems}" IsReadOnly="{Binding LockGridEdit.Value}"
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+                <Expander ExpandDirection="Right" Background="{StaticResource MahApps.Brushes.Accent4}">
+                    <Expander.Header>
+                        <TextBlock Text="Selected Item" RenderTransformOrigin=".5,.5">
+                            <TextBlock.LayoutTransform>
+                                <RotateTransform Angle="90"/>
+                            </TextBlock.LayoutTransform>
+                        </TextBlock>
+                    </Expander.Header>
+
+                    <Grid VerticalAlignment="Stretch">
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Padding" Value="8"/>
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="キーワード" FontWeight="Bold"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="キーワード2" FontWeight="Bold"/>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="説明" FontWeight="Bold"/>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="カテゴリ" FontWeight="Bold"/>
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="更新日" FontWeight="Bold"/>
+
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.KeywordR.Value}"
+                           Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolToVisible}}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.Keyword2R.Value}"
+                           Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolToVisible}}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" local:NavigationService.Text="{Binding FilteredItems.CurrentItem.DescriptionR.Value}"
+                           Width="500" Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolToVisible}}"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.CategoryR.Value}"
+                           Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolToVisible}}"/>
+
+                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.KeywordR.Value, UpdateSourceTrigger=PropertyChanged}" 
+                         TextWrapping="Wrap" Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegativeToVisible}}"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.Keyword2R.Value, UpdateSourceTrigger=PropertyChanged}" 
+                         TextWrapping="Wrap" Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegativeToVisible}}"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.DescriptionR.Value, UpdateSourceTrigger=PropertyChanged}"
+                         TextWrapping="Wrap" Width="500" AcceptsReturn="True" Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegativeToVisible}}"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.CategoryR.Value, UpdateSourceTrigger=PropertyChanged}"
+                         TextWrapping="Wrap" Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegativeToVisible}}"/>
+
+                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.DateR.Value}" TextWrapping="Wrap"/>
+
+                        <CheckBox Grid.Row="5" Grid.ColumnSpan="2" Margin="5, 0" Style="{StaticResource MaterialDesignCheckBox}"
+                          ToolTip="ロック解除するとデータの書き換えができます。ロック中はURLのリンク化等が行われます"
+                          IsChecked="{Binding LockGridEdit.Value}">
+                            <ContentControl>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="Resources/tool_padlock01_01.png" VerticalAlignment="Center" Height="20"/>
+                                    <TextBlock Text="編集ロック" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </ContentControl>
+                        </CheckBox>
+
+                    </Grid>
+                </Expander>
+            </ScrollViewer>
+
+            <DataGrid Grid.Column="0" ItemsSource="{Binding FilteredItems}" IsReadOnly="True"
                   AutoGenerateColumns="False" CanUserDeleteRows="{Binding AllowDeleteItem.Value}">
-            <DataGrid.CellStyle>
-                <Style TargetType="DataGridCell">
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
-                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-                            <Setter Property="BorderBrush" Value="Transparent"/>
-                        </Trigger>
-                        <Trigger Property="IsFocused" Value="True">
-                            <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.CellStyle>
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="キーワード" Binding="{Binding KeywordR.Value}" MaxWidth="230">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="TextWrapping" Value="Wrap"/>
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                                <Setter Property="BorderBrush" Value="Transparent"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.CellStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="キーワード" Binding="{Binding KeywordR.Value}" MaxWidth="230">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                                <Setter Property="Padding" Value="3"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
 
-                <DataGridTextColumn Header="キーワード2" Binding="{Binding Keyword2R.Value}" MaxWidth="230">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="TextWrapping" Value="Wrap"/>
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
+                    <DataGridTextColumn Header="キーワード2" Binding="{Binding Keyword2R.Value}" MaxWidth="230">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                                <Setter Property="Padding" Value="3"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
 
-                <DataGridTextColumn x:Name="desc" Header="説明" Binding="{Binding DescriptionR.Value}" MaxWidth="600">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="TextWrapping" Value="Wrap"/>
-                            <!--
+                    <DataGridTextColumn x:Name="desc" Header="説明" Binding="{Binding DescriptionR.Value}" MaxWidth="600">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                                <Setter Property="Padding" Value="3"/>
+                                <!--
                             <Setter Property="local:NavigationService.Text" Value="{Binding DescriptionR.Value}"/>
                             -->
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                    <DataGridTextColumn.EditingElementStyle>
-                        <Style TargetType="TextBox">
-                            <Setter Property="TextWrapping" Value="Wrap"/>
-                            <Setter Property="AcceptsReturn" Value="True"/>
-                            <!--
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                        <DataGridTextColumn.EditingElementStyle>
+                            <Style TargetType="TextBox">
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                                <Setter Property="AcceptsReturn" Value="True"/>
+                                <Setter Property="Padding" Value="3"/>
+                                <!--
                             <Setter Property="Text" Value="{Binding DescriptionR.Value}"/>
                             -->
-                        </Style>
-                    </DataGridTextColumn.EditingElementStyle>
-                </DataGridTextColumn>
+                            </Style>
+                        </DataGridTextColumn.EditingElementStyle>
+                    </DataGridTextColumn>
 
-                <DataGridTextColumn Header="カテゴリ" Binding="{Binding CategoryR.Value}" MaxWidth="200">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="TextWrapping" Value="Wrap"/>
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
+                    <DataGridTextColumn Header="カテゴリ" Binding="{Binding CategoryR.Value}" MaxWidth="200">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                                <Setter Property="Padding" Value="3"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
 
-                <DataGridTextColumn Header="更新日" Binding="{Binding DateR.Value, StringFormat=\{0:yyyy/MM/dd hh:mm:ss\}}" MaxWidth="180">
-                    <DataGridTextColumn.EditingElementStyle>
-                        <Style TargetType="TextBox">
-                            <Setter Property="IsReadOnly" Value="True"/>
-                        </Style>
-                    </DataGridTextColumn.EditingElementStyle>
-                </DataGridTextColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+                    <DataGridTextColumn Header="更新日" Binding="{Binding DateR.Value, StringFormat=\{0:yyyy/MM/dd hh:mm:ss\}}" MaxWidth="180">
+                        <DataGridTextColumn.EditingElementStyle>
+                            <Style TargetType="TextBox">
+                                <Setter Property="IsReadOnly" Value="True"/>
+                                <Setter Property="Padding" Value="3"/>
+                            </Style>
+                        </DataGridTextColumn.EditingElementStyle>
+                    </DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
     </DockPanel>
 </mahApps:MetroWindow>

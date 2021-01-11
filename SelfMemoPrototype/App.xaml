@@ -8,6 +8,10 @@
         <ResourceDictionary>
             <c:BoolNegativeConverter x:Key="BoolNegative"/>
             <BooleanToVisibilityConverter x:Key="BoolToVisible"/>
+            <c:ValueConverterGroup x:Key="BoolNegativeToVisible">
+                <c:BoolNegativeConverter/>
+                <BooleanToVisibilityConverter/>
+            </c:ValueConverterGroup>
 
             <ResourceDictionary.MergedDictionaries>
                 <!--MahApps.Metro-->
