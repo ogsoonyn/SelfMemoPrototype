@@ -124,16 +124,20 @@ namespace SelfMemoPrototype.ViewModel
             // Filter文字列が更新されたら、Filterされたアイテムリストを更新
             FilterStr.Subscribe(_ =>
             {
-                if (!FilteredItemsRefreshTimer.IsEnabled)
+                // 既にタイマーが走ってたら、一旦止める
+                if (FilteredItemsRefreshTimer.IsEnabled)
                 {
-                    FilteredItemsRefreshTimer.Interval = TimeSpan.FromMilliseconds(300);
-                    FilteredItemsRefreshTimer.Tick += (s, e) =>
-                    {
-                        FilteredItems.Refresh();
-                        FilteredItemsRefreshTimer.Stop();
-                    };
-                    FilteredItemsRefreshTimer.Start();
+                    FilteredItemsRefreshTimer.Stop();
                 }
+
+                // タイマー開始
+                FilteredItemsRefreshTimer.Interval = TimeSpan.FromMilliseconds(300);
+                FilteredItemsRefreshTimer.Tick += (s, e) =>
+                {
+                    FilteredItems.Refresh();
+                    FilteredItemsRefreshTimer.Stop();
+                };
+                FilteredItemsRefreshTimer.Start();
             });
 
             // Filter文字列の有無フラグを連動
