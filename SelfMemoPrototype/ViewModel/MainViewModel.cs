@@ -38,7 +38,7 @@ namespace SelfMemoPrototype.ViewModel
         /// <summary>
         /// DataGridの直接編集をロックする機能のON/OFFフラグ
         /// </summary>
-        public ReactivePropertySlim<bool> LockGridEdit { get; set; } = new ReactivePropertySlim<bool>(true);
+        public ReactivePropertySlim<bool> LockGridEdit { get; set; } = new ReactivePropertySlim<bool>(false);
 
         /// <summary>
         /// 検索（フィルタ）文字列
@@ -117,8 +117,8 @@ namespace SelfMemoPrototype.ViewModel
                 MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "キーワードと関連情報（訳語、正式名称、説明など）を登録して再参照しやすくするアプリです。", "本アプリの説明"));
                 MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "検索フォームからキーワード検索ができます。", "本アプリの説明"));
                 MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "メニューの「登録ダイアログを開く(Ctrl+R)」からキーワードの追加ができます。", "本アプリの説明"));
-                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "「ロック」チェックを外すとテーブルを直接編集できます。", "本アプリの説明"));
-                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "「カテゴリ」にチェックを入れるとカテゴリ毎の表示切り替えができます。", "本アプリの説明"));
+                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "「ロック」チェックを外すと編集ビューで登録内容を編集できます。", "本アプリの説明"));
+                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "「カテゴリ」メニューからカテゴリ毎の表示フィルタリングができます。", "本アプリの説明"));
             }
 
             // Filter文字列が更新されたら、Filterされたアイテムリストを更新

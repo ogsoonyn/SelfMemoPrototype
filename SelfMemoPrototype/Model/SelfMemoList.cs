@@ -66,9 +66,13 @@ namespace SelfMemoPrototype.Model
             }
 
             newlist.Sort();
-            _categoryList.Clear();
-            foreach (var s in newlist) { _categoryList.Add(s); }
 
+            // newlistが現行リストと違う場合は更新する
+            if (!newlist.SequenceEqual(_categoryList))
+            {
+                _categoryList.Clear();
+                foreach (var s in newlist) { _categoryList.Add(s); }
+            }
             return true;
         }
 

@@ -11,7 +11,7 @@
         mc:Ignorable="d"
         FocusManager.FocusedElement="{Binding ElementName=WordBox}"
         Title="SelfMemoPrototype - 登録ダイアログ" Height="500" Width="500" 
-        ResizeMode="NoResize" Drop="Window_Drop" AllowDrop="True" PreviewDragOver="Window_PreviewDragOver">
+        ResizeMode="CanResize"  Drop="Window_Drop" AllowDrop="True" PreviewDragOver="Window_PreviewDragOver">
     <mahApps:MetroWindow.DataContext>
         <vm:RegisterViewModel/>
     </mahApps:MetroWindow.DataContext>
@@ -26,25 +26,25 @@
         </Grid.InputBindings>
 
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="4*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="0.6*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Text="キーワード&#10;(用語)"
+        <TextBlock Grid.Row="0" Text="キーワード&#10;(用語)" Margin="5"
                    HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
         <TextBox Grid.Row="0" Grid.Column="1" x:Name="WordBox"
                  Text="{Binding Word.Value, UpdateSourceTrigger=PropertyChanged}" b:FocusExtension.IsFocused="{Binding IsSelected.Value}"
                  VerticalAlignment="Center"/>
 
-        <TextBlock Grid.Row="1" Text="キーワード2&#10;(略語・別名・訳語など)"
+        <TextBlock Grid.Row="1" Text="キーワード2&#10;(略語・別名・訳語など)" Margin="5"
                    HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
         <TextBox Grid.Row="1" Grid.Column="1"
                  Text="{Binding ShortWord.Value, UpdateSourceTrigger=PropertyChanged}"
@@ -55,7 +55,7 @@
                  Text="{Binding Description.Value, UpdateSourceTrigger=PropertyChanged}"
                  AcceptsReturn="True"/>
 
-        <TextBlock Grid.Row="3" Text="カテゴリ"
+        <TextBlock Grid.Row="3" Text="カテゴリ" Margin="5"
                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <TextBox Grid.Row="3" Grid.Column="1" Margin="0, 10" VerticalAlignment="Center"
                  Text="{Binding Category.Value, UpdateSourceTrigger=PropertyChanged}"/>
@@ -64,6 +64,7 @@
                 Content="追加する (Ctrl+S)" Command="{Binding AddMemoItemCmd}"/>
 
         <TextBlock Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center"
+                   Margin="5"
                    Text="ファイル(csv, json)のドラッグ＆ドロップでまとめて項目追加できます。"/>
 
     </Grid>
