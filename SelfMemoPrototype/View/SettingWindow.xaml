@@ -7,26 +7,27 @@
         xmlns:mahApps="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:vm="clr-namespace:SelfMemoPrototype.ViewModel"
         mc:Ignorable="d"
-        Title="グローバルホットキーの設定" Height="200" Width="300" ResizeMode="NoResize">
+        Title="グローバルホットキーの設定" Height="250" Width="300" ResizeMode="NoResize">
     <mahApps:MetroWindow.DataContext>
         <vm:SettingViewModel/>
     </mahApps:MetroWindow.DataContext>
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="15"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="本アプリを呼び出すショートカットキーを設定します。"/>
+        <TextBlock Grid.Row="0" Grid.ColumnSpan="3" Text="本アプリを呼び出すショートカットキーを設定します。" Margin="5"/>
         <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding GHKeyString.Value}" FontWeight="Bold"
-                   VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <StackPanel Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                   VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"/>
+        <StackPanel Grid.Row="2" Grid.Column="0" Margin="5"
+                    VerticalAlignment="Center" HorizontalAlignment="Center">
             <CheckBox Content="Ctrl" IsChecked="{Binding ModifierCtrl.Value}"/>
             <CheckBox Content="Shift" IsChecked="{Binding ModifierShift.Value}"/>
             <CheckBox Content="Alt" IsChecked="{Binding ModifierAlt.Value}"/>
@@ -37,7 +38,7 @@
                 <TextBlock Text="Key(キー名を入力)"/>
                 <TextBox Text="{Binding ShortcutKey.Value}" Width="100"/>
         </StackPanel>
-        <StackPanel Orientation="Vertical" Grid.Row="3" Grid.ColumnSpan="3">
+        <StackPanel Orientation="Vertical" Grid.Row="3" Grid.ColumnSpan="3" Margin="5">
             <Button Grid.Row="1" Content="グローバルホットキーを設定" Command="{Binding SetGlobalHotkeyCmd}" />
             <TextBlock Text="{Binding Message.Value}"/>
         </StackPanel>
