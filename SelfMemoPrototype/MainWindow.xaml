@@ -133,6 +133,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
 
                         </Grid.RowDefinitions>
 
@@ -163,7 +164,7 @@
                         <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.DateR.Value}" TextWrapping="Wrap"/>
 
                         <CheckBox Grid.Row="5" Grid.ColumnSpan="2" Margin="5, 0" Style="{StaticResource MaterialDesignCheckBox}"
-                          ToolTip="ロック解除するとデータの書き換えができます。ロック中はURLのリンク化等が行われます"
+                          ToolTip="ロック解除するとデータの書き換えができます。ロック中はURLのリンク化が行われます"
                           IsChecked="{Binding LockGridEdit.Value}">
                             <ContentControl>
                                 <StackPanel Orientation="Horizontal">
@@ -172,6 +173,8 @@
                                 </StackPanel>
                             </ContentControl>
                         </CheckBox>
+
+                        <TextBlock Grid.Row="6" Grid.ColumnSpan="2" Text="編集ロック中は、「説明」にURL記載があれば自動的にリンク化されます"/>
 
                     </Grid>
                 </Expander>
