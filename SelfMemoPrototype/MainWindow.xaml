@@ -21,6 +21,7 @@
         <vm:MainViewModel/>
     </mahApps:MetroWindow.DataContext>
 
+    <!--
     <mahApps:MetroWindow.RightWindowCommands>
         <mahApps:WindowCommands>
             <Button>
@@ -28,6 +29,7 @@
             </Button>
         </mahApps:WindowCommands>
     </mahApps:MetroWindow.RightWindowCommands>
+    -->
     
     <mahApps:MetroWindow.Resources>
         <ContextMenu x:Key="sampleWinMenu">
