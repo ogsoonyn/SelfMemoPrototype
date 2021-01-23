@@ -2,6 +2,7 @@
 using SelfMemoPrototype.Model;
 using System;
 using System.ComponentModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -77,6 +78,46 @@ namespace SelfMemoPrototype
         }
         */
 
+        private void Window_Drop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop, false);
+
+            foreach (var name in files)
+            {
+                int val = 0;
+                switch (Path.GetExtension(name).ToLower())
+                {
+                    case ".csv":
+                        val = SelfMemoList.AddMemoFromCsv(SelfMemoList.ItemsList, name);
+                        break;
+                    case ".json":
+                        val = SelfMemoList.LoadMemoFile(SelfMemoList.ItemsList, name);
+                        break;
+                }
+
+                if (val > 0)
+                {
+                    MessageBox.Show(name + " から " + val + " 件追加しました", "ファイルから登録", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show("追加する項目が見つかりませんでした", "ファイルから登録", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+        }
+
+        private void Window_PreviewDragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, true))
+            {
+                e.Effects = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effects = DragDropEffects.None;
+            }
+            e.Handled = e.Data.GetDataPresent(DataFormats.FileDrop);
+        }
 
         #region タスクトレイのContextMenu用のイベント定義
         private void MenuItem_Show_Click(object sender, RoutedEventArgs e)

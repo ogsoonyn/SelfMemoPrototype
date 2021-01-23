@@ -10,7 +10,7 @@
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        FocusManager.FocusedElement="{Binding ElementName=SearchTextBox}"
+        FocusManager.FocusedElement="{Binding ElementName=SearchTextBox}" AllowDrop="True" Drop="Window_Drop" PreviewDragOver="Window_PreviewDragOver"
         Title="{Binding AppName.Value}" MinHeight="300" MinWidth="450" Height="450" Width="800" SaveWindowPosition="True" TitleCharacterCasing="Normal">
 
     <i:Interaction.Behaviors>
@@ -182,7 +182,7 @@
                 </Expander>
             </ScrollViewer>
 
-            <DataGrid Grid.Column="0" ItemsSource="{Binding FilteredItems}" IsReadOnly="True"
+            <DataGrid Grid.Column="0" ItemsSource="{Binding FilteredItems}" IsReadOnly="False"
                   AutoGenerateColumns="False" CanUserDeleteRows="{Binding AllowDeleteItem.Value}">
                 <DataGrid.CellStyle>
                     <Style TargetType="DataGridCell">
@@ -199,7 +199,7 @@
                     </Style>
                 </DataGrid.CellStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="キーワード" Binding="{Binding KeywordR.Value}" MaxWidth="230">
+                    <DataGridTextColumn Header="キーワード" Binding="{Binding KeywordR.Value}" MaxWidth="230" IsReadOnly="True">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="TextWrapping" Value="Wrap"/>
@@ -208,7 +208,7 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
 
-                    <DataGridTextColumn Header="キーワード2" Binding="{Binding Keyword2R.Value}" MaxWidth="230">
+                    <DataGridTextColumn Header="キーワード2" Binding="{Binding Keyword2R.Value}" MaxWidth="230" IsReadOnly="True">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="TextWrapping" Value="Wrap"/>
@@ -217,7 +217,7 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
 
-                    <DataGridTextColumn x:Name="desc" Header="説明" Binding="{Binding DescriptionR.Value}" MaxWidth="600">
+                    <DataGridTextColumn x:Name="desc" Header="説明" Binding="{Binding DescriptionR.Value}" MaxWidth="600" IsReadOnly="True">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="TextWrapping" Value="Wrap"/>
@@ -239,7 +239,7 @@
                         </DataGridTextColumn.EditingElementStyle>
                     </DataGridTextColumn>
 
-                    <DataGridTextColumn Header="カテゴリ" Binding="{Binding CategoryR.Value}" MaxWidth="200">
+                    <DataGridTextColumn Header="カテゴリ" Binding="{Binding CategoryR.Value}" MaxWidth="200" IsReadOnly="True">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="TextWrapping" Value="Wrap"/>
@@ -248,7 +248,7 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
 
-                    <DataGridTextColumn Header="更新日" Binding="{Binding DateR.Value, StringFormat=\{0:yyyy/MM/dd hh:mm:ss\}}" MaxWidth="180">
+                    <DataGridTextColumn Header="更新日" Binding="{Binding DateR.Value, StringFormat=\{0:yyyy/MM/dd hh:mm:ss\}}" MaxWidth="180" IsReadOnly="True">
                         <DataGridTextColumn.EditingElementStyle>
                             <Style TargetType="TextBox">
                                 <Setter Property="IsReadOnly" Value="True"/>
