@@ -114,11 +114,12 @@ namespace SelfMemoPrototype.ViewModel
             if (SelfMemoList.ItemsList.Count == 0)
             {
                 MemoList.Add(new SelfMemoItem("用語", "正式名称、別名、訳語など", "用語の解説", "カテゴリ"));
-                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "キーワードと関連情報（訳語、正式名称、説明など）を登録して再参照しやすくするアプリです。", "本アプリの説明"));
-                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "検索フォームからキーワード検索ができます。", "本アプリの説明"));
-                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "メニューの「登録ダイアログを開く(Ctrl+R)」からキーワードの追加ができます。", "本アプリの説明"));
-                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "「ロック」チェックを外すと編集ビューで登録内容を編集できます。", "本アプリの説明"));
-                MemoList.Add(new SelfMemoItem("SelfMemo", "ど忘れ用メモアプリ", "「カテゴリ」メニューからカテゴリ毎の表示フィルタリングができます。", "本アプリの説明"));
+                MemoList.Add(new SelfMemoItem("SelfMemo", "概要", "キーワードと関連情報(訳語、正式名称、説明など)を登録し、ど忘れした時に見返しやすくするアプリです。", "本アプリの説明"));
+                MemoList.Add(new SelfMemoItem("SelfMemo", "検索機能", "検索フォームからキーワード検索ができます。", "本アプリの説明"));
+                MemoList.Add(new SelfMemoItem("SelfMemo", "ショートカット", "グローバルホットキー(デフォルトでAlt+Shift+F2)でいつでもアプリ起動します。", "本アプリの説明"));
+                MemoList.Add(new SelfMemoItem("SelfMemo", "項目追加", "メニューの「登録ダイアログを開く(Ctrl+R)」からキーワードの追加ができます。", "本アプリの説明"));
+                MemoList.Add(new SelfMemoItem("SelfMemo", "項目編集", "編集ビューから登録内容の編集ができます。", "本アプリの説明"));
+                MemoList.Add(new SelfMemoItem("SelfMemo", "カテゴリフィルタ", "「カテゴリ」メニューでカテゴリ毎の表示フィルタリングができます。", "本アプリの説明"));
             }
 
             // Filter文字列が更新されたら、Filterされたアイテムリストを更新
