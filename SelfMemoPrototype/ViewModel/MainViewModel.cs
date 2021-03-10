@@ -15,6 +15,8 @@ namespace SelfMemoPrototype.ViewModel
 {
     class MainViewModel : BindableBase
     {
+        #region Properties
+
         /// <summary>
         /// メモリスト本体
         /// </summary>
@@ -74,6 +76,11 @@ namespace SelfMemoPrototype.ViewModel
         /// DataGrid上の操作で項目を削除することを許容するかどうか
         /// </summary>
         public ReactivePropertySlim<bool> AllowDeleteItem { get; set; } = new ReactivePropertySlim<bool>(false);
+
+        public ReactivePropertySlim<double> WindowWidth { get; set; } = new ReactivePropertySlim<double>(900);
+
+        public ReactivePropertySlim<double> ExpanderWidth { get; set; } = new ReactivePropertySlim<double>(450);
+        #endregion // Properties
 
         /// <summary>
         /// 辞書データファイルの名前
@@ -179,6 +186,11 @@ namespace SelfMemoPrototype.ViewModel
             {
                 SelfMemoList.SaveMemoFile(MemoList, MemoFileName);
             };
+
+            WindowWidth.Subscribe(_ =>
+            {
+                ExpanderWidth.Value = Math.Max(400, WindowWidth.Value / 2);
+            });
         }
 
         ~MainViewModel()
@@ -293,6 +305,18 @@ namespace SelfMemoPrototype.ViewModel
             }
 
             SelfMemoList.SaveMemoFile(list, "filtered.json");
+        }
+
+        private DelegateCommand _clearCategoryFilterCmd;
+        public DelegateCommand ClearCategoryFilterCmd
+        {
+            get { return _clearCategoryFilterCmd = _clearCategoryFilterCmd ?? new DelegateCommand(ClearCategoryFilter); }
+        }
+
+        private void ClearCategoryFilter()
+        {
+            CategoryListSelected.Value = null;
+
         }
     }
 }

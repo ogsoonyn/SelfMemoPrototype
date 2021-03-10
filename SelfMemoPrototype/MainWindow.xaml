@@ -11,7 +11,7 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         FocusManager.FocusedElement="{Binding ElementName=SearchTextBox}" AllowDrop="True" Drop="Window_Drop" PreviewDragOver="Window_PreviewDragOver"
-        Title="{Binding AppName.Value}" MinHeight="300" MinWidth="450" Height="450" Width="800" SaveWindowPosition="True" TitleCharacterCasing="Normal">
+        Title="{Binding AppName.Value}" MinHeight="300" MinWidth="450" Height="450" Width="{Binding WindowWidth.Value, Mode=TwoWay}" SaveWindowPosition="True" TitleCharacterCasing="Normal">
 
     <i:Interaction.Behaviors>
         <b:ApplicationCommandBehavior/>
@@ -41,6 +41,7 @@
     <DockPanel>
         <DockPanel.InputBindings>
             <KeyBinding Key="R" Modifiers="Ctrl" Command="{Binding OpenRegisterWindowCmd}"/>
+            <KeyBinding Key="D" Modifiers="Ctrl" Command="{Binding ClearCategoryFilterCmd}"/>
             <KeyBinding Key="Esc" Command="Close"/>
         </DockPanel.InputBindings>
 
@@ -48,7 +49,7 @@
             <Menu DockPanel.Dock="Left" IsMainMenu="True" VerticalAlignment="Center">
                 <MenuItem>
                     <MenuItem.Header>
-                        <md:PackIcon Kind="Menu"/>
+                        <md:PackIcon Kind="Menu" TabIndex="1" IsTabStop="True"/>
                     </MenuItem.Header>
                     <MenuItem Header="登録ダイアログを開く" Command="{Binding OpenRegisterWindowCmd}"
                           InputGestureText="Ctrl+R"/>
@@ -68,18 +69,18 @@
             </Menu>
 
             <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding CategoryList}" Margin="10,0"
-                                      SelectedItem="{Binding CategoryListSelected.Value}" MinWidth="150"
+                                      SelectedItem="{Binding CategoryListSelected.Value, Mode=TwoWay}" MinWidth="150"
                                       Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                       md:TextFieldAssist.HasClearButton="True"
                                       md:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryHueMidBrush}"
                                       md:ColorZoneAssist.Mode="Inverted"
-                                      md:HintAssist.Hint="カテゴリフィルタ"/>
+                                      md:HintAssist.Hint="カテゴリフィルタ" TabIndex="3"/>
 
             <md:PackIcon DockPanel.Dock="Left" Kind="Magnify" VerticalAlignment="Center" Foreground="{Binding ElementName=SearchTextBox, Path=BorderBrush}"/>
             <TextBox x:Name="SearchTextBox" Style="{StaticResource MaterialDesignTextBox}"
                      VerticalContentAlignment="Center"
                          md:HintAssist.Hint="検索" md:TextFieldAssist.HasClearButton="True" Margin="10,3"
-                         Text="{Binding FilterStr.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                         Text="{Binding FilterStr.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="2"/>
         </DockPanel>
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem HorizontalAlignment="Left" Visibility="{Binding UseFilterStr.Value, Converter={StaticResource BoolToVisible}}">
@@ -112,12 +113,12 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
-                <Expander ExpandDirection="Right" Background="{StaticResource MahApps.Brushes.Accent4}">
+                <Expander ExpandDirection="Right" Background="{StaticResource MahApps.Brushes.Accent4}" TabIndex="5" IsTabStop="True">
                     <Expander.Header>
                         <TextBlock Text="編&#10;集" RenderTransformOrigin=".5,.5" HorizontalAlignment="Center"/>
                     </Expander.Header>
 
-                    <Grid VerticalAlignment="Stretch">
+                    <Grid VerticalAlignment="Stretch" Width="{Binding ExpanderWidth.Value}">
                         <Grid.Resources>
                             <Style TargetType="{x:Type TextBlock}">
                                 <Setter Property="Padding" Value="8"/>
@@ -150,7 +151,7 @@
                         <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.Keyword2R.Value}"
                            Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolToVisible}}"/>
                         <TextBlock Grid.Row="2" Grid.Column="1" local:NavigationService.Text="{Binding FilteredItems.CurrentItem.DescriptionR.Value}"
-                           Width="500" Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolToVisible}}"/>
+                           Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolToVisible}}"/>
                         <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.CategoryR.Value}"
                            Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolToVisible}}"/>
 
@@ -159,7 +160,7 @@
                         <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.Keyword2R.Value, UpdateSourceTrigger=PropertyChanged}" 
                          TextWrapping="Wrap" Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegativeToVisible}}"/>
                         <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.DescriptionR.Value, UpdateSourceTrigger=PropertyChanged}"
-                         TextWrapping="Wrap" Width="500" AcceptsReturn="True" Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegativeToVisible}}"/>
+                         TextWrapping="Wrap" Width="Auto" AcceptsReturn="True" Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegativeToVisible}}"/>
                         <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.CategoryR.Value, UpdateSourceTrigger=PropertyChanged}"
                          TextWrapping="Wrap" Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegativeToVisible}}"/>
 
@@ -168,7 +169,7 @@
                         <CheckBox Grid.Row="5" Grid.ColumnSpan="2" Margin="5, 0" Style="{StaticResource MaterialDesignCheckBox}"
                           ToolTip="ロック解除するとデータの書き換えができます。ロック中はURLのリンク化が行われます"
                           IsChecked="{Binding LockGridEdit.Value}">
-                            <ContentControl>
+                            <ContentControl IsTabStop="False">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="Resources/tool_padlock01_01.png" VerticalAlignment="Center" Height="20"/>
                                     <TextBlock Text="編集ロック" VerticalAlignment="Center"/>
@@ -183,7 +184,7 @@
             </ScrollViewer>
 
             <DataGrid Grid.Column="0" ItemsSource="{Binding FilteredItems}" IsReadOnly="False"
-                  AutoGenerateColumns="False" CanUserDeleteRows="{Binding AllowDeleteItem.Value}">
+                  AutoGenerateColumns="False" CanUserDeleteRows="{Binding AllowDeleteItem.Value}" TabIndex="4" IsTabStop="True">
                 <DataGrid.CellStyle>
                     <Style TargetType="DataGridCell">
                         <Style.Triggers>
