@@ -42,6 +42,7 @@
         <DockPanel.InputBindings>
             <KeyBinding Key="R" Modifiers="Ctrl" Command="{Binding OpenRegisterWindowCmd}"/>
             <KeyBinding Key="D" Modifiers="Ctrl" Command="{Binding ClearCategoryFilterCmd}"/>
+            <KeyBinding Key="E" Modifiers="Ctrl" Command="{Binding FocusOnSearchBoxCmd}"/>
             <KeyBinding Key="Esc" Command="Close"/>
         </DockPanel.InputBindings>
 
@@ -79,7 +80,8 @@
             <md:PackIcon DockPanel.Dock="Left" Kind="Magnify" VerticalAlignment="Center" Foreground="{Binding ElementName=SearchTextBox, Path=BorderBrush}"/>
             <TextBox x:Name="SearchTextBox" Style="{StaticResource MaterialDesignTextBox}"
                      VerticalContentAlignment="Center"
-                         md:HintAssist.Hint="検索" md:TextFieldAssist.HasClearButton="True" Margin="10,3"
+                     b:FocusExtension.IsFocused="{Binding SearchBoxIsFocused.Value}"
+                         md:HintAssist.Hint="検索 (Ctrl+E)" md:TextFieldAssist.HasClearButton="True" Margin="10,3"
                          Text="{Binding FilterStr.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="2"/>
         </DockPanel>
         <StatusBar DockPanel.Dock="Bottom">

@@ -131,6 +131,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Behavior\ApplicationCommandBehavior.cs" />
+    <Compile Include="Behavior\FocusExtension.cs" />
     <Compile Include="Converter\BoolNegativeConverter.cs" />
     <Compile Include="Converter\ValueConverterGroup.cs" />
     <Compile Include="ExpanderAttachment.cs" />

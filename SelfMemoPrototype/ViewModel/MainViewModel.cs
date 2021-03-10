@@ -80,6 +80,9 @@ namespace SelfMemoPrototype.ViewModel
         public ReactivePropertySlim<double> WindowWidth { get; set; } = new ReactivePropertySlim<double>(900);
 
         public ReactivePropertySlim<double> ExpanderWidth { get; set; } = new ReactivePropertySlim<double>(450);
+
+        public ReactivePropertySlim<bool> SearchBoxIsFocused { get; set; } = new ReactivePropertySlim<bool>();
+
         #endregion // Properties
 
         /// <summary>
@@ -317,6 +320,20 @@ namespace SelfMemoPrototype.ViewModel
         {
             CategoryListSelected.Value = null;
 
+        }
+
+        private DelegateCommand _focusOnSearchBoxCmd;
+        public DelegateCommand FocusOnSearchBoxCmd
+        {
+            get { return _focusOnSearchBoxCmd = _focusOnSearchBoxCmd ?? new DelegateCommand(FocusOnSearchBox); }
+        }
+
+        private void FocusOnSearchBox()
+        {
+            // 値がTrueに"変わる"ときにフォーカスが移るので、すでにTrueのときは一旦Falseに戻す
+            if(SearchBoxIsFocused.Value)
+                SearchBoxIsFocused.Value = false;
+            SearchBoxIsFocused.Value = true;
         }
     }
 }
