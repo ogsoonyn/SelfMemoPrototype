@@ -104,7 +104,7 @@ namespace SelfMemoPrototype.ViewModel
         {
             // タイトルに表示する文字列を指定
             var asm = Assembly.GetExecutingAssembly().GetName();
-            AppName.Value = asm.Name + " - " + asm.Version.Major + "." + asm.Version.Minor;
+            AppName.Value = "Self Memo - " + asm.Version.Major + "." + asm.Version.Minor;
 
             // 表示するリスト（filteredItemsSource）のソースとフィルタの設定
             FilteredItemsSource = new CollectionViewSource { Source = MemoList };

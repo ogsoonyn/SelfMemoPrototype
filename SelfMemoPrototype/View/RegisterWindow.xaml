@@ -10,7 +10,7 @@
         xmlns:mahApps="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         mc:Ignorable="d"
         FocusManager.FocusedElement="{Binding ElementName=WordBox}"
-        Title="SelfMemoPrototype - 登録ダイアログ" Height="500" Width="500" TitleCharacterCasing="Normal"
+        Title="Self Memo - 登録ダイアログ" Height="500" Width="500" TitleCharacterCasing="Normal"
         ResizeMode="CanResize"  Drop="Window_Drop" AllowDrop="True" PreviewDragOver="Window_PreviewDragOver">
     <mahApps:MetroWindow.DataContext>
         <vm:RegisterViewModel/>
