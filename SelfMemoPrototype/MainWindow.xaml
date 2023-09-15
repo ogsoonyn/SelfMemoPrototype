@@ -163,8 +163,8 @@
                          TextWrapping="Wrap" Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegativeToVisible}}"/>
                         <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.DescriptionR.Value, UpdateSourceTrigger=PropertyChanged}"
                          TextWrapping="Wrap" Width="Auto" AcceptsReturn="True" Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegativeToVisible}}"/>
-                        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.CategoryR.Value, UpdateSourceTrigger=PropertyChanged}"
-                         TextWrapping="Wrap" Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegativeToVisible}}"/>
+                        <ComboBox Grid.Row="3" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.CategoryR.Value, UpdateSourceTrigger=PropertyChanged}"
+                         ItemsSource="{Binding CategoryList}" IsEditable="True" IsReadOnly="False" Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegativeToVisible}}"/>
 
                         <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.DateR.Value}" TextWrapping="Wrap"/>
 

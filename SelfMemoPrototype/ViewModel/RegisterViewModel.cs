@@ -15,6 +15,14 @@ namespace SelfMemoPrototype.ViewModel
             }
         }
 
+        public ReactiveCollection<string> CategoryList
+        {
+            get
+            {
+                return SelfMemoList.CategoryList;
+            }
+        }
+
         public ReactivePropertySlim<string> Word { get; set; } = new ReactivePropertySlim<string>("");
         public ReactivePropertySlim<string> ShortWord { get; set; } = new ReactivePropertySlim<string>("");
         public ReactivePropertySlim<string> Description { get; set; } = new ReactivePropertySlim<string>("");
