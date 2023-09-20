@@ -163,8 +163,13 @@
                          TextWrapping="Wrap" Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegativeToVisible}}"/>
                         <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.DescriptionR.Value, UpdateSourceTrigger=PropertyChanged}"
                          TextWrapping="Wrap" Width="Auto" AcceptsReturn="True" Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegativeToVisible}}"/>
-                        <ComboBox Grid.Row="3" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.CategoryR.Value, UpdateSourceTrigger=PropertyChanged}"
-                         ItemsSource="{Binding CategoryList}" IsEditable="True" IsReadOnly="False" Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegativeToVisible}}"/>
+                        <DockPanel Grid.Row="3" Grid.Column="1">
+                            <ComboBox DockPanel.Dock="Right" MinWidth="100" SelectedItem="{Binding FilteredItems.CurrentItem.CategoryR.Value, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding CategoryList}" Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegativeToVisible}}"
+                                      Margin="10, 0"/>
+                            <TextBox Text="{Binding FilteredItems.CurrentItem.CategoryR.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                     TextWrapping="Wrap" Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegativeToVisible}}"/>
+                        </DockPanel>
 
                         <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.DateR.Value}" TextWrapping="Wrap"/>
 
