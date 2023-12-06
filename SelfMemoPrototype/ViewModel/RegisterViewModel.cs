@@ -61,11 +61,18 @@ namespace SelfMemoPrototype.ViewModel
             {
                 MemoList.Add(newmemo);
 
+                // Imageがあれば保存
+                if(ImageSource.Value != null)
+                {
+                    ImageManager.SaveImageFile(ImageSource.Value, newmemo.IDR.Value);
+                }
+
                 // プロパティを空白で初期化
                 Word.Value = "";
                 ShortWord.Value = "";
                 Description.Value = "";
                 Category.Value = "";
+                ImageSource.Value = null;
 
                 //SaveMemoFile(); // MemoListのハンドラで実施されるのでここでは不要
 

@@ -138,6 +138,7 @@
     <Compile Include="HotKeyHelper.cs" />
     <Compile Include="Model\ClipboardCapture.cs" />
     <Compile Include="Model\HotKeyManager.cs" />
+    <Compile Include="Model\ImageManager.cs" />
     <Compile Include="Model\SelfMemoItem.cs" />
     <Compile Include="Model\SelfMemoList.cs" />
     <Compile Include="NavigationService.cs" />

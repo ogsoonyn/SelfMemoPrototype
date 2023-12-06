@@ -4,17 +4,6 @@ using System.Windows;
 
 namespace SelfMemoPrototype.Model
 {
-    class ImageManager
-    {
-        public static readonly string ImageFilePath = ".\\images";
-
-        public static BitmapSource GetBitmapSource(int index)
-        {
-            BitmapSource source = null;
-
-            return source;
-        }
-    }
 
 
     public class ClipboardCapture

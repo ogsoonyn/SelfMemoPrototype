@@ -11,13 +11,31 @@ namespace SelfMemoPrototype.Model
     public class SelfMemoItem
 #pragma warning restore CS0659 // 型は Object.Equals(object o) をオーバーライドしますが、Object.GetHashCode() をオーバーライドしません
     {
+        public ReactivePropertySlim<int> IDR { get; set; } = new ReactivePropertySlim<int>();
+
         public ReactivePropertySlim<string> KeywordR { get; set; } = new ReactivePropertySlim<string>();
         public ReactivePropertySlim<string> Keyword2R { get; set; } = new ReactivePropertySlim<string>();
         public ReactivePropertySlim<string> DescriptionR { get; set; } = new ReactivePropertySlim<string>();
         public ReactivePropertySlim<string> CategoryR { get; set; } = new ReactivePropertySlim<string>();
         public ReactivePropertySlim<DateTime> DateR { get; set; } = new ReactivePropertySlim<DateTime>();
 
-        public ReactivePropertySlim<BitmapSource> ImageSourceR { get; set; } = new ReactivePropertySlim<BitmapSource>();
+        public ReactivePropertySlim<BitmapSource> ImageSourceR { get; set; }
+
+        [DataMember]
+        private int ID
+        {
+            get
+            {
+                if (IDR == null) IDR = new ReactivePropertySlim<int>(-1);
+                return IDR.Value;
+            }
+            set {
+                if (IDR == null) IDR = new ReactivePropertySlim<int>(value);
+                else ID = value;
+            }
+            
+        }
+
         [DataMember]
         private string Keyword
         {
@@ -69,10 +87,11 @@ namespace SelfMemoPrototype.Model
         {
             if (obj is SelfMemoItem)
             {
-                bool chk1 = (obj as SelfMemoItem).Keyword.Equals(Keyword);
-                bool chk2 = (obj as SelfMemoItem).Description.Equals(Description);
-                bool chk3 = (obj as SelfMemoItem).Keyword2.Equals(Keyword2);
-                bool chk4 = (obj as SelfMemoItem).Category.Equals(Category);
+                var item = obj as SelfMemoItem;
+                bool chk1 = item.Keyword == Keyword;
+                bool chk2 = item.Description == Description;
+                bool chk3 = item.Keyword2 == Keyword2;
+                bool chk4 = item.Category == Category;
 
                 return chk1 && chk2 && chk3 && chk4;
             }
@@ -86,32 +105,29 @@ namespace SelfMemoPrototype.Model
         }
         */
 
-        public SelfMemoItem(string keyword, string shortkwd, string description, string category)
+        public SelfMemoItem(string keyword, string shortkwd, string description, string category, int id=-1)
         {
-            Initialize(keyword, shortkwd, description, category);
+            Initialize(keyword, shortkwd, description, category, id);
         }
 
-        public void Initialize(string keyword, string shortkwd, string description, string category, BitmapSource source = null)
+        public void Initialize(string keyword, string shortkwd, string description, string category, int id=-1)
         {
+            IDR.Value = id;
             KeywordR.Value = keyword;
             Keyword2R.Value = shortkwd;
             DescriptionR.Value = description;
             CategoryR.Value = category;
             DateR.Value = DateTime.Now;
-            ImageSourceR.Value = source;
 
             Initialize();
         }
 
-        public void Initialize(string keyword, string shortkwd, string description, string category, DateTime date, BitmapSource source = null)
-        {
-            Initialize(keyword, shortkwd, description, category);
-            DateR.Value = date;
-            ImageSourceR.Value = source;
-        }
-
         public void Initialize()
         {
+            if (ID < 0) IDR.Value = SelfMemoList.GetNextID();
+            ImageSourceR = new ReactivePropertySlim<BitmapSource>();
+            ImageSourceR.Value = ImageManager.GetBitmapSource(IDR.Value);
+
             Format();
             SetHandler();
         }

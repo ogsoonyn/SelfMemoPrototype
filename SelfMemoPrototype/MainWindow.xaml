@@ -139,6 +139,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
 
                         </Grid.RowDefinitions>
 
@@ -185,7 +186,7 @@
                         </CheckBox>
 
                         <TextBlock Grid.Row="6" Grid.ColumnSpan="2" Text="編集ロック中は、「説明」にURL記載があれば自動的にリンク化されます"/>
-
+                        <Image Grid.Row="7" Grid.ColumnSpan="2" Source="{Binding FilteredItems.CurrentItem.ImageSourceR.Value, UpdateSourceTrigger=PropertyChanged}" MinHeight="100" MinWidth="100"/>
                     </Grid>
                 </Expander>
             </ScrollViewer>
@@ -207,6 +208,15 @@
                     </Style>
                 </DataGrid.CellStyle>
                 <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding IDR.Value}" IsReadOnly="True">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="TextWrapping" Value="Wrap"/>
+                                <Setter Property="Padding" Value="3"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
                     <DataGridTextColumn Header="キーワード" Binding="{Binding KeywordR.Value}" MaxWidth="230" IsReadOnly="True">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
