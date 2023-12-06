@@ -41,7 +41,7 @@ namespace SelfMemoPrototype.ViewModel
         /// <summary>
         /// DataGridの直接編集をロックする機能のON/OFFフラグ
         /// </summary>
-        public ReactivePropertySlim<bool> LockGridEdit { get; set; } = new ReactivePropertySlim<bool>(false);
+        public ReactivePropertySlim<bool> LockGridEdit { get; set; } = new ReactivePropertySlim<bool>(true);
 
         /// <summary>
         /// 検索（フィルタ）文字列
