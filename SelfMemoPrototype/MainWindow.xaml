@@ -293,7 +293,7 @@
                     <DataGridTemplateColumn Header="画像" IsReadOnly="True">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Image Source="{Binding ImageSourceR.Value}" Margin="3" MaxHeight="200"/>
+                                <Image Source="{Binding ImageSourceR.Value}" HorizontalAlignment="Left" Margin="3" MaxHeight="200"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
