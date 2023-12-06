@@ -9,6 +9,7 @@ using System.Reactive.Linq;
 using System.Reflection;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 namespace SelfMemoPrototype.ViewModel
@@ -334,6 +335,31 @@ namespace SelfMemoPrototype.ViewModel
             if(SearchBoxIsFocused.Value)
                 SearchBoxIsFocused.Value = false;
             SearchBoxIsFocused.Value = true;
+        }
+
+        private DelegateCommand _pasteImageCmd;
+
+        public DelegateCommand PasteImageCmd
+        {
+            get => _pasteImageCmd = _pasteImageCmd ?? new DelegateCommand(() =>
+            {
+                var img = ClipboardCapture.GetBitmap();
+                if (img != null)
+                {
+                    SelectedItem.Value.ImageSourceR.Value = img;
+                    ImageManager.SaveImageFile(img, SelectedItem.Value.IDR.Value);
+                }
+            });
+        }
+
+        private DelegateCommand _removeImageCmd;
+
+        public DelegateCommand RemoveImageCmd
+        {
+            get => _removeImageCmd = _removeImageCmd ?? new DelegateCommand(() =>
+            {
+                SelectedItem.Value.ImageSourceR.Value = null;
+            });
         }
     }
 }

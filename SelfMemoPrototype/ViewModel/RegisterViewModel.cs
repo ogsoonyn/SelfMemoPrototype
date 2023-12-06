@@ -59,13 +59,14 @@ namespace SelfMemoPrototype.ViewModel
 
             if (!MemoList.Contains(newmemo))
             {
-                MemoList.Add(newmemo);
-
                 // Imageがあれば保存
                 if(ImageSource.Value != null)
                 {
                     ImageManager.SaveImageFile(ImageSource.Value, newmemo.IDR.Value);
+                    newmemo.ImageSourceR.Value = ImageSource.Value;
                 }
+
+                MemoList.Add(newmemo);
 
                 // プロパティを空白で初期化
                 Word.Value = "";

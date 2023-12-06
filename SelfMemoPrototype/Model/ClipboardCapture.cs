@@ -8,6 +8,13 @@ namespace SelfMemoPrototype.Model
 
     public class ClipboardCapture
     {
+        public static BitmapSource GetBitmap()
+        {
+            return GetBitmapEncDec();
+            //return GetBitmapDIB();
+        }
+
+
         //Streamに一時保存方式、BmpBitmapのエンコーダーとデコーダーを使う
         public static BitmapSource GetBitmapEncDec()
         {
@@ -33,7 +40,7 @@ namespace SelfMemoPrototype.Model
         /// 透明画像にならないようにクリップボードの画像取得、DeviceIndependentBitmapでToArrayの15番目がbpp、32未満ならBgr32へ変換
         /// </summary>
         /// <returns></returns>
-        public static BitmapSource GetBitmap(bool checkExcel=true)
+        public static BitmapSource GetBitmapDIB(bool checkExcel=true)
         {
             var data = Clipboard.GetDataObject();
             if (data == null) return null;

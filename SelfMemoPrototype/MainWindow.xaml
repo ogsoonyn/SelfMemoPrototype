@@ -139,8 +139,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="キーワード" FontWeight="Bold"/>
@@ -148,6 +147,15 @@
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="説明" FontWeight="Bold"/>
                         <TextBlock Grid.Row="3" Grid.Column="0" Text="カテゴリ" FontWeight="Bold"/>
                         <TextBlock Grid.Row="4" Grid.Column="0" Text="更新日" FontWeight="Bold"/>
+                        <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.ColumnSpan="2">
+                            <TextBlock Text="画像" FontWeight="Bold"/>
+                            <Button Content="クリップボードから貼付" Command="{Binding PasteImageCmd}" IsEnabled="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegative}}"
+                                    Margin="3" ToolTip="クリップボードに画像があれば、貼り付けます（上書きされるので注意）"/>
+                            <!--
+                            <Button Content="削除" Command="{Binding RemoveImageCmd}" IsEnabled="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegative}}"
+                                    Margin="3" ToolTip="画像を削除します"/>
+                            -->
+                        </StackPanel>
 
                         <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.KeywordR.Value}"
                            Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolToVisible}}"/>
@@ -181,12 +189,13 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="Resources/tool_padlock01_01.png" VerticalAlignment="Center" Height="20"/>
                                     <TextBlock Text="編集ロック" VerticalAlignment="Center"/>
+                                    <TextBlock Text="(※ロック中は「説明」のURL記載がリンク化)" FontSize="11"/>
                                 </StackPanel>
                             </ContentControl>
                         </CheckBox>
 
-                        <TextBlock Grid.Row="6" Grid.ColumnSpan="2" Text="編集ロック中は、「説明」にURL記載があれば自動的にリンク化されます"/>
-                        <Image Grid.Row="7" Grid.ColumnSpan="2" Source="{Binding FilteredItems.CurrentItem.ImageSourceR.Value, UpdateSourceTrigger=PropertyChanged}" MinHeight="100" MinWidth="100"/>
+                        <Image Grid.Row="7" Grid.ColumnSpan="2" Margin="5" VerticalAlignment="Top" HorizontalAlignment="Center" 
+                               Source="{Binding FilteredItems.CurrentItem.ImageSourceR.Value, UpdateSourceTrigger=PropertyChanged}"/>
                     </Grid>
                 </Expander>
             </ScrollViewer>

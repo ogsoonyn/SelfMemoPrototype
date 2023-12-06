@@ -225,28 +225,10 @@ namespace SelfMemoPrototype.Model
             return count;
         }
 
-        private static int NextID = 0;
         public static int GetNextID()
         {
-            var next = NextID;
-            while(true)
-            {
-                var finish = true;
-                foreach(var m in ItemsList)
-                {
-                    if(m.IDR.Value == next)
-                    {
-                        next++;
-                        finish = false;
-                        break;
-                    }
-                }
-
-                if (finish) break;
-            }
-
-            NextID = next + 1;
-            return next;
+            if (ItemsList.Count == 0) return 0;
+            return ItemsList.Select(item => item.IDR.Value).Max() + 1;
         }
 
     }
