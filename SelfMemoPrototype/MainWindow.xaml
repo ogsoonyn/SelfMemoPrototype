@@ -194,8 +194,14 @@
                             </ContentControl>
                         </CheckBox>
 
-                        <Image Grid.Row="7" Grid.ColumnSpan="2" Margin="5" VerticalAlignment="Top" HorizontalAlignment="Center" 
-                               Source="{Binding FilteredItems.CurrentItem.ImageSourceR.Value, UpdateSourceTrigger=PropertyChanged}"/>
+                        <StackPanel Grid.Row="7" Grid.ColumnSpan="2" Margin="5">
+                            <Canvas>
+                                <Image VerticalAlignment="Top"
+                                    Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType=StackPanel}}"
+                                    Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorType=StackPanel}}"
+                                    Source="{Binding FilteredItems.CurrentItem.ImageSourceR.Value, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Canvas>
+                        </StackPanel>
                     </Grid>
                 </Expander>
             </ScrollViewer>
@@ -283,6 +289,14 @@
                             </Style>
                         </DataGridTextColumn.EditingElementStyle>
                     </DataGridTextColumn>
+
+                    <DataGridTemplateColumn Header="画像" IsReadOnly="True">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding ImageSourceR.Value}" Margin="3" MaxHeight="200"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

@@ -193,7 +193,7 @@ namespace SelfMemoPrototype.ViewModel
 
             WindowWidth.Subscribe(_ =>
             {
-                ExpanderWidth.Value = Math.Max(400, WindowWidth.Value / 2);
+                ExpanderWidth.Value = WindowWidth.Value / 2;
             });
         }
 
@@ -343,12 +343,11 @@ namespace SelfMemoPrototype.ViewModel
         {
             get => _pasteImageCmd = _pasteImageCmd ?? new DelegateCommand(() =>
             {
+                if (SelectedItem.Value == null) return;
                 var img = ClipboardCapture.GetBitmap();
-                if (img != null)
-                {
+                if (img == null) return;
                     SelectedItem.Value.ImageSourceR.Value = img;
                     ImageManager.SaveImageFile(img, SelectedItem.Value.IDR.Value);
-                }
             });
         }
 
