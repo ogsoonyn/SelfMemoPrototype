@@ -136,6 +136,7 @@
     <Compile Include="Converter\ValueConverterGroup.cs" />
     <Compile Include="ExpanderAttachment.cs" />
     <Compile Include="HotKeyHelper.cs" />
+    <Compile Include="Model\ClipboardCapture.cs" />
     <Compile Include="Model\HotKeyManager.cs" />
     <Compile Include="Model\SelfMemoItem.cs" />
     <Compile Include="Model\SelfMemoList.cs" />

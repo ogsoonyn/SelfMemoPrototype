@@ -1,6 +1,8 @@
 ﻿using Reactive.Bindings;
 using System;
 using System.Runtime.Serialization;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace SelfMemoPrototype.Model
 {
@@ -15,6 +17,7 @@ namespace SelfMemoPrototype.Model
         public ReactivePropertySlim<string> CategoryR { get; set; } = new ReactivePropertySlim<string>();
         public ReactivePropertySlim<DateTime> DateR { get; set; } = new ReactivePropertySlim<DateTime>();
 
+        public ReactivePropertySlim<BitmapSource> ImageSourceR { get; set; } = new ReactivePropertySlim<BitmapSource>();
         [DataMember]
         private string Keyword
         {
@@ -88,21 +91,23 @@ namespace SelfMemoPrototype.Model
             Initialize(keyword, shortkwd, description, category);
         }
 
-        public void Initialize(string keyword, string shortkwd, string description, string category)
+        public void Initialize(string keyword, string shortkwd, string description, string category, BitmapSource source = null)
         {
             KeywordR.Value = keyword;
             Keyword2R.Value = shortkwd;
             DescriptionR.Value = description;
             CategoryR.Value = category;
             DateR.Value = DateTime.Now;
+            ImageSourceR.Value = source;
 
             Initialize();
         }
 
-        public void Initialize(string keyword, string shortkwd, string description, string category, DateTime date)
+        public void Initialize(string keyword, string shortkwd, string description, string category, DateTime date, BitmapSource source = null)
         {
             Initialize(keyword, shortkwd, description, category);
             DateR.Value = date;
+            ImageSourceR.Value = source;
         }
 
         public void Initialize()

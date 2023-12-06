@@ -2,6 +2,7 @@
 using Prism.Mvvm;
 using Reactive.Bindings;
 using SelfMemoPrototype.Model;
+using System.Windows.Media.Imaging;
 
 namespace SelfMemoPrototype.ViewModel
 {
@@ -30,11 +31,23 @@ namespace SelfMemoPrototype.ViewModel
 
         public ReactivePropertySlim<bool> IsSelected { get; set; } = new ReactivePropertySlim<bool>();
 
+        public ReactivePropertySlim<BitmapSource> ImageSource { get; set; } = new ReactivePropertySlim<BitmapSource>();
+
         #region AddMemoItemCommand
         private DelegateCommand _addMemoItemCmd;
         public DelegateCommand AddMemoItemCmd
         {
             get { return _addMemoItemCmd = _addMemoItemCmd ?? new DelegateCommand(AddMemoToList); }
+        }
+
+        private DelegateCommand _pasteImageCmd;
+
+        public DelegateCommand PasteImageCmd
+        {
+            get => _pasteImageCmd = _pasteImageCmd ?? new DelegateCommand(() =>
+            {
+                ImageSource.Value = ClipboardCapture.GetBitmap();
+            });
         }
 
         /// <summary>
