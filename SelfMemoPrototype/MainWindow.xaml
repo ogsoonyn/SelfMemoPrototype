@@ -113,34 +113,33 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="2*" MinWidth="10"/>
             </Grid.ColumnDefinitions>
-            <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
-                <Expander ExpandDirection="Right" Background="{StaticResource MahApps.Brushes.Accent4}" TabIndex="5" IsTabStop="True">
-                    <Expander.Header>
-                        <TextBlock Text="編&#10;集" RenderTransformOrigin=".5,.5" HorizontalAlignment="Center"/>
-                    </Expander.Header>
 
-                    <Grid VerticalAlignment="Stretch" Width="{Binding ExpanderWidth.Value}">
-                        <Grid.Resources>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Setter Property="Padding" Value="8"/>
-                                <Setter Property="TextWrapping" Value="Wrap"/>
-                            </Style>
-                        </Grid.Resources>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
+            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>
+
+            <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
+                <Grid VerticalAlignment="Stretch">
+                    <Grid.Resources>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Padding" Value="8"/>
+                            <Setter Property="TextWrapping" Value="Wrap"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="キーワード" FontWeight="Bold"/>
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="キーワード2" FontWeight="Bold"/>
