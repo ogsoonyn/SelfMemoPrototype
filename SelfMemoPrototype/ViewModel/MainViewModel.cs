@@ -79,10 +79,6 @@ namespace SelfMemoPrototype.ViewModel
         /// </summary>
         public ReactivePropertySlim<bool> AllowDeleteItem { get; set; } = new ReactivePropertySlim<bool>(false);
 
-        public ReactivePropertySlim<double> WindowWidth { get; set; } = new ReactivePropertySlim<double>(900);
-
-        public ReactivePropertySlim<double> ExpanderWidth { get; set; } = new ReactivePropertySlim<double>(450);
-
         public ReactivePropertySlim<bool> SearchBoxIsFocused { get; set; } = new ReactivePropertySlim<bool>();
 
         /// <summary>
@@ -201,11 +197,6 @@ namespace SelfMemoPrototype.ViewModel
             {
                 SelfMemoList.SaveMemoFile(MemoList, MemoFileName);
             };
-
-            WindowWidth.Subscribe(_ =>
-            {
-                ExpanderWidth.Value = WindowWidth.Value / 2;
-            });
         }
 
         ~MainViewModel()

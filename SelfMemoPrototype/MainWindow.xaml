@@ -11,7 +11,7 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         FocusManager.FocusedElement="{Binding ElementName=SearchTextBox}" AllowDrop="True" Drop="Window_Drop" PreviewDragOver="Window_PreviewDragOver"
-        Title="{Binding AppName.Value}" MinHeight="300" MinWidth="450" Height="450" Width="{Binding WindowWidth.Value, Mode=TwoWay}" SaveWindowPosition="True" TitleCharacterCasing="Normal">
+        Title="{Binding AppName.Value}" MinHeight="300" MinWidth="450" SaveWindowPosition="True" TitleCharacterCasing="Normal">
 
     <i:Interaction.Behaviors>
         <b:ApplicationCommandBehavior/>
