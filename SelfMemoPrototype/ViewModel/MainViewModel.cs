@@ -157,23 +157,6 @@ namespace SelfMemoPrototype.ViewModel
             // Filter文字列の有無フラグを連動
             UseFilterStr = FilterStr.Select(x => !string.IsNullOrWhiteSpace(x)).ToReadOnlyReactivePropertySlim();
 
-            // カテゴリ選択ComboBoxが更新されたら、Filterされたアイテムリスト更新
-            /*
-            CategoryListSelected.Subscribe(_ =>
-            {
-                if (!FilteredItemsRefreshTimer.IsEnabled)
-                {
-                    FilteredItemsRefreshTimer.Interval = TimeSpan.FromMilliseconds(300);
-                    FilteredItemsRefreshTimer.Tick += (s, e) =>
-                    {
-                        FilteredItems.Refresh();
-                        FilteredItemsRefreshTimer.Stop();
-                    };
-                    FilteredItemsRefreshTimer.Start();
-                }
-            });
-            */
-
             // 選択項目をSelectedItemに入れる処理
             FilteredItems.CurrentChanged += (s, e) =>
             {
@@ -187,14 +170,6 @@ namespace SelfMemoPrototype.ViewModel
 
             // UseCategoryListはカテゴリリストからなんか選択されてたらTrue
             UseCategoryList = CategoryListSelected.Select(x => !string.IsNullOrEmpty(x)).ToReadOnlyReactivePropertySlim();
-
-            /*
-            // カテゴリリストのON/OFFを切り替えるタイミングでもカテゴリリストの内容更新
-            UseCategoryList.Subscribe(_ =>
-            {
-                SelfMemoList.UpdateCategoryList();
-            });
-            */
 
             // MemoListのコレクションが更新されたらファイルに保存
             MemoList.CollectionChanged += (s, e) =>
