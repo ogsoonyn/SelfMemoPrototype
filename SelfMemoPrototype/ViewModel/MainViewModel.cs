@@ -178,7 +178,11 @@ namespace SelfMemoPrototype.ViewModel
             FilteredItems.CurrentChanged += (s, e) =>
             {
                 SelectedItem.Value = FilteredItems.CurrentItem as SelfMemoItem;
+
+                // カテゴリリスト更新でCategoryListSelectedがリセットされることを防ぐため、事前に記憶しておいてリセットされてたら戻す
+                var filterItem = CategoryListSelected.Value;
                 SelfMemoList.UpdateCategoryList();
+                if (CategoryListSelected.Value != filterItem) CategoryListSelected.Value = filterItem;
             };
 
             // UseCategoryListはカテゴリリストからなんか選択されてたらTrue
