@@ -66,6 +66,7 @@
                     <MenuItem Header="グローバルホットキーの設定" Command="{Binding OpenSettingWindowCmd}"/>
                     <MenuItem Header="現在表示中のリストをfiltered.jsonに保存" Command="{Binding SaveFilteredItemsCmd}"/>
                     <MenuItem Header="閉じる" Command="Close" InputGestureText="Esc"/>
+                    <MenuItem Header="アプリケーションを終了" Click="MenuItem_Exit_Click"/>
                 </MenuItem>
             </Menu>
 
