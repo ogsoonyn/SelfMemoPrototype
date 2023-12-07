@@ -9,6 +9,7 @@ using System.Reactive.Linq;
 using System.Reflection;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 
@@ -84,6 +85,11 @@ namespace SelfMemoPrototype.ViewModel
 
         public ReactivePropertySlim<bool> SearchBoxIsFocused { get; set; } = new ReactivePropertySlim<bool>();
 
+        /// <summary>
+        /// 編集エリアのカテゴリ選択コンボボックスで選択している内容を保存
+        /// </summary>
+        public ReactivePropertySlim<string> CategoryEditorSelectedItem { get; set; } = new ReactivePropertySlim<string>();
+
         #endregion // Properties
 
         /// <summary>
@@ -156,6 +162,7 @@ namespace SelfMemoPrototype.ViewModel
             UseFilterStr = FilterStr.Select(x => !string.IsNullOrWhiteSpace(x)).ToReadOnlyReactivePropertySlim();
 
             // カテゴリ選択ComboBoxが更新されたら、Filterされたアイテムリスト更新
+            /*
             CategoryListSelected.Subscribe(_ =>
             {
                 if (!FilteredItemsRefreshTimer.IsEnabled)
@@ -169,21 +176,25 @@ namespace SelfMemoPrototype.ViewModel
                     FilteredItemsRefreshTimer.Start();
                 }
             });
+            */
 
             // 選択項目をSelectedItemに入れる処理
             FilteredItems.CurrentChanged += (s, e) =>
             {
                 SelectedItem.Value = FilteredItems.CurrentItem as SelfMemoItem;
+                SelfMemoList.UpdateCategoryList();
             };
 
             // UseCategoryListはカテゴリリストからなんか選択されてたらTrue
             UseCategoryList = CategoryListSelected.Select(x => !string.IsNullOrEmpty(x)).ToReadOnlyReactivePropertySlim();
 
+            /*
             // カテゴリリストのON/OFFを切り替えるタイミングでもカテゴリリストの内容更新
             UseCategoryList.Subscribe(_ =>
             {
                 SelfMemoList.UpdateCategoryList();
             });
+            */
 
             // MemoListのコレクションが更新されたらファイルに保存
             MemoList.CollectionChanged += (s, e) =>
@@ -252,7 +263,7 @@ namespace SelfMemoPrototype.ViewModel
             if (string.IsNullOrEmpty(CategoryListSelected.Value)) return true;
 
             // 指定されたCategoryの項目のみTrueを返す
-            return (memo.CategoryR.Value.Equals(CategoryListSelected.Value));
+            return (memo.CategoryR.Value == CategoryListSelected.Value);
         }
 
         /// <summary>
@@ -358,6 +369,36 @@ namespace SelfMemoPrototype.ViewModel
             get => _removeImageCmd = _removeImageCmd ?? new DelegateCommand(() =>
             {
                 SelectedItem.Value.ImageSourceR.Value = null;
+            });
+        }
+
+        private DelegateCommand _changeCategoryEditorCmd;
+
+        public DelegateCommand ChangeCategoryEditorCmd
+        {
+            get => _changeCategoryEditorCmd = _changeCategoryEditorCmd ?? new DelegateCommand(() =>
+            {
+                if (string.IsNullOrEmpty(CategoryEditorSelectedItem.Value)) return;
+                SelectedItem.Value.CategoryR.Value = CategoryEditorSelectedItem.Value;
+            });
+        }
+
+        private DelegateCommand _changeCategoryFilterCmd;
+
+        public DelegateCommand ChangeCategoryFilterCmd
+        {
+            get => _changeCategoryFilterCmd = _changeCategoryFilterCmd ?? new DelegateCommand(() =>
+            {
+                if (!FilteredItemsRefreshTimer.IsEnabled)
+                {
+                    FilteredItemsRefreshTimer.Interval = TimeSpan.FromMilliseconds(300);
+                    FilteredItemsRefreshTimer.Tick += (s, e) =>
+                    {
+                        FilteredItems.Refresh();
+                        FilteredItemsRefreshTimer.Stop();
+                    };
+                    FilteredItemsRefreshTimer.Start();
+                }
             });
         }
     }
