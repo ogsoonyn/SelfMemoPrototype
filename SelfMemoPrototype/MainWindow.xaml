@@ -212,10 +212,26 @@
 
                     <StackPanel Grid.Row="7" Grid.ColumnSpan="2" Margin="5">
                         <Canvas>
-                            <Image VerticalAlignment="Top"
+                            <Image VerticalAlignment="Top" 
                                     Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType=StackPanel}}"
                                     Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorType=StackPanel}}"
-                                    Source="{Binding FilteredItems.CurrentItem.ImageSourceR.Value, UpdateSourceTrigger=PropertyChanged}"/>
+                                    Source="{Binding FilteredItems.CurrentItem.ImageSourceR.Value, UpdateSourceTrigger=PropertyChanged}">
+                                <Image.Resources>
+                                    <Style TargetType="Image">
+                                        <Setter Property="Stretch" Value="Uniform"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsChecked, ElementName=ICM_IsNotScaling}" Value="True">
+                                                <Setter Property="Stretch" Value="None"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Image.Resources>
+                                <Image.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="等倍表示" IsCheckable="True" Name="ICM_IsNotScaling"/>
+                                    </ContextMenu>
+                                </Image.ContextMenu>
+                            </Image>
                         </Canvas>
                     </StackPanel>
                 </Grid>
