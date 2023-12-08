@@ -197,7 +197,7 @@
                         </ComboBox>
                     </Grid>
 
-                    <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.DateR.Value}" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.DateR.Value, StringFormat=yyyy/MM/dd hh:mm:ss}" TextWrapping="Wrap"/>
 
                     <CheckBox Grid.Row="5" Grid.ColumnSpan="2" Margin="5, 0" Style="{StaticResource MaterialDesignCheckBox}"
                           ToolTip="ロック解除するとデータの書き換えができます。ロック中はURLのリンク化が行われます"
@@ -212,10 +212,13 @@
                     </CheckBox>
 
                     <StackPanel Grid.Row="7" Grid.ColumnSpan="2" Margin="5">
-                        <Image VerticalAlignment="Top" HorizontalAlignment="Left" Stretch="Uniform" StretchDirection="DownOnly"
-                                Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType=StackPanel}}"
-                                Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorType=StackPanel}}"
-                                Source="{Binding FilteredItems.CurrentItem.ImageSourceR.Value, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Border BorderThickness="1" BorderBrush="Black" VerticalAlignment="Top" HorizontalAlignment="Left" 
+                                Width="{Binding ElementName=I_Image, Path=ActualWidth}" Height="{Binding ElementName=I_Image, Path=ActualHeight}">
+                            <Image Name="I_Image" Stretch="Uniform" StretchDirection="DownOnly"
+                                   Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType=StackPanel}}"
+                                   Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorType=StackPanel}}"
+                                   Source="{Binding FilteredItems.CurrentItem.ImageSourceR.Value, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Border>
                     </StackPanel>
                 </Grid>
             </ScrollViewer>
