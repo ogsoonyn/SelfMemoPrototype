@@ -36,10 +36,10 @@ namespace SelfMemoPrototype.View
                 switch (Path.GetExtension(name).ToLower())
                 {
                     case ".csv":
-                        val = SelfMemoList.AddMemoFromCsv(SelfMemoList.ItemsList, name);
+                        val = SelfMemoList.AddMemoFromCsv(name);
                         break;
                     case ".json":
-                        val = SelfMemoList.LoadMemoFile(SelfMemoList.ItemsList, name);
+                        val = SelfMemoList.LoadMemoFile(name);
                         break;
                 }
 

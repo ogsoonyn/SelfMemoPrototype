@@ -11,6 +11,14 @@ namespace SelfMemoPrototype.Model
 {
     public class SelfMemoList
     {
+        /// <summary>
+        /// 辞書データファイルの名前
+        /// </summary>
+        public static readonly string MemoFileName = "self_memo.json";
+
+        /// <summary>
+        /// メモのリスト
+        /// </summary>
         public static ReactiveCollection<SelfMemoItem> ItemsList
         {
             get
@@ -29,6 +37,9 @@ namespace SelfMemoPrototype.Model
 
         private static ReactiveCollection<SelfMemoItem> _itemsList = null;
 
+        /// <summary>
+        /// メモに含まれるカテゴリのリスト
+        /// </summary>
         public static ReactiveCollection<string> CategoryList
         {
             get
@@ -77,12 +88,12 @@ namespace SelfMemoPrototype.Model
         }
 
         /// <summary>
-        /// ファイルからメモリストの情報を読み出して引数のリストに追加する
+        /// ファイルからメモリストの情報を読み出してリストに追加する
         /// </summary>
         /// <param name="memoList">追加する対象のリスト</param>
         /// <param name="filename">読み出すファイル</param>
         /// <returns>追加された項目数</returns>
-        public static int LoadMemoFile(ReactiveCollection<SelfMemoItem> memoList, string filename)
+        public static int LoadMemoFile(string filename)
         {
             int ret = 0;
             ReactiveCollection<SelfMemoItem> _memo;
@@ -97,9 +108,9 @@ namespace SelfMemoPrototype.Model
                 foreach (var m in _memo)
                 {
                     m.Initialize();
-                    if (!memoList.Contains(m))
+                    if (!ItemsList.Contains(m))
                     {
-                        memoList.Add(m);
+                        ItemsList.Add(m);
                         ret++;
                     }
                 }
@@ -109,6 +120,11 @@ namespace SelfMemoPrototype.Model
                 //error
             }
             return ret;
+        }
+
+        public static void SaveMemoFile()
+        {
+            SaveMemoFile(ItemsList, MemoFileName);
         }
 
         /// <summary>
@@ -127,12 +143,12 @@ namespace SelfMemoPrototype.Model
 
 
         /// <summary>
-        /// csvからメモリストを読み込んで指定のリストに追加する
+        /// csvからメモリストを読み込んでリストに追加する
         /// </summary>
         /// <param name="memoList">追加する対象のリスト</param>
         /// <param name="filename">csvファイル</param>
         /// <returns>追加された項目数</returns>
-        public static int AddMemoFromCsv(ReactiveCollection<SelfMemoItem> memoList, string filename)
+        public static int AddMemoFromCsv(string filename)
         {
             if (Path.GetExtension(filename).ToLower() != ".csv") return 0;
             int ret = 0;
@@ -184,9 +200,9 @@ namespace SelfMemoPrototype.Model
                     if (separated.Length >= 4)
                     {
                         var m = new SelfMemoItem(separated[0].Trim('\"'), separated[1].Trim('\"'), separated[2].Trim('\"'), separated[3].Trim('\"'));
-                        if (!memoList.Contains(m))
+                        if (!ItemsList.Contains(m))
                         {
-                            memoList.Add(m);
+                            ItemsList.Add(m);
                             ret++;
                         }
                     }

@@ -89,11 +89,6 @@ namespace SelfMemoPrototype.ViewModel
         #endregion // Properties
 
         /// <summary>
-        /// 辞書データファイルの名前
-        /// </summary>
-        private static readonly string MemoFileName = "selfmemo.json";
-
-        /// <summary>
         /// FilteredItemsの更新に使用するタイマー
         /// </summary>
         DispatcherTimer FilteredItemsRefreshTimer = new DispatcherTimer();
@@ -118,9 +113,9 @@ namespace SelfMemoPrototype.ViewModel
             };
 
             // ファイルが有ればロードしてMemoListを更新
-            if (File.Exists(MemoFileName))
+            if (File.Exists(SelfMemoList.MemoFileName))
             {
-                SelfMemoList.LoadMemoFile(MemoList, MemoFileName);
+                SelfMemoList.LoadMemoFile(SelfMemoList.MemoFileName);
             }
 
             // MemoListが空なら、ヘルプメッセージ的な項目を追加する

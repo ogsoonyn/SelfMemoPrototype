@@ -63,22 +63,6 @@ namespace SelfMemoPrototype
             SearchTextBox.Focus(); // 検索窓にフォーカス当てる
         }
 
-        /*
-        private void btnSetTitle_Click(object sender, RoutedEventArgs e)
-        {
-            this._notify.Text = this.txtTitle.Text;
-        }
-
-        private void btnShowBalloon_Click(object sender, RoutedEventArgs e)
-        {
-            var icon = (ToolTipIconEx)this.cmbIcon.SelectedValue;
-            var title = this.txtBalloonTitle.Text;
-            var text = this.txtBalloonText.Text;
-
-            this._notify.ShowBalloonTip(100, title, text, icon);
-        }
-        */
-
         private void Window_Drop(object sender, DragEventArgs e)
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop, false);
@@ -89,10 +73,10 @@ namespace SelfMemoPrototype
                 switch (Path.GetExtension(name).ToLower())
                 {
                     case ".csv":
-                        val = SelfMemoList.AddMemoFromCsv(SelfMemoList.ItemsList, name);
+                        val = SelfMemoList.AddMemoFromCsv(name);
                         break;
                     case ".json":
-                        val = SelfMemoList.LoadMemoFile(SelfMemoList.ItemsList, name);
+                        val = SelfMemoList.LoadMemoFile(name);
                         break;
                 }
 
