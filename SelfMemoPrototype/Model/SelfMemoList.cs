@@ -17,6 +17,11 @@ namespace SelfMemoPrototype.Model
         public static readonly string MemoFileName = "self_memo.json";
 
         /// <summary>
+        /// バックアップフォルダの名前
+        /// </summary>
+        public static readonly string BackupDirectoryName = ".\\backup\\";
+
+        /// <summary>
         /// メモのリスト
         /// </summary>
         public static ReactiveCollection<SelfMemoItem> ItemsList
@@ -247,5 +252,18 @@ namespace SelfMemoPrototype.Model
             return ItemsList.Select(item => item.IDR.Value).Max() + 1;
         }
 
+
+        // Backup関連
+        public static DateTime LastBackupDate { get; private set; } = DateTime.MinValue;
+
+        public static void BackupMemoFile()
+        {
+            if (!Directory.Exists(BackupDirectoryName)) Directory.CreateDirectory(BackupDirectoryName);
+
+            LastBackupDate = DateTime.Now;
+            var backupName = BackupDirectoryName + LastBackupDate.ToString("yyyy-MM-dd") + "_self_memo.json";
+
+            SaveMemoFile(ItemsList, backupName);
+        }
     }
 }

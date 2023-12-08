@@ -2,6 +2,7 @@
 using Prism.Mvvm;
 using Reactive.Bindings;
 using SelfMemoPrototype.Model;
+using System;
 using System.Windows.Media.Imaging;
 
 namespace SelfMemoPrototype.ViewModel
@@ -66,7 +67,15 @@ namespace SelfMemoPrototype.ViewModel
                     newmemo.ImageSourceR.Value = ImageSource.Value;
                 }
 
+                // MemoListに追加
                 MemoList.Add(newmemo);
+
+                SelfMemoList.SaveMemoFile();
+
+                // 前回バックアップから1日以上経っていたらバックアップ実行
+                if ((DateTime.Now - SelfMemoList.LastBackupDate).TotalDays > 1.0)
+                    SelfMemoList.BackupMemoFile();
+
 
                 // プロパティを空白で初期化
                 Word.Value = "";
@@ -74,8 +83,6 @@ namespace SelfMemoPrototype.ViewModel
                 Description.Value = "";
                 Category.Value = "";
                 ImageSource.Value = null;
-
-                //SaveMemoFile(); // MemoListのハンドラで実施されるのでここでは不要
 
                 // WordのTextboxをフォーカスする
                 IsSelected.Value = true;

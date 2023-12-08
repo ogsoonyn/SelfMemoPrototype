@@ -166,17 +166,15 @@ namespace SelfMemoPrototype.ViewModel
             // UseCategoryListはカテゴリリストからなんか選択されてたらTrue
             UseCategoryList = CategoryListSelected.Select(x => !string.IsNullOrEmpty(x)).ToReadOnlyReactivePropertySlim();
 
-            // MemoListのコレクションが更新されたらファイルに保存
-            MemoList.CollectionChanged += (s, e) =>
-            {
-                SelfMemoList.SaveMemoFile(MemoList, MemoFileName);
-            };
         }
 
         ~MainViewModel()
         {
             // Finalizer でファイル保存を実行
-            SelfMemoList.SaveMemoFile(MemoList, MemoFileName);
+            SelfMemoList.SaveMemoFile();
+
+            // バックアップ実行
+            SelfMemoList.BackupMemoFile();
         }
 
         /// <summary>

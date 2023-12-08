@@ -46,6 +46,8 @@ namespace SelfMemoPrototype.View
                 if (val > 0)
                 {
                     MessageBox.Show(name + " から " + val + " 件追加しました", "ファイルから登録", MessageBoxButton.OK, MessageBoxImage.Information);
+                    SelfMemoList.SaveMemoFile();
+                    SelfMemoList.BackupMemoFile();
                 }
                 else
                 {
