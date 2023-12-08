@@ -9,8 +9,8 @@
         xmlns:mahApps="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        mc:Ignorable="d" TitleCharacterCasing="Normal"
-        Title="ImageViewerWindow" Height="450" Width="800">
+        mc:Ignorable="d" TitleCharacterCasing="Normal" ResizeMode="CanResizeWithGrip"
+        Title="Self Memo - Image Viewer" Height="450" Width="800">
     <mahApps:MetroWindow.DataContext>
         <vm:ImageViewerViewModel/>
     </mahApps:MetroWindow.DataContext>

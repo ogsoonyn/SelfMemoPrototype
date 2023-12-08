@@ -11,7 +11,7 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         FocusManager.FocusedElement="{Binding ElementName=SearchTextBox}" AllowDrop="True" Drop="Window_Drop" PreviewDragOver="Window_PreviewDragOver"
-        Title="{Binding AppName.Value}" MinHeight="300" MinWidth="450" SaveWindowPosition="True" TitleCharacterCasing="Normal">
+        Title="{Binding AppName.Value}" MinHeight="300" MinWidth="450" SaveWindowPosition="True" TitleCharacterCasing="Normal" ResizeMode="CanResizeWithGrip">
 
     <i:Interaction.Behaviors>
         <b:ApplicationCommandBehavior/>
@@ -106,14 +106,13 @@
                 </StackPanel>
             </StatusBarItem>
 
-            <StatusBarItem HorizontalAlignment="Right">
+            <StatusBarItem HorizontalAlignment="Right" Margin="0,0,15,0">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="{Binding FilteredItems.Count}"/>
                     <TextBlock Text="/"/>
                     <TextBlock Text="{Binding MemoList.Count}"/>
                 </StackPanel>
             </StatusBarItem>
-
         </StatusBar>
 
         <Grid DockPanel.Dock="Top">
