@@ -1,0 +1,68 @@
+﻿<mahApps:MetroWindow x:Class="SelfMemoPrototype.View.ImageViewerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SelfMemoPrototype.View"
+        xmlns:b="clr-namespace:SelfMemoPrototype.Behavior"
+        xmlns:vm="clr-namespace:SelfMemoPrototype.ViewModel"
+        xmlns:mahApps="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        mc:Ignorable="d" TitleCharacterCasing="Normal"
+        Title="ImageViewerWindow" Height="450" Width="800">
+    <mahApps:MetroWindow.DataContext>
+        <vm:ImageViewerViewModel/>
+    </mahApps:MetroWindow.DataContext>
+    
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <RadioButton Name="RB_IsScaling" Content="ウィンドウに合わせる" IsChecked="True" GroupName="ImageStretch"/>
+            <RadioButton Name="RB_IsNotStratch" Content="等倍" GroupName="ImageStretch"/>
+        </Menu>
+
+        <StatusBar DockPanel.Dock="Bottom">
+            <StatusBarItem Content="{Binding Item.Value.KeywordR.Value, UpdateSourceTrigger=PropertyChanged}"/>
+        </StatusBar>
+
+        <ScrollViewer>
+            <ScrollViewer.Resources>
+                <Style TargetType="ScrollViewer">
+                    <!-- 等倍表示 -->
+                    <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
+                    <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsChecked, ElementName=RB_IsScaling}" Value="True">
+                            <!-- ウィンドウに合わせる -->
+                            <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+                            <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ScrollViewer.Resources>
+            <Image Source="{Binding Item.Value.ImageSourceR.Value, UpdateSourceTrigger=PropertyChanged}">
+                <Image.Resources>
+                    <Style TargetType="Image">
+                        <!-- 等倍表示 -->
+                        <Setter Property="Stretch" Value="None"/>
+                        <Setter Property="Height" Value="Auto"/>
+                        <Setter Property="Width" Value="Auto"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsChecked, ElementName=RB_IsScaling}" Value="True">
+                                <!-- ウィンドウに合わせる -->
+                                <Setter Property="Stretch" Value="Uniform"/>
+                                <Setter Property="Width" Value="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType=ScrollViewer}}"/>
+                                <Setter Property="Height" Value="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorType=ScrollViewer}}"/>
+                        </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Resources>
+                <Image.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="拡大表示" IsCheckable="{Binding IsChecked, ElementName=RB_IsScaling}"/>
+                    </ContextMenu>
+                </Image.ContextMenu>
+            </Image>
+        </ScrollViewer>
+    </DockPanel>
+</mahApps:MetroWindow>

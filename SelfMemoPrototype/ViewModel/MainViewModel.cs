@@ -371,5 +371,19 @@ namespace SelfMemoPrototype.ViewModel
                 }
             });
         }
+
+        private DelegateCommand _openAsImageViewerCmd;
+        public DelegateCommand OpenAsImageViewerCmd
+        {
+            get => _openAsImageViewerCmd = _openAsImageViewerCmd ?? new DelegateCommand(() =>
+            {
+                if(SelectedItem.Value != null)
+                {
+                    var viewer = new ImageViewerWindow();
+                    viewer.Show();
+                    (viewer.DataContext as ImageViewerViewModel).Item.Value = SelectedItem.Value;
+                }
+            });
+        }
     }
 }

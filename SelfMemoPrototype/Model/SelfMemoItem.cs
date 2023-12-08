@@ -1,5 +1,6 @@
 ﻿using Reactive.Bindings;
 using System;
+using System.Reactive.Linq;
 using System.Runtime.Serialization;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -20,6 +21,8 @@ namespace SelfMemoPrototype.Model
         public ReactivePropertySlim<DateTime> DateR { get; set; } = new ReactivePropertySlim<DateTime>();
 
         public ReactivePropertySlim<BitmapSource> ImageSourceR { get; set; }
+
+        public ReadOnlyReactivePropertySlim<bool> HasImageSource { get; private set; }
 
         [DataMember]
         private int ID
@@ -130,6 +133,8 @@ namespace SelfMemoPrototype.Model
 
             Format();
             SetHandler();
+
+            HasImageSource = ImageSourceR.Select(x => x != null).ToReadOnlyReactivePropertySlim<bool>();
         }
 
         /// <summary>
