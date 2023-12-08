@@ -238,83 +238,93 @@ namespace SelfMemoPrototype.ViewModel
         private DelegateCommand _openRegisterWindowCmd;
         public DelegateCommand OpenRegisterWindowCmd
         {
-            get { return _openRegisterWindowCmd = _openRegisterWindowCmd ?? new DelegateCommand(OpenRegisterWindow); }
-        }
-
-        private void OpenRegisterWindow()
-        {
-            var win = new RegisterWindow();
-            if (CopySearchWordToRegister.Value)
+            get
             {
-                // Search枠に入力された文字列を登録フォームのKeyword枠にコピーする
-                (win.DataContext as RegisterViewModel).Word.Value = FilterStr.Value;
+                return _openRegisterWindowCmd = _openRegisterWindowCmd ?? new DelegateCommand(() =>
+                {
+                    var win = new RegisterWindow();
+                    if (CopySearchWordToRegister.Value)
+                    {
+                        // Search枠に入力された文字列を登録フォームのKeyword枠にコピーする
+                        (win.DataContext as RegisterViewModel).Word.Value = FilterStr.Value;
+                    }
+                    win.ShowDialog();
+                });
             }
-            win.ShowDialog();
         }
         #endregion
 
         /// <summary>
         /// 設定ダイアログを表示するコマンド
         /// </summary>
-        #region OpenSettingWindow
-        private DelegateCommand _openSettingWindowCmd;
         public DelegateCommand OpenSettingWindowCmd
         {
-            get { return _openSettingWindowCmd = _openSettingWindowCmd ?? new DelegateCommand(OpenSettingWindow); }
+            get
+            {
+                return _openSettingWindowCmd = _openSettingWindowCmd ?? new DelegateCommand(() =>
+                {
+                    var win = new SettingWindow();
+                    win.ShowDialog();
+                });
+            }
         }
+        private DelegateCommand _openSettingWindowCmd;
 
-        private void OpenSettingWindow()
-        {
-            var win = new SettingWindow();
-            win.ShowDialog();
-        }
-        #endregion
-
-        private DelegateCommand _saveFilteredItemsCmd;
+        /// <summary>
+        /// いまリストに表示されている内容をJsonで保存する処理
+        /// </summary>
         public DelegateCommand SaveFilteredItemsCmd
         {
-            get { return _saveFilteredItemsCmd = _saveFilteredItemsCmd ?? new DelegateCommand(SaveFilteredItems); }
-        }
-
-        private void SaveFilteredItems()
-        {
-            var list = new ReactiveCollection<SelfMemoItem>();
-            foreach(var item in FilteredItems)
+            get
             {
-                list.Add(item as SelfMemoItem);
+                return _saveFilteredItemsCmd = _saveFilteredItemsCmd ?? new DelegateCommand(() =>
+                {
+                    var list = new ReactiveCollection<SelfMemoItem>();
+                    foreach (var item in FilteredItems)
+                    {
+                        list.Add(item as SelfMemoItem);
+                    }
+
+                    SelfMemoList.SaveMemoFile(list, "filtered.json");
+                });
             }
-
-            SelfMemoList.SaveMemoFile(list, "filtered.json");
         }
+        private DelegateCommand _saveFilteredItemsCmd;
 
-        private DelegateCommand _clearCategoryFilterCmd;
+        /// <summary>
+        /// カテゴリフィルタをカラにする
+        /// </summary>
         public DelegateCommand ClearCategoryFilterCmd
         {
-            get { return _clearCategoryFilterCmd = _clearCategoryFilterCmd ?? new DelegateCommand(ClearCategoryFilter); }
+            get
+            {
+                return _clearCategoryFilterCmd = 
+                    _clearCategoryFilterCmd ?? new DelegateCommand(() => CategoryListSelected.Value = null);
+            }
         }
+        private DelegateCommand _clearCategoryFilterCmd;
 
-        private void ClearCategoryFilter()
-        {
-            CategoryListSelected.Value = null;
-
-        }
-
-        private DelegateCommand _focusOnSearchBoxCmd;
+        /// <summary>
+        /// 検索Boxにフォーカスを当てる処理
+        /// </summary>
         public DelegateCommand FocusOnSearchBoxCmd
         {
-            get { return _focusOnSearchBoxCmd = _focusOnSearchBoxCmd ?? new DelegateCommand(FocusOnSearchBox); }
+            get
+            {
+                return _focusOnSearchBoxCmd = _focusOnSearchBoxCmd ?? new DelegateCommand(() =>
+                {
+                    // 値がTrueに"変わる"ときにフォーカスが移るので、すでにTrueのときは一旦Falseに戻す
+                    if (SearchBoxIsFocused.Value)
+                        SearchBoxIsFocused.Value = false;
+                    SearchBoxIsFocused.Value = true;
+                });
+            }
         }
+        private DelegateCommand _focusOnSearchBoxCmd;
 
-        private void FocusOnSearchBox()
-        {
-            // 値がTrueに"変わる"ときにフォーカスが移るので、すでにTrueのときは一旦Falseに戻す
-            if(SearchBoxIsFocused.Value)
-                SearchBoxIsFocused.Value = false;
-            SearchBoxIsFocused.Value = true;
-        }
-
-        private DelegateCommand _pasteImageCmd;
-
+        /// <summary>
+        /// クリップボードから画像をメモに貼り付ける
+        /// </summary>
         public DelegateCommand PasteImageCmd
         {
             get => _pasteImageCmd = _pasteImageCmd ?? new DelegateCommand(() =>
@@ -326,9 +336,11 @@ namespace SelfMemoPrototype.ViewModel
                     ImageManager.SaveImageFile(img, SelectedItem.Value.IDR.Value);
             });
         }
+        private DelegateCommand _pasteImageCmd;
 
-        private DelegateCommand _removeImageCmd;
-
+        /// <summary>
+        /// 画像を（見かけ上）削除する
+        /// </summary>
         public DelegateCommand RemoveImageCmd
         {
             get => _removeImageCmd = _removeImageCmd ?? new DelegateCommand(() =>
@@ -336,9 +348,12 @@ namespace SelfMemoPrototype.ViewModel
                 SelectedItem.Value.ImageSourceR.Value = null;
             });
         }
+        private DelegateCommand _removeImageCmd;
 
-        private DelegateCommand _changeCategoryEditorCmd;
 
+        /// <summary>
+        /// カテゴリエディタでカテゴリを編集したときに実行する処理
+        /// </summary>
         public DelegateCommand ChangeCategoryEditorCmd
         {
             get => _changeCategoryEditorCmd = _changeCategoryEditorCmd ?? new DelegateCommand(() =>
@@ -347,9 +362,12 @@ namespace SelfMemoPrototype.ViewModel
                 SelectedItem.Value.CategoryR.Value = CategoryEditorSelectedItem.Value;
             });
         }
+        private DelegateCommand _changeCategoryEditorCmd;
 
-        private DelegateCommand _changeCategoryFilterCmd;
 
+        /// <summary>
+        /// カテゴリフィルタを変更した時に実行する処理
+        /// </summary>
         public DelegateCommand ChangeCategoryFilterCmd
         {
             get => _changeCategoryFilterCmd = _changeCategoryFilterCmd ?? new DelegateCommand(() =>
@@ -366,8 +384,11 @@ namespace SelfMemoPrototype.ViewModel
                 }
             });
         }
+        private DelegateCommand _changeCategoryFilterCmd;
 
-        private DelegateCommand _openAsImageViewerCmd;
+        /// <summary>
+        /// 画像ビューアで画像を開く
+        /// </summary>
         public DelegateCommand OpenAsImageViewerCmd
         {
             get => _openAsImageViewerCmd = _openAsImageViewerCmd ?? new DelegateCommand(() =>
@@ -380,5 +401,6 @@ namespace SelfMemoPrototype.ViewModel
                 }
             });
         }
+        private DelegateCommand _openAsImageViewerCmd;
     }
 }
