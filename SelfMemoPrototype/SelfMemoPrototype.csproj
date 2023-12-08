@@ -134,7 +134,6 @@
     <Compile Include="Behavior\FocusExtension.cs" />
     <Compile Include="Converter\BoolNegativeConverter.cs" />
     <Compile Include="Converter\ValueConverterGroup.cs" />
-    <Compile Include="ExpanderAttachment.cs" />
     <Compile Include="HotKeyHelper.cs" />
     <Compile Include="Model\ClipboardCapture.cs" />
     <Compile Include="Model\HotKeyManager.cs" />
