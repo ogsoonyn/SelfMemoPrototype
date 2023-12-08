@@ -212,29 +212,10 @@
                     </CheckBox>
 
                     <StackPanel Grid.Row="7" Grid.ColumnSpan="2" Margin="5">
-                        <Canvas>
-                            <Image VerticalAlignment="Top" 
-                                    Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType=StackPanel}}"
-                                    Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorType=StackPanel}}"
-                                    Source="{Binding FilteredItems.CurrentItem.ImageSourceR.Value, UpdateSourceTrigger=PropertyChanged}">
-                                <Image.Resources>
-                                    <Style TargetType="Image">
-                                        <Setter Property="Stretch" Value="Uniform"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding IsChecked, ElementName=ICM_IsNotScaling}" Value="True">
-                                                <Setter Property="Stretch" Value="None"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Image.Resources>
-                                <Image.ContextMenu>
-                                    <ContextMenu>
-                                        <MenuItem Header="等倍表示" IsCheckable="True" Name="ICM_IsNotScaling"/>
-                                        <MenuItem Header="ビューアで見る" Command="{Binding OpenAsImageViewerCmd}"/>
-                                    </ContextMenu>
-                                </Image.ContextMenu>
-                            </Image>
-                        </Canvas>
+                        <Image VerticalAlignment="Top" HorizontalAlignment="Left" Stretch="Uniform" StretchDirection="DownOnly"
+                                Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType=StackPanel}}"
+                                Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorType=StackPanel}}"
+                                Source="{Binding FilteredItems.CurrentItem.ImageSourceR.Value, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                 </Grid>
             </ScrollViewer>
@@ -326,7 +307,7 @@
                     <DataGridTemplateColumn Header="画像" IsReadOnly="True">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Image Source="{Binding ImageSourceR.Value}" HorizontalAlignment="Left" Margin="3" MaxHeight="200"/>
+                                <Image Source="{Binding ImageSourceR.Value}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3" MaxHeight="200" StretchDirection="DownOnly"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
