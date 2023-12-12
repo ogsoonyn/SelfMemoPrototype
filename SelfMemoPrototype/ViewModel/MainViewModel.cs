@@ -1,4 +1,5 @@
-﻿using Prism.Commands;
+﻿using MahApps.Metro.Controls.Dialogs;
+using Prism.Commands;
 using Prism.Mvvm;
 using Reactive.Bindings;
 using SelfMemoPrototype.Model;
@@ -325,16 +326,28 @@ namespace SelfMemoPrototype.ViewModel
         /// </summary>
         public DelegateCommand PasteImageCmd
         {
-            get => _pasteImageCmd = _pasteImageCmd ?? new DelegateCommand(() =>
+            get => _pasteImageCmd = _pasteImageCmd ?? new DelegateCommand(async () =>
             {
                 if (SelectedItem.Value == null) return;
                 var img = ClipboardCapture.GetBitmap();
                 if (img == null) return;
-                    SelectedItem.Value.ImageSourceR.Value = img;
-                    ImageManager.SaveImageFile(img, SelectedItem.Value.IDR.Value);
+
+                var item = SelectedItem.Value;
+
+                // 既にターゲット画像があれば、警告を表示する
+                if (item.HasImageSource.Value)
+                {
+                    var res = await DialogCoordinator.ShowMessageAsync(this, "警告", "画像を上書きしても良いですか？", MessageDialogStyle.AffirmativeAndNegative);
+                    if(res == MessageDialogResult.Negative || res == MessageDialogResult.Canceled) return;
+                }
+
+                item.ImageSourceR.Value = img;
+                ImageManager.SaveImageFile(img, item.IDR.Value);
             });
         }
         private DelegateCommand _pasteImageCmd;
+
+        public IDialogCoordinator DialogCoordinator { get; set; }
 
         /// <summary>
         /// 画像を（見かけ上）削除する

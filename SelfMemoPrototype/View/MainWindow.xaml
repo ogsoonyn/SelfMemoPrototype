@@ -7,9 +7,11 @@
         xmlns:b="clr-namespace:SelfMemoPrototype.Behavior"
         xmlns:vm="clr-namespace:SelfMemoPrototype.ViewModel"
         xmlns:mahApps="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
+        Dialog:DialogParticipation.Register="{Binding}"
         FocusManager.FocusedElement="{Binding ElementName=SearchTextBox}" AllowDrop="True" Drop="Window_Drop" PreviewDragOver="Window_PreviewDragOver"
         Title="{Binding AppName.Value}" MinHeight="300" MinWidth="450" SaveWindowPosition="True" TitleCharacterCasing="Normal" ResizeMode="CanResizeWithGrip">
 
@@ -18,7 +20,11 @@
     </i:Interaction.Behaviors>
 
     <mahApps:MetroWindow.DataContext>
-        <vm:MainViewModel/>
+        <vm:MainViewModel>
+            <vm:MainViewModel.DialogCoordinator>
+                <Dialog:DialogCoordinator/>
+            </vm:MainViewModel.DialogCoordinator>
+        </vm:MainViewModel>
     </mahApps:MetroWindow.DataContext>
 
     <!--
