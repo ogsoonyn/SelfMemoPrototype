@@ -49,6 +49,12 @@ namespace SelfMemoPrototype.Model
             }
         }
 
+        public static void RemoveImageFile(int id)
+        {
+            var path = ID2JpgPath(id);
+            if (File.Exists(path)) File.Delete(path);
+        }
+
         public static string ID2JpgPath(int id)
         {
             return ImageDirectory + "\\" + string.Format("{0:00000}", id) + ".jpg";

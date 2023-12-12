@@ -350,13 +350,21 @@ namespace SelfMemoPrototype.ViewModel
         public IDialogCoordinator DialogCoordinator { get; set; }
 
         /// <summary>
-        /// 画像を（見かけ上）削除する
+        /// 画像を削除する
         /// </summary>
         public DelegateCommand RemoveImageCmd
         {
-            get => _removeImageCmd = _removeImageCmd ?? new DelegateCommand(() =>
+            get => _removeImageCmd = _removeImageCmd ?? new DelegateCommand(async () =>
             {
-                SelectedItem.Value.ImageSourceR.Value = null;
+                var item = SelectedItem.Value;
+                if (!item.HasImageSource.Value) return;
+
+                // 削除してよいか警告を表示する
+                var res = await DialogCoordinator.ShowMessageAsync(this, "警告", "画像を削除しても良いですか？", MessageDialogStyle.AffirmativeAndNegative);
+                if (res == MessageDialogResult.Negative || res == MessageDialogResult.Canceled) return;
+
+                item.ImageSourceR.Value = null;
+                ImageManager.RemoveImageFile(item.IDR.Value);
             });
         }
         private DelegateCommand _removeImageCmd;

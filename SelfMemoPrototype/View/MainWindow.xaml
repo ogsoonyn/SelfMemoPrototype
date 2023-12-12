@@ -163,10 +163,8 @@
                         <Button Content="クリップボードから貼付" Command="{Binding PasteImageCmd}" IsEnabled="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegative}}"
                                     Margin="3" ToolTip="クリップボードに画像があれば、貼り付けます（上書きされるので注意）"/>
                         <Button Content="ビューアで見る" Command="{Binding OpenAsImageViewerCmd}" IsEnabled="{Binding SelectedItem.Value.HasImageSource.Value}"/>
-                        <!--
-                            <Button Content="削除" Command="{Binding RemoveImageCmd}" IsEnabled="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegative}}"
-                                    Margin="3" ToolTip="画像を削除します"/>
-                            -->
+                        <Button Content="削除" Command="{Binding RemoveImageCmd}" IsEnabled="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegative}}"
+                                Margin="3" ToolTip="画像を削除します"/>
                     </StackPanel>
 
                     <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.KeywordR.Value}"
