@@ -5,6 +5,7 @@ using Reactive.Bindings;
 using SelfMemoPrototype.Model;
 using SelfMemoPrototype.View;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reactive.Linq;
 using System.Reflection;
@@ -421,5 +422,16 @@ namespace SelfMemoPrototype.ViewModel
             });
         }
         private DelegateCommand _openAsImageViewerCmd;
+
+        public DelegateCommand OpenAppFolderCmd
+        {
+            get => _openAppFolderCmd = _openAppFolderCmd ?? new DelegateCommand(() =>
+            {
+                var path = AppDomain.CurrentDomain.BaseDirectory;
+                if (!Directory.Exists(path)) Directory.CreateDirectory(path);
+                Process.Start(path);
+            });
+        }
+        private DelegateCommand _openAppFolderCmd;
     }
 }
