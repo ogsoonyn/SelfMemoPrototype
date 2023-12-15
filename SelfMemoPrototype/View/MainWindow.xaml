@@ -161,11 +161,12 @@
                     <TextBlock Grid.Row="4" Grid.Column="0" Text="更新日" FontWeight="Bold"/>
                     <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.ColumnSpan="2">
                         <TextBlock Text="画像" FontWeight="Bold"/>
-                        <Button Content="クリップボードから貼付" Command="{Binding PasteImageCmd}" IsEnabled="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegative}}"
-                                    Margin="3" ToolTip="クリップボードに画像があれば、貼り付けます（上書きされるので注意）"/>
-                        <Button Content="ビューアで見る" Command="{Binding OpenAsImageViewerCmd}" IsEnabled="{Binding SelectedItem.Value.HasImageSource.Value}"/>
+                        <Button Content="ビューアで見る" Command="{Binding OpenAsImageViewerCmd}" IsEnabled="{Binding SelectedItem.Value.HasImageSource.Value}"
+                                Margin="3" ToolTip="画像ビューアを開きます"/>
+                        <Button Content="貼付" Command="{Binding PasteImageCmd}" IsEnabled="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegative}}"
+                                Margin="3" ToolTip="クリップボードに画像があれば、貼り付けます（上書きされるので注意）"/>
                         <Button Content="削除" Command="{Binding RemoveImageCmd}" IsEnabled="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegative}}"
-                                Margin="3" ToolTip="画像を削除します"/>
+                                Margin="3" ToolTip="画像を削除します" Style="{StaticResource MaterialDesignRaisedAccentButton}"/>
                     </StackPanel>
 
                     <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.KeywordR.Value}"
@@ -201,7 +202,7 @@
                         </ComboBox>
                     </Grid>
 
-                    <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.DateR.Value, StringFormat=yyyy/MM/dd hh:mm:ss}" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.DateR.Value, StringFormat={}{0:yyyy/M/d H:mm:ss}}" TextWrapping="Wrap"/>
 
                     <CheckBox Grid.Row="5" Grid.ColumnSpan="2" Margin="5, 0" Style="{StaticResource MaterialDesignCheckBox}"
                           ToolTip="ロック解除するとデータの書き換えができます。ロック中はURLのリンク化が行われます"
@@ -302,7 +303,7 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
 
-                    <DataGridTextColumn Header="更新日" Binding="{Binding DateR.Value, StringFormat=\{0:yyyy/MM/dd hh:mm:ss\}}" MaxWidth="180" IsReadOnly="True">
+                    <DataGridTextColumn Header="更新日" Binding="{Binding DateR.Value, StringFormat={}{0:yyyy/M/d H:mm:ss}}" MaxWidth="180" IsReadOnly="True">
                         <DataGridTextColumn.EditingElementStyle>
                             <Style TargetType="TextBox">
                                 <Setter Property="IsReadOnly" Value="True"/>
