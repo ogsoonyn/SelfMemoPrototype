@@ -14,7 +14,13 @@
     <mahApps:MetroWindow.DataContext>
         <vm:ImageViewerViewModel/>
     </mahApps:MetroWindow.DataContext>
-    
+    <i:Interaction.Behaviors>
+        <b:ApplicationCommandBehavior/>
+    </i:Interaction.Behaviors>
+    <Window.InputBindings>
+        <KeyBinding Key="Esc" Command="Close"/>
+    </Window.InputBindings>
+
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <RadioButton Name="RB_IsScaling" Content="ウィンドウに合わせる" IsChecked="True" GroupName="ImageStretch"/>
