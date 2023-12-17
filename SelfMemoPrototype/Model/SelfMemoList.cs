@@ -246,16 +246,25 @@ namespace SelfMemoPrototype.Model
             return count;
         }
 
+        /// <summary>
+        /// 次の新規項目のIDを返す
+        /// </summary>
+        /// <returns></returns>
         public static int GetNextID()
         {
-            if (ItemsList.Count == 0) return 0;
+            if (ItemsList.Count == 0) return 1;
             return ItemsList.Select(item => item.IDR.Value).Max() + 1;
         }
 
 
-        // Backup関連
+        /// <summary>
+        /// 最終バックアップ日時
+        /// </summary>
         public static DateTime LastBackupDate { get; private set; } = DateTime.MinValue;
 
+        /// <summary>
+        /// メモファイルのjsonデータをバックアップする
+        /// </summary>
         public static void BackupMemoFile()
         {
             if (!Directory.Exists(BackupDirectoryName)) Directory.CreateDirectory(BackupDirectoryName);
