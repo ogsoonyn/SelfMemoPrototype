@@ -1,8 +1,13 @@
-﻿using Prism.Commands;
+﻿using MaterialDesignThemes.Wpf;
+using Prism.Commands;
 using Prism.Mvvm;
 using Reactive.Bindings;
 using SelfMemoPrototype.Model;
 using System;
+using System.IO;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using System.Windows.Media.Imaging;
 
 namespace SelfMemoPrototype.ViewModel
@@ -33,6 +38,25 @@ namespace SelfMemoPrototype.ViewModel
         public ReactivePropertySlim<bool> IsSelected { get; set; } = new ReactivePropertySlim<bool>();
 
         public ReactivePropertySlim<BitmapSource> ImageSource { get; set; } = new ReactivePropertySlim<BitmapSource>();
+
+        public ReactivePropertySlim<RegisterTemplate> Template { get; set; } = new ReactivePropertySlim<RegisterTemplate>();
+
+        public ReactiveCollection<RegisterTemplate> Templates { get; set; } = new ReactiveCollection<RegisterTemplate>();
+
+
+        public RegisterViewModel()
+        {
+            var items = RegisterTemplate.LoadTemplateJson("template.json");
+            if(items != null)
+            {
+                foreach(var item in items)
+                {
+                    Templates.Add(item);
+                }
+            }
+            if (Templates.Count == 0) Templates.Add(new RegisterTemplate());
+            Template.Value = Templates.ElementAt(0);
+        }
 
         #region AddMemoItemCommand
         private DelegateCommand _addMemoItemCmd;
@@ -89,5 +113,49 @@ namespace SelfMemoPrototype.ViewModel
             }
         }
         #endregion
+    }
+
+    [DataContract]
+    class RegisterTemplate
+    {
+        [DataMember]
+        public string Name { get; set; } = "デフォルト";
+
+        [DataMember]
+        public string Keyword1Hint { get; set; } = "キーワード(用語)";
+
+        [DataMember]
+        public string Keyword2Hint { get; set; } = "キーワード2(略語・別名・訳語など)";
+
+        [DataMember]
+        public string DescriptionHint { get; set; } = "説明";
+
+        public override string ToString()
+        {
+            return Name;
+        }
+
+        public RegisterTemplate(string name, string kw1, string kw2, string desc)
+        {
+            Name = name;
+            Keyword1Hint = kw1;
+            Keyword2Hint = kw2;
+            DescriptionHint = desc;
+        }
+
+        public RegisterTemplate() { }
+
+        public static ReactiveCollection<RegisterTemplate> LoadTemplateJson(string filename)
+        {
+            if(!File.Exists(filename)) return null;
+            ReactiveCollection<RegisterTemplate> items;
+            using (var ms = new FileStream(filename, FileMode.Open))
+            { 
+                var serializer = new DataContractJsonSerializer(typeof(ReactiveCollection<RegisterTemplate>));
+                items = (ReactiveCollection<RegisterTemplate>)serializer.ReadObject(ms);
+            }
+
+            return items;
+        }
     }
 }

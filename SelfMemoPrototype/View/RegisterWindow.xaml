@@ -34,16 +34,17 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <GroupBox Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Header="用語登録" Margin="3">
             <DockPanel HorizontalAlignment="Stretch">
-                <TextBox DockPanel.Dock="Top" x:Name="WordBox" md:HintAssist.Hint="キーワード(用語)"
+                <TextBox DockPanel.Dock="Top" x:Name="WordBox" md:HintAssist.Hint="{Binding Template.Value.Keyword1Hint}"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="3" TabIndex="1"
                          Text="{Binding Word.Value, UpdateSourceTrigger=PropertyChanged}" b:FocusExtension.IsFocused="{Binding IsSelected.Value}"
                          VerticalAlignment="Center"/>
 
-                <TextBox DockPanel.Dock="Top" md:HintAssist.Hint="キーワード2(略語・別名・訳語など)"
+                <TextBox DockPanel.Dock="Top" md:HintAssist.Hint="{Binding Template.Value.Keyword2Hint}"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="3" TabIndex="2"
                          Text="{Binding ShortWord.Value, UpdateSourceTrigger=PropertyChanged}"
                          VerticalAlignment="Center"/>
@@ -53,7 +54,7 @@
                           Text="{Binding Category.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           IsEditable="True" IsReadOnly="False" ItemsSource="{Binding CategoryList}"/>
 
-                <TextBox DockPanel.Dock="Bottom" Margin="3" md:HintAssist.Hint="説明"
+                <TextBox DockPanel.Dock="Bottom" Margin="3" md:HintAssist.Hint="{Binding Template.Value.DescriptionHint}"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}" TabIndex="3"
                          Text="{Binding Description.Value, UpdateSourceTrigger=PropertyChanged}"
                          AcceptsReturn="True" TextWrapping="Wrap"/>
@@ -68,6 +69,9 @@
             </DockPanel>
         </GroupBox>
 
-        <Button Grid.Row="1" Grid.Column="1" Margin="20, 5" Content="追加する (Ctrl+S)" Command="{Binding AddMemoItemCmd}"/>
+        <ComboBox Grid.Row="1" Grid.Column="1" Margin="20, 5" md:HintAssist.Hint="用語登録テンプレート"
+                  Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                  SelectedItem="{Binding Template.Value, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Templates}"/>
+        <Button Grid.Row="2" Grid.Column="1" Margin="20, 5" Content="追加する (Ctrl+S)" Command="{Binding AddMemoItemCmd}"/>
     </Grid>
 </mahApps:MetroWindow>
