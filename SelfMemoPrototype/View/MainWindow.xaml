@@ -169,27 +169,27 @@
                                 Margin="3" ToolTip="画像を削除します" Style="{StaticResource MaterialDesignRaisedAccentButton}"/>
                     </StackPanel>
 
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.KeywordR.Value}"
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.Keyword_R.Value}"
                            Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolToVisible}}"/>
-                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.Keyword2R.Value}"
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.Keyword2_R.Value}"
                            Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolToVisible}}"/>
-                    <TextBlock Grid.Row="2" Grid.Column="1" local:NavigationService.Text="{Binding FilteredItems.CurrentItem.DescriptionR.Value}"
+                    <TextBlock Grid.Row="2" Grid.Column="1" local:NavigationService.Text="{Binding FilteredItems.CurrentItem.Description_R.Value}"
                            Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolToVisible}}"/>
-                    <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.CategoryR.Value}"
+                    <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.Category_R.Value}"
                            Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolToVisible}}"/>
 
-                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.KeywordR.Value, UpdateSourceTrigger=PropertyChanged}" 
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.Keyword_R.Value, UpdateSourceTrigger=PropertyChanged}" 
                          TextWrapping="Wrap" Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegativeToVisible}}"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.Keyword2R.Value, UpdateSourceTrigger=PropertyChanged}" 
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.Keyword2_R.Value, UpdateSourceTrigger=PropertyChanged}" 
                          TextWrapping="Wrap" Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegativeToVisible}}"/>
-                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.DescriptionR.Value, UpdateSourceTrigger=PropertyChanged}"
+                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.Description_R.Value, UpdateSourceTrigger=PropertyChanged}"
                          TextWrapping="Wrap" Width="Auto" AcceptsReturn="True" Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegativeToVisible}}"/>
                     <Grid Grid.Row="3" Grid.Column="1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="3*"/>
                             <ColumnDefinition Width="*" MinWidth="100"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox Text="{Binding FilteredItems.CurrentItem.CategoryR.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        <TextBox Text="{Binding FilteredItems.CurrentItem.Category_R.Value, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                      TextWrapping="Wrap" Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegativeToVisible}}"/>
                         <ComboBox Grid.Column="1" SelectedItem="{Binding CategoryEditorSelectedItem.Value, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding CategoryList}" Visibility="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegativeToVisible}}"
@@ -202,7 +202,7 @@
                         </ComboBox>
                     </Grid>
 
-                    <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.DateR.Value, StringFormat={}{0:yyyy/M/d H:mm:ss}}" TextWrapping="Wrap"/>
+                    <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding FilteredItems.CurrentItem.Date_R.Value, StringFormat={}{0:yyyy/M/d H:mm:ss}}" TextWrapping="Wrap"/>
 
                     <CheckBox Grid.Row="5" Grid.ColumnSpan="2" Margin="5, 0" Style="{StaticResource MaterialDesignCheckBox}"
                           ToolTip="ロック解除するとデータの書き換えができます。ロック中はURLのリンク化が行われます"
@@ -245,7 +245,7 @@
                     </Style>
                 </DataGrid.CellStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Binding="{Binding IDR.Value}" IsReadOnly="True">
+                    <DataGridTextColumn Header="ID" Binding="{Binding ID_R.Value}" IsReadOnly="True">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="TextWrapping" Value="Wrap"/>
@@ -254,7 +254,7 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
 
-                    <DataGridTextColumn Header="キーワード" Binding="{Binding KeywordR.Value}" MaxWidth="230" IsReadOnly="True">
+                    <DataGridTextColumn Header="キーワード" Binding="{Binding Keyword_R.Value}" MaxWidth="230" IsReadOnly="True">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="TextWrapping" Value="Wrap"/>
@@ -263,7 +263,7 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
 
-                    <DataGridTextColumn Header="キーワード2" Binding="{Binding Keyword2R.Value}" MaxWidth="230" IsReadOnly="True">
+                    <DataGridTextColumn Header="キーワード2" Binding="{Binding Keyword2_R.Value}" MaxWidth="230" IsReadOnly="True">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="TextWrapping" Value="Wrap"/>
@@ -272,7 +272,7 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
 
-                    <DataGridTextColumn x:Name="desc" Header="説明" Binding="{Binding DescriptionR.Value}" MaxWidth="600" IsReadOnly="True">
+                    <DataGridTextColumn x:Name="desc" Header="説明" Binding="{Binding Description_R.Value}" MaxWidth="600" IsReadOnly="True">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="TextWrapping" Value="Wrap"/>
@@ -294,7 +294,7 @@
                         </DataGridTextColumn.EditingElementStyle>
                     </DataGridTextColumn>
 
-                    <DataGridTextColumn Header="カテゴリ" Binding="{Binding CategoryR.Value}" MaxWidth="200" IsReadOnly="True">
+                    <DataGridTextColumn Header="カテゴリ" Binding="{Binding Category_R.Value}" MaxWidth="200" IsReadOnly="True">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="TextWrapping" Value="Wrap"/>
@@ -303,7 +303,7 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
 
-                    <DataGridTextColumn Header="更新日" Binding="{Binding DateR.Value, StringFormat={}{0:yyyy/M/d H:mm:ss}}" MaxWidth="180" IsReadOnly="True">
+                    <DataGridTextColumn Header="更新日" Binding="{Binding Date_R.Value, StringFormat={}{0:yyyy/M/d H:mm:ss}}" MaxWidth="180" IsReadOnly="True">
                         <DataGridTextColumn.EditingElementStyle>
                             <Style TargetType="TextBox">
                                 <Setter Property="IsReadOnly" Value="True"/>
@@ -315,7 +315,7 @@
                     <DataGridTemplateColumn Header="画像" IsReadOnly="True">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Image Source="{Binding ImageSourceR.Value}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3" MaxHeight="200" StretchDirection="DownOnly"/>
+                                <Image Source="{Binding ImageSource_R.Value}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3" MaxHeight="200" StretchDirection="DownOnly"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

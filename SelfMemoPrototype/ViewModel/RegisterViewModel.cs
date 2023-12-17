@@ -63,8 +63,8 @@ namespace SelfMemoPrototype.ViewModel
                 // Imageがあれば保存
                 if(ImageSource.Value != null)
                 {
-                    ImageManager.SaveImageFile(ImageSource.Value, newmemo.IDR.Value);
-                    newmemo.ImageSourceR.Value = ImageSource.Value;
+                    ImageManager.SaveImageFile(ImageSource.Value, newmemo.ID_R.Value);
+                    newmemo.ImageSource_R.Value = ImageSource.Value;
                 }
 
                 // MemoListに追加

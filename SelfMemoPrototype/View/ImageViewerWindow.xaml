@@ -29,10 +29,10 @@
 
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem HorizontalAlignment="Left">
-                <TextBlock Text="{Binding Item.Value.KeywordR.Value, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text="{Binding Item.Value.Keyword_R.Value, UpdateSourceTrigger=PropertyChanged}"/>
             </StatusBarItem>
             <StatusBarItem HorizontalAlignment="Right" Margin="0,0,15,0">
-                <TextBlock Text="{Binding Item.Value.CategoryR.Value, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text="{Binding Item.Value.Category_R.Value, UpdateSourceTrigger=PropertyChanged}"/>
             </StatusBarItem>
         </StatusBar>
 
@@ -51,7 +51,7 @@
                     </Style.Triggers>
                 </Style>
             </ScrollViewer.Resources>
-            <Image Source="{Binding Item.Value.ImageSourceR.Value, UpdateSourceTrigger=PropertyChanged}">
+            <Image Source="{Binding Item.Value.ImageSource_R.Value, UpdateSourceTrigger=PropertyChanged}">
                 <Image.Resources>
                     <Style TargetType="Image">
                         <!-- 等倍表示 -->

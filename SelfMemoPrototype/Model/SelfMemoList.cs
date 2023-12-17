@@ -75,9 +75,9 @@ namespace SelfMemoPrototype.Model
             // ItemsListを全件検索
             foreach (var item in ItemsList)
             {
-                if (!newlist.Contains(item.CategoryR.Value))
+                if (!newlist.Contains(item.Category_R.Value))
                 {
-                    newlist.Add(item.CategoryR.Value);
+                    newlist.Add(item.Category_R.Value);
                 }
             }
 
@@ -253,7 +253,7 @@ namespace SelfMemoPrototype.Model
         public static int GetNextID()
         {
             if (ItemsList.Count == 0) return 1;
-            return ItemsList.Select(item => item.IDR.Value).Max() + 1;
+            return ItemsList.Select(item => item.ID_R.Value).Max() + 1;
         }
 
 

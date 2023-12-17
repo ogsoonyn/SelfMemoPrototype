@@ -204,10 +204,10 @@ namespace SelfMemoPrototype.ViewModel
                 }
                 string fl = f.ToLower();
 
-                if (memo.KeywordR.Value.ToLower().Contains(fl)) found++;
-                else if (memo.Keyword2R.Value.ToLower().Contains(fl)) found++ ;
-                else if (memo.DescriptionR.Value.ToLower().Contains(fl)) found++;
-                else if (memo.CategoryR.Value.ToLower().Contains(fl)) found++;
+                if (memo.Keyword_R.Value.ToLower().Contains(fl)) found++;
+                else if (memo.Keyword2_R.Value.ToLower().Contains(fl)) found++ ;
+                else if (memo.Description_R.Value.ToLower().Contains(fl)) found++;
+                else if (memo.Category_R.Value.ToLower().Contains(fl)) found++;
             }
 
             return found == filters.Length;
@@ -228,7 +228,7 @@ namespace SelfMemoPrototype.ViewModel
             if (string.IsNullOrEmpty(CategoryListSelected.Value)) return true;
 
             // 指定されたCategoryの項目のみTrueを返す
-            return (memo.CategoryR.Value == CategoryListSelected.Value);
+            return (memo.Category_R.Value == CategoryListSelected.Value);
         }
 
         /// <summary>
@@ -342,8 +342,8 @@ namespace SelfMemoPrototype.ViewModel
                     if(res == MessageDialogResult.Negative || res == MessageDialogResult.Canceled) return;
                 }
 
-                item.ImageSourceR.Value = img;
-                ImageManager.SaveImageFile(img, item.IDR.Value);
+                item.ImageSource_R.Value = img;
+                ImageManager.SaveImageFile(img, item.ID_R.Value);
             });
         }
         private DelegateCommand _pasteImageCmd;
@@ -364,8 +364,8 @@ namespace SelfMemoPrototype.ViewModel
                 var res = await DialogCoordinator.ShowMessageAsync(this, "警告", "画像を削除しても良いですか？", MessageDialogStyle.AffirmativeAndNegative);
                 if (res == MessageDialogResult.Negative || res == MessageDialogResult.Canceled) return;
 
-                item.ImageSourceR.Value = null;
-                ImageManager.RemoveImageFile(item.IDR.Value);
+                item.ImageSource_R.Value = null;
+                ImageManager.RemoveImageFile(item.ID_R.Value);
             });
         }
         private DelegateCommand _removeImageCmd;
@@ -379,7 +379,7 @@ namespace SelfMemoPrototype.ViewModel
             get => _changeCategoryEditorCmd = _changeCategoryEditorCmd ?? new DelegateCommand(() =>
             {
                 if (string.IsNullOrEmpty(CategoryEditorSelectedItem.Value)) return;
-                SelectedItem.Value.CategoryR.Value = CategoryEditorSelectedItem.Value;
+                SelectedItem.Value.Category_R.Value = CategoryEditorSelectedItem.Value;
             });
         }
         private DelegateCommand _changeCategoryEditorCmd;

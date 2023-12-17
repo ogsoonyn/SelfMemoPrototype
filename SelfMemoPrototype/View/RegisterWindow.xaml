@@ -20,7 +20,7 @@
         <b:ApplicationCommandBehavior/>
     </i:Interaction.Behaviors>
 
-    <Grid Margin="10">
+    <Grid Margin="3">
         <Grid.InputBindings>
             <KeyBinding Key="Esc" Command="Close"/>
             <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding AddMemoItemCmd}"/>
@@ -36,31 +36,31 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <GroupBox Grid.Row="0" Grid.Column="0" Grid.RowSpan="4" Header="用語登録" Margin="5">
+        <GroupBox Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Header="用語登録" Margin="3">
             <DockPanel HorizontalAlignment="Stretch">
                 <TextBox DockPanel.Dock="Top" x:Name="WordBox" md:HintAssist.Hint="キーワード(用語)"
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="3"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="3" TabIndex="1"
                          Text="{Binding Word.Value, UpdateSourceTrigger=PropertyChanged}" b:FocusExtension.IsFocused="{Binding IsSelected.Value}"
                          VerticalAlignment="Center"/>
 
                 <TextBox DockPanel.Dock="Top" md:HintAssist.Hint="キーワード2(略語・別名・訳語など)"
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="3"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="3" TabIndex="2"
                          Text="{Binding ShortWord.Value, UpdateSourceTrigger=PropertyChanged}"
                          VerticalAlignment="Center"/>
 
-                <ComboBox DockPanel.Dock="Bottom" md:HintAssist.Hint="カテゴリ"
+                <ComboBox DockPanel.Dock="Bottom" md:HintAssist.Hint="カテゴリ" TabIndex="4"
                           Style="{StaticResource MaterialDesignFloatingHintComboBox}" Margin="3"
                           Text="{Binding Category.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           IsEditable="True" IsReadOnly="False" ItemsSource="{Binding CategoryList}"/>
 
                 <TextBox DockPanel.Dock="Bottom" Margin="3" md:HintAssist.Hint="説明"
-                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" TabIndex="3"
                          Text="{Binding Description.Value, UpdateSourceTrigger=PropertyChanged}"
                          AcceptsReturn="True" TextWrapping="Wrap"/>
             </DockPanel>
         </GroupBox>
 
-        <GroupBox Grid.Row="0" Grid.Column="1" Margin="5" Header="画像">
+        <GroupBox Grid.Row="0" Grid.Column="1" Margin="3" Header="画像">
             <DockPanel>
                 <Button DockPanel.Dock="Bottom" Content="クリップボードから貼付" Command="{Binding PasteImageCmd}"
                         Style="{StaticResource MaterialDesignFlatButton}" HorizontalAlignment="Right"/>
