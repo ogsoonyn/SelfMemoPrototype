@@ -222,7 +222,7 @@
                             <Image Name="I_Image" Stretch="Uniform" StretchDirection="DownOnly"
                                    Width="{Binding ActualWidth, RelativeSource={RelativeSource FindAncestor, AncestorType=StackPanel}}"
                                    Height="{Binding ActualHeight, RelativeSource={RelativeSource FindAncestor, AncestorType=StackPanel}}"
-                                   Source="{Binding FilteredItems.CurrentItem.ImageSourceR.Value, UpdateSourceTrigger=PropertyChanged}"/>
+                                   Source="{Binding FilteredItems.CurrentItem.ImageSource_R.Value, UpdateSourceTrigger=PropertyChanged}"/>
                         </Border>
                     </StackPanel>
                 </Grid>

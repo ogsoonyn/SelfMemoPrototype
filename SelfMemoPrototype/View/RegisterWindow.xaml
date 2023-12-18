@@ -37,7 +37,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <GroupBox Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Header="用語登録" Margin="3">
+        <GroupBox Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" Header="用語登録" Margin="3">
             <DockPanel HorizontalAlignment="Stretch">
                 <TextBox DockPanel.Dock="Top" x:Name="WordBox" md:HintAssist.Hint="{Binding Template.Value.Keyword1Hint}"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="3" TabIndex="1"
