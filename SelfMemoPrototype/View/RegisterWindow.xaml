@@ -49,7 +49,7 @@
                          Text="{Binding ShortWord.Value, UpdateSourceTrigger=PropertyChanged}"
                          VerticalAlignment="Center"/>
 
-                <ComboBox DockPanel.Dock="Bottom" md:HintAssist.Hint="カテゴリ" TabIndex="4"
+                <ComboBox DockPanel.Dock="Bottom" md:HintAssist.Hint="{Binding Template.Value.CategoryHint}" TabIndex="4"
                           Style="{StaticResource MaterialDesignFloatingHintComboBox}" Margin="3"
                           Text="{Binding Category.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           IsEditable="True" IsReadOnly="False" ItemsSource="{Binding CategoryList}"/>

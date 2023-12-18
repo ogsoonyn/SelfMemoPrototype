@@ -56,36 +56,33 @@ namespace SelfMemoPrototype.ViewModel
             }
             if (Templates.Count == 0) Templates.Add(new RegisterTemplate());
             Template.Value = Templates.ElementAt(0);
+
+            Template.Subscribe(t =>
+            {
+                ApplyTemplateToRegisterEntry(t);
+            });
+        }
+
+        public void ApplyTemplateToRegisterEntry(RegisterTemplate t)
+        {
+            Word.Value = t.Keyword1Template;
+            ShortWord.Value = t.Keyword2Template;
+            Description.Value = t.DescriptionTemplate;
+            Category.Value = t.CategoryTemplate;
         }
 
         #region AddMemoItemCommand
         private DelegateCommand _addMemoItemCmd;
         public DelegateCommand AddMemoItemCmd
         {
-            get { return _addMemoItemCmd = _addMemoItemCmd ?? new DelegateCommand(AddMemoToList); }
-        }
-
-        private DelegateCommand _pasteImageCmd;
-
-        public DelegateCommand PasteImageCmd
-        {
-            get => _pasteImageCmd = _pasteImageCmd ?? new DelegateCommand(() =>
+            get => _addMemoItemCmd = _addMemoItemCmd ?? new DelegateCommand(() =>
             {
-                ImageSource.Value = ClipboardCapture.GetBitmap();
-            });
-        }
+                SelfMemoItem newmemo = new SelfMemoItem(Word.Value, ShortWord.Value, Description.Value, Category.Value);
 
-        /// <summary>
-        /// プロパティに保持中の情報を新規SelfMemoとして追加する
-        /// </summary>
-        private void AddMemoToList()
-        {
-            SelfMemoItem newmemo = new SelfMemoItem(Word.Value, ShortWord.Value, Description.Value, Category.Value);
+                if (MemoList.Contains(newmemo)) return;
 
-            if (!MemoList.Contains(newmemo))
-            {
                 // Imageがあれば保存
-                if(ImageSource.Value != null)
+                if (ImageSource.Value != null)
                 {
                     ImageManager.SaveImageFile(ImageSource.Value, newmemo.ID_R.Value);
                     newmemo.ImageSource_R.Value = ImageSource.Value;
@@ -101,16 +98,26 @@ namespace SelfMemoPrototype.ViewModel
                     SelfMemoList.BackupMemoFile();
 
 
-                // プロパティを空白で初期化
-                Word.Value = "";
-                ShortWord.Value = "";
-                Description.Value = "";
-                Category.Value = "";
+                // プロパティをテンプレートの初期値で初期化
+                ApplyTemplateToRegisterEntry(Template.Value);
+
                 ImageSource.Value = null;
 
                 // WordのTextboxをフォーカスする
                 IsSelected.Value = true;
-            }
+
+
+            });
+        }
+
+        private DelegateCommand _pasteImageCmd;
+
+        public DelegateCommand PasteImageCmd
+        {
+            get => _pasteImageCmd = _pasteImageCmd ?? new DelegateCommand(() =>
+            {
+                ImageSource.Value = ClipboardCapture.GetBitmap();
+            });
         }
         #endregion
     }
@@ -130,17 +137,33 @@ namespace SelfMemoPrototype.ViewModel
         [DataMember]
         public string DescriptionHint { get; set; } = "説明";
 
+        [DataMember]
+        public string CategoryHint { get; set; } = "カテゴリ";
+
+        [DataMember]
+        public string Keyword1Template { get; set; } = "";
+
+        [DataMember]
+        public string Keyword2Template { get; set; } = "";
+
+        [DataMember]
+        public string DescriptionTemplate { get; set; } = "";
+
+        [DataMember]
+        public string CategoryTemplate { get; set; } = "";
+
         public override string ToString()
         {
             return Name;
         }
 
-        public RegisterTemplate(string name, string kw1, string kw2, string desc)
+        public RegisterTemplate(string name, string kw1, string kw2, string desc, string category)
         {
             Name = name;
             Keyword1Hint = kw1;
             Keyword2Hint = kw2;
             DescriptionHint = desc;
+            CategoryHint = category;
         }
 
         public RegisterTemplate() { }
