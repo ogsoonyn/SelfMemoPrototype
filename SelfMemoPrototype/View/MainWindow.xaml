@@ -101,23 +101,32 @@
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem HorizontalAlignment="Left" Visibility="{Binding UseFilterStr.Value, Converter={StaticResource BoolToVisible}}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Kwd: " FontWeight="Bold" />
+                    <TextBlock Text="Search: " FontWeight="Bold" />
                     <TextBlock Text="{Binding FilterStr.Value}"/>
                 </StackPanel>
             </StatusBarItem>
 
             <StatusBarItem HorizontalAlignment="Left" Visibility="{Binding UseCategoryList.Value, Converter={StaticResource BoolToVisible}}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Cat: " FontWeight="Bold"/>
+                    <TextBlock Text="Category: " FontWeight="Bold"/>
                     <TextBlock Text="{Binding CategoryListSelected.Value}"/>
                 </StackPanel>
             </StatusBarItem>
 
-            <StatusBarItem HorizontalAlignment="Right" Margin="0,0,15,0">
+            <StatusBarItem Margin="0,0,15,0" HorizontalAlignment="Right" DockPanel.Dock="Right">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="{Binding FilteredItems.Count}"/>
                     <TextBlock Text="/"/>
                     <TextBlock Text="{Binding MemoList.Count}"/>
+                    <TextBlock Text=" items"/>
+                </StackPanel>
+            </StatusBarItem>
+
+            <Separator DockPanel.Dock="Right"/>
+            <StatusBarItem HorizontalAlignment="Right" DockPanel.Dock="Right">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Filtering Time: " FontWeight="Bold"/>
+                    <TextBlock Text="{Binding FilteringTime.Value, StringFormat={}{0:s\\.fff}s}"/>
                 </StackPanel>
             </StatusBarItem>
         </StatusBar>

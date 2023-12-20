@@ -88,8 +88,6 @@ namespace SelfMemoPrototype.ViewModel
         /// </summary>
         public ReactivePropertySlim<string> CategoryEditorSelectedItem { get; set; } = new ReactivePropertySlim<string>();
 
-        #endregion // Properties
-
         /// <summary>
         /// FilteredItemsの更新に使用するタイマー
         /// </summary>
@@ -99,6 +97,13 @@ namespace SelfMemoPrototype.ViewModel
         /// 選択中の項目プレビューに使用する
         /// </summary>
         public ReactivePropertySlim<SelfMemoItem> SelectedItem { get; set; } = new ReactivePropertySlim<SelfMemoItem>();
+
+        /// <summary>
+        /// フィルタリングにかかった時間
+        /// </summary>
+        public ReactivePropertySlim<TimeSpan> FilteringTime { get; private set; } = new ReactivePropertySlim<TimeSpan>();
+
+        #endregion // Properties
 
         public MainViewModel()
         {
@@ -133,23 +138,7 @@ namespace SelfMemoPrototype.ViewModel
             }
 
             // Filter文字列が更新されたら、Filterされたアイテムリストを更新
-            FilterStr.Subscribe(_ =>
-            {
-                // 既にタイマーが走ってたら、一旦止める
-                if (FilteredItemsRefreshTimer.IsEnabled)
-                {
-                    FilteredItemsRefreshTimer.Stop();
-                }
-
-                // タイマー開始
-                FilteredItemsRefreshTimer.Interval = TimeSpan.FromMilliseconds(300);
-                FilteredItemsRefreshTimer.Tick += (s, e) =>
-                {
-                    FilteredItems.Refresh();
-                    FilteredItemsRefreshTimer.Stop();
-                };
-                FilteredItemsRefreshTimer.Start();
-            });
+            FilterStr.Subscribe(_ => RefreshFilteredItems(300));
 
             // Filter文字列の有無フラグを連動
             UseFilterStr = FilterStr.Select(x => !string.IsNullOrWhiteSpace(x)).ToReadOnlyReactivePropertySlim();
@@ -168,6 +157,16 @@ namespace SelfMemoPrototype.ViewModel
             // UseCategoryListはカテゴリリストからなんか選択されてたらTrue
             UseCategoryList = CategoryListSelected.Select(x => !string.IsNullOrEmpty(x)).ToReadOnlyReactivePropertySlim();
 
+            // FilteredItemsのリフレッシュ処理（ワーカスレッド）の初期化
+            FilteredItemsRefreshTimer.Tick += (s, e) =>
+            {
+                var stw = new Stopwatch();
+                stw.Start();
+                FilteredItems.Refresh();
+                FilteredItemsRefreshTimer.Stop();
+                stw.Stop();
+                FilteringTime.Value = stw.Elapsed;
+            };
         }
 
         ~MainViewModel()
@@ -229,6 +228,20 @@ namespace SelfMemoPrototype.ViewModel
 
             // 指定されたCategoryの項目のみTrueを返す
             return (memo.Category_R.Value == CategoryListSelected.Value);
+        }
+
+        /// <summary>
+        /// 表示するリストの内容を更新する
+        /// 更新処理は別スレッドで、引数のDelay時間後に実行
+        /// </summary>
+        /// <param name="delay"></param>
+        private void RefreshFilteredItems(double delay)
+        {
+            // 既にタイマーが走ってたら何もしない
+            if (FilteredItemsRefreshTimer.IsEnabled) return;
+
+            FilteredItemsRefreshTimer.Interval = TimeSpan.FromMilliseconds(delay);
+            FilteredItemsRefreshTimer.Start();
         }
 
         /// <summary>
@@ -390,19 +403,7 @@ namespace SelfMemoPrototype.ViewModel
         /// </summary>
         public DelegateCommand ChangeCategoryFilterCmd
         {
-            get => _changeCategoryFilterCmd = _changeCategoryFilterCmd ?? new DelegateCommand(() =>
-            {
-                if (!FilteredItemsRefreshTimer.IsEnabled)
-                {
-                    FilteredItemsRefreshTimer.Interval = TimeSpan.FromMilliseconds(300);
-                    FilteredItemsRefreshTimer.Tick += (s, e) =>
-                    {
-                        FilteredItems.Refresh();
-                        FilteredItemsRefreshTimer.Stop();
-                    };
-                    FilteredItemsRefreshTimer.Start();
-                }
-            });
+            get => _changeCategoryFilterCmd = _changeCategoryFilterCmd ?? new DelegateCommand(() => RefreshFilteredItems(200));
         }
         private DelegateCommand _changeCategoryFilterCmd;
 
