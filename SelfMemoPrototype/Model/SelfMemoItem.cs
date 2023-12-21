@@ -3,14 +3,13 @@ using System;
 using System.Reactive.Linq;
 using System.Runtime.Serialization;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace SelfMemoPrototype.Model
 {
     [DataContract]
-#pragma warning disable CS0659 // 型は Object.Equals(object o) をオーバーライドしますが、Object.GetHashCode() をオーバーライドしません
     public class SelfMemoItem
-#pragma warning restore CS0659 // 型は Object.Equals(object o) をオーバーライドしますが、Object.GetHashCode() をオーバーライドしません
     {
         public ReactivePropertySlim<int> ID_R { get; set; } = new ReactivePropertySlim<int>();
 
@@ -88,25 +87,13 @@ namespace SelfMemoPrototype.Model
 
         public override bool Equals(object obj)
         {
-            if (obj is SelfMemoItem)
-            {
-                var item = obj as SelfMemoItem;
-                bool chk1 = item.Keyword == Keyword;
-                bool chk2 = item.Description == Description;
-                bool chk3 = item.Keyword2 == Keyword2;
-                bool chk4 = item.Category == Category;
-
-                return chk1 && chk2 && chk3 && chk4;
-            }
-            return false;
+            return obj.GetHashCode() == GetHashCode();
         }
 
-        /*
         public override int GetHashCode()
         {
-            return (Keyword + Description + Keyword2 + Category).GetHashCode();
+            return (Keyword, Keyword2, Description, Category).GetHashCode();
         }
-        */
 
         public SelfMemoItem(string keyword, string shortkwd, string description, string category, int id=-1)
         {
