@@ -92,7 +92,7 @@ namespace SelfMemoPrototype.Model
 
         public override int GetHashCode()
         {
-            return (Keyword, Keyword2, Description, Category).GetHashCode();
+            return (Keyword_R, Keyword2_R, Description_R, Category_R).GetHashCode();
         }
 
         public SelfMemoItem(string keyword, string shortkwd, string description, string category, int id=-1)
