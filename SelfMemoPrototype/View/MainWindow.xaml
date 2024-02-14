@@ -218,7 +218,7 @@
                           IsChecked="{Binding LockGridEdit.Value}">
                         <ContentControl IsTabStop="False">
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="Resources/tool_padlock01_01.png" VerticalAlignment="Center" Height="20"/>
+                                <Image Source="/Resources/tool_padlock01_01.png" VerticalAlignment="Center" Height="20"/>
                                 <TextBlock Text="編集ロック" VerticalAlignment="Center"/>
                                 <TextBlock Text="(※ロック中は「説明」のURL記載がリンク化)" FontSize="11"/>
                             </StackPanel>
@@ -263,7 +263,7 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
 
-                    <DataGridTextColumn Header="キーワード" Binding="{Binding Keyword_R.Value}" MaxWidth="230" IsReadOnly="True">
+                    <DataGridTextColumn Header="キーワード" Binding="{Binding Keyword_R.Value}" MaxWidth="150" IsReadOnly="True">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="TextWrapping" Value="Wrap"/>
@@ -272,7 +272,7 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
 
-                    <DataGridTextColumn Header="キーワード2" Binding="{Binding Keyword2_R.Value}" MaxWidth="230" IsReadOnly="True">
+                    <DataGridTextColumn Header="キーワード2" Binding="{Binding Keyword2_R.Value}" MaxWidth="150" IsReadOnly="True">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="TextWrapping" Value="Wrap"/>
@@ -281,7 +281,7 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
 
-                    <DataGridTextColumn x:Name="desc" Header="説明" Binding="{Binding Description_R.Value}" MaxWidth="600" IsReadOnly="True">
+                    <DataGridTextColumn x:Name="desc" Header="説明" Binding="{Binding Description_R.Value}" MaxWidth="500" IsReadOnly="True">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="TextWrapping" Value="Wrap"/>
@@ -303,7 +303,7 @@
                         </DataGridTextColumn.EditingElementStyle>
                     </DataGridTextColumn>
 
-                    <DataGridTextColumn Header="カテゴリ" Binding="{Binding Category_R.Value}" MaxWidth="200" IsReadOnly="True">
+                    <DataGridTextColumn Header="カテゴリ" Binding="{Binding Category_R.Value}" MaxWidth="150" IsReadOnly="True">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="TextWrapping" Value="Wrap"/>
@@ -312,7 +312,7 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
 
-                    <DataGridTextColumn Header="更新日" Binding="{Binding Date_R.Value, StringFormat={}{0:yyyy/M/d H:mm:ss}}" MaxWidth="180" IsReadOnly="True">
+                    <DataGridTextColumn Header="更新日" Binding="{Binding Date_R.Value, StringFormat={}{0:yyyy/M/d H:mm:ss}}" MaxWidth="160" IsReadOnly="True">
                         <DataGridTextColumn.EditingElementStyle>
                             <Style TargetType="TextBox">
                                 <Setter Property="IsReadOnly" Value="True"/>
@@ -321,7 +321,7 @@
                         </DataGridTextColumn.EditingElementStyle>
                     </DataGridTextColumn>
 
-                    <DataGridTemplateColumn Header="画像" IsReadOnly="True">
+                    <DataGridTemplateColumn Header="画像" Width="220" IsReadOnly="True">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Image Source="{Binding ImageSource_R.Value}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3" MaxHeight="200" StretchDirection="DownOnly"/>
