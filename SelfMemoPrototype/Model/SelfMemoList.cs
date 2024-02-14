@@ -2,6 +2,7 @@
 using Reactive.Bindings;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Json;
@@ -123,6 +124,7 @@ namespace SelfMemoPrototype.Model
             catch (Exception e)
             {
                 //error
+                Debug.Print(e.Message);
             }
             return ret;
         }
@@ -219,6 +221,7 @@ namespace SelfMemoPrototype.Model
             catch (Exception e)
             {
                 //error
+                Debug.Print(e.Message);
             }
             return ret;
         }
