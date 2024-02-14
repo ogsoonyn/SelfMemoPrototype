@@ -12,7 +12,10 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Dialog:DialogParticipation.Register="{Binding}"
-        FocusManager.FocusedElement="{Binding ElementName=SearchTextBox}" AllowDrop="True" Drop="Window_Drop" PreviewDragOver="Window_PreviewDragOver"
+        FocusManager.FocusedElement="{Binding ElementName=SearchTextBox}"
+        Width="{Binding WindowWidth.Value, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+        Height="{Binding WindowHeight.Value, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+        AllowDrop="True" Drop="Window_Drop" PreviewDragOver="Window_PreviewDragOver"
         Title="{Binding AppName.Value}" MinHeight="300" MinWidth="450" SaveWindowPosition="True" TitleCharacterCasing="Normal" ResizeMode="CanResizeWithGrip">
 
     <i:Interaction.Behaviors>
@@ -49,6 +52,8 @@
             <KeyBinding Key="R" Modifiers="Ctrl" Command="{Binding OpenRegisterWindowCmd}"/>
             <KeyBinding Key="D" Modifiers="Ctrl" Command="{Binding ClearCategoryFilterCmd}"/>
             <KeyBinding Key="E" Modifiers="Ctrl" Command="{Binding FocusOnSearchBoxCmd}"/>
+            <KeyBinding Key="L" Modifiers="Ctrl" Command="{Binding ToggleEditorAreaCmd}"/>
+            <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding SaveFilteredItemsCmd}"/>
             <KeyBinding Key="Esc" Command="Close"/>
         </DockPanel.InputBindings>
 
@@ -61,21 +66,26 @@
                     <MenuItem Header="登録ダイアログを開く" Command="{Binding OpenRegisterWindowCmd}"
                           InputGestureText="Ctrl+R"/>
                     <MenuItem Header="検索フォームの入力を登録ダイアログにコピーする"
-                          ToolTip="チェックを入れると、登録ダイアログを開いたときに検索フォームの入力をダイアログ側にコピーする"
+                          ToolTip="登録ダイアログを開いたときに検索フォームの入力をダイアログ側にコピーする"
                           IsCheckable="True" IsChecked="{Binding CopySearchWordToRegister.Value}"/>
+                    <MenuItem Header="編集エリアを表示する" IsCheckable="True" InputGestureText="Ctrl+L"
+                              ToolTip="編集エリアをウィンドウ右側に表示する" IsChecked="{Binding IsExpandedEditorArea.Value}"/>
                     <MenuItem Header="編集ロック" IsCheckable="True"
-                          ToolTip="チェックを外すとSelected Item枠でのデータ編集が可能になる"
+                          ToolTip="編集エリアでのデータ更新を禁止する"
                           IsChecked="{Binding LockGridEdit.Value}"/>
                     <MenuItem Header="Deleteキーでのテーブルの項目削除を許容する" IsCheckable="True"
-                          ToolTip="チェックを入れるとDeleteキーでの項目削除が可能になる"
+                          ToolTip="Deleteキーでの項目削除が可能になる"
                           IsChecked="{Binding AllowDeleteItem.Value}" IsEnabled="{Binding LockGridEdit.Value, Converter={StaticResource BoolNegative}}"/>
                     <MenuItem Header="グローバルホットキーの設定" Command="{Binding OpenSettingWindowCmd}"/>
-                    <MenuItem Header="現在表示中のリストをfiltered.jsonに保存" Command="{Binding SaveFilteredItemsCmd}"/>
+                    <MenuItem Header="現在表示中のリストをfiltered.jsonに保存" InputGestureText="Ctrl+S" Command="{Binding SaveFilteredItemsCmd}"/>
                     <MenuItem Header="実行ファイルのフォルダを開く" Command="{Binding OpenAppFolderCmd}"/>
                     <MenuItem Header="閉じる" Command="Close" InputGestureText="Esc"/>
                     <MenuItem Header="アプリケーションを終了" Click="MenuItem_Exit_Click"/>
                 </MenuItem>
             </Menu>
+
+            <CheckBox DockPanel.Dock="Right" Content="編集エリア表示"
+                      IsChecked="{Binding IsExpandedEditorArea.Value}" VerticalAlignment="Center" Margin="5,0"/>
 
             <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding CategoryList}" Margin="10,0"
                                       SelectedItem="{Binding CategoryListSelected.Value, Mode=TwoWay}" MinWidth="150"
@@ -92,6 +102,7 @@
             </ComboBox>
 
             <md:PackIcon DockPanel.Dock="Left" Kind="Magnify" VerticalAlignment="Center" Foreground="{Binding ElementName=SearchTextBox, Path=BorderBrush}"/>
+
             <TextBox x:Name="SearchTextBox" Style="{StaticResource MaterialDesignTextBox}"
                      VerticalContentAlignment="Center"
                      b:FocusExtension.IsFocused="{Binding SearchBoxIsFocused.Value}"
@@ -134,11 +145,8 @@
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="2*" MinWidth="10"/>
+                <ColumnDefinition Width="{Binding EditorAreaWidth.Value, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid.ColumnDefinitions>
-
-            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch"/>
 
             <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
                 <Grid VerticalAlignment="Stretch">

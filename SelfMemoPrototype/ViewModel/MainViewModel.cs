@@ -103,6 +103,13 @@ namespace SelfMemoPrototype.ViewModel
         /// </summary>
         public ReactivePropertySlim<TimeSpan> FilteringTime { get; private set; } = new ReactivePropertySlim<TimeSpan>();
 
+        public ReactivePropertySlim<bool> IsExpandedEditorArea { get; set; } = new ReactivePropertySlim<bool>(false);
+
+        public ReactivePropertySlim<double> EditorAreaWidth { get; set; } = new ReactivePropertySlim<double>(200);
+
+        public ReactivePropertySlim<double> WindowHeight { get; set; } = new ReactivePropertySlim<double>();
+        public ReactivePropertySlim<double> WindowWidth { get; set; } = new ReactivePropertySlim<double>();
+
         #endregion // Properties
 
         public MainViewModel()
@@ -167,6 +174,17 @@ namespace SelfMemoPrototype.ViewModel
                 stw.Stop();
                 FilteringTime.Value = stw.Elapsed;
             };
+
+            IsExpandedEditorArea.Subscribe(_ => UpdateEditorAreaWidth());
+            WindowWidth.Subscribe(_ => UpdateEditorAreaWidth());
+        }
+
+        private void UpdateEditorAreaWidth()
+        {
+            if (IsExpandedEditorArea.Value)
+                EditorAreaWidth.Value = WindowWidth.Value * 0.4;
+            else
+                EditorAreaWidth.Value = 0;
         }
 
         ~MainViewModel()
@@ -434,5 +452,11 @@ namespace SelfMemoPrototype.ViewModel
             });
         }
         private DelegateCommand _openAppFolderCmd;
+
+        public DelegateCommand ToggleEditorAreaCmd => _toggleEditorAreaCmd = _toggleEditorAreaCmd ?? new DelegateCommand(() =>
+        {
+            IsExpandedEditorArea.Value = !IsExpandedEditorArea.Value;
+        });
+        private DelegateCommand _toggleEditorAreaCmd;
     }
 }
