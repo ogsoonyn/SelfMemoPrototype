@@ -84,7 +84,7 @@
                 </MenuItem>
             </Menu>
 
-            <CheckBox DockPanel.Dock="Right" Content="編集エリア表示"
+            <CheckBox DockPanel.Dock="Right" Content="編集エリア表示 (Ctrl+L)"
                       IsChecked="{Binding IsExpandedEditorArea.Value}" VerticalAlignment="Center" Margin="5,0"/>
 
             <ComboBox DockPanel.Dock="Right" ItemsSource="{Binding CategoryList}" Margin="10,0"
